@@ -1,0 +1,107 @@
+<div class="testbox">
+  <form [formGroup]="Form" (ngSubmit)="onSubmit()">
+    <h5>Nallah Loading Video Report</h5> 
+    <hr>
+
+    <div class="row">
+
+      <div class="col-2">
+        <div class="item">
+          <p>Zone</p>
+        </div>
+      </div>
+      <div class="col-5">
+        <select formControlName="zone" (change)="onZoneChange($event)">       
+          <option value="" selected *ngIf="uniqueZone?.length != 1">ALL</option>
+          <option *ngFor="let p of uniqueZone" [value]="p">{{ p }}</option>         
+        </select>
+      </div>
+
+    </div>
+
+    <div class="row">
+      <div class="col-2">
+        <div class="item">
+          <p>Parent Code</p>
+        </div>
+      </div>
+
+      <div class="col-5">
+        <select formControlName="parentcode" (change)="onParentcodeChange($event)">        
+          <option value="" selected *ngIf="uniqueParentcode?.length != 1">ALL</option>
+          <option *ngFor="let p of uniqueParentcode" [value]="p">{{ p }}</option>       
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-2">
+        <div class="item">
+          <p>Work Code</p>
+        </div>
+      </div>
+
+      <div class="col-5">
+        <select formControlName="workcode" (change)="onWorkcodeChange($event)">
+          <option value="" selected *ngIf="uniqueWorkcode?.length != 1">ALL</option>
+          <option *ngFor="let p of uniqueWorkcode" [value]="p">{{ p }}</option>     
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-2">
+        <div class="item">
+          <p>Nallah</p>
+        </div>
+      </div>
+
+      <div class="col-5">
+        <select formControlName="nalla">
+          <option value="" selected *ngIf="Nallalist?.length != 1">ALL</option>
+          <option *ngFor="let p of Nallalist" [value]="p.SiltQuantityID">{{ p.NallahSystem }}</option>     
+        </select>
+      </div>
+    </div>
+ 
+    
+    <div class="btn-block">
+      <button type="submit">Search</button>
+      <button type="button" (click)="back()">Back</button>
+    </div>
+ 
+
+  <div class="row" *ngIf="lstUnLoadingVideos.length>0">
+    <div class="col-md-12">
+      <div class="box box-info">
+        <div class="box-header with-border">
+          <h3 class="box-title" style="margin-top: 20px;"> Video Details </h3>
+  
+        </div><!-- /.box-header -->
+       
+         
+<table id="MajorNallahs">
+  <tr>
+    <th>Sr No.</th>
+        <th>Nallah Name</th>
+    <th>Video Links</th>
+   
+  </tr>
+  
+    <tr *ngFor="let i of lstUnLoadingVideos; let in = index">
+      <td>{{in+1}}</td>    
+      <td>{{i.NallahName}}</td>  
+      <td><a [href]="i.Video" target="_blank"> View </a></td>
+    </tr>
+    
+
+ 
+</table>
+       
+
+      </div>
+    </div>
+  </div>
+</form>
+</div> 
+

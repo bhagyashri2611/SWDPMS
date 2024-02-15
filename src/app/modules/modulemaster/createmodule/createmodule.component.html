@@ -1,0 +1,71 @@
+<c-col xs="12">
+    <c-card class="mb-4">
+        <c-card-body>
+            <h5>{{pageTitle}}</h5>
+            <hr style="margin-bottom: 50px;">
+
+            <form [formGroup]="form" (ngSubmit)="onSubmit()" [validated]="customStylesValidated" cForm
+                class="row g-3 needs-validation">
+
+                <c-row class="mb-3">
+                    <label cLabel class="col-sm-2" for="moduleName">Task Name</label>
+                    <c-col [sm]="8">
+                        <input cFormControl id="moduleName" required type="text" formControlName="moduleName" />
+                        <c-form-feedback [valid]="false">Please Provide task Name</c-form-feedback>
+                    </c-col>
+                </c-row>
+                <c-row class="mb-3">
+                    <label cLabel class="col-sm-2" for="description">Task
+                        Description</label>
+                    <c-col [sm]="8">
+                        <input cFormControl id="description" formControlName="description" required type="text" />
+                        <c-form-feedback [valid]="false">Please Provide task Description</c-form-feedback>
+                    </c-col>
+                </c-row>
+                <c-row class="mb-3">
+                    <label cLabel class="col-sm-2" for="priority">Select Task Priority</label>
+                    <c-col [sm]="8">
+                        <select cSelect id="priority" formControlName="priority" required>
+                            <option value="">Choose...</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                        <c-form-feedback [valid]="false">Please Provide task ptiority</c-form-feedback>
+                    </c-col>
+                </c-row>
+                <c-row ngPreserveWhitespaces>
+                    <c-col xs="12">
+                        <c-card-body>
+                            <c-row class="align-items-center mb-3">
+                                <c-col>
+                                    <button cButton class="me-1" color="success" type="submit">
+                                        <svg cIcon name="cilPlus" style="margin-right: 5px;"></svg>
+                                        SUBMIT
+                                    </button>
+                                    <button (click)="onReset()" cButton class="me-1" color="info" type="reset">
+                                        <svg cIcon name="cilReload" style="margin-right: 5px;"></svg>
+                                        RESET
+                                    </button>
+                                    <button (click)="Back()" cButton class="me-1" color="secondary">
+                                        <svg cIcon name="cilArrowCircleLeft" style="margin-right: 5px;"></svg>
+                                        BACK
+                                    </button>
+                                </c-col>
+                            </c-row>
+                        </c-card-body>
+                    </c-col>
+                </c-row>
+
+            </form>
+
+        </c-card-body>
+    </c-card>
+</c-col>

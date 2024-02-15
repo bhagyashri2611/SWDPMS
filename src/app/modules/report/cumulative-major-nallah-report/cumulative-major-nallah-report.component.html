@@ -1,0 +1,183 @@
+<div class="testbox">
+
+
+  <form [formGroup]="Form" (ngSubmit)="onSubmit()">
+    <h5> Major Nalla Cumulative Silt Quantity Report</h5>
+    <hr>
+
+    <div class="row">
+          
+      <div class="col-sm-2">
+        <div class="item">
+          <p>Zone</p>
+        </div>
+      </div>
+      <div class="col-sm-5">
+        <select formControlName="zone" (change)="onZoneChange($event)">
+          <option value="" selected *ngIf="uniqueZone?.length != 1">ALL</option>
+          <option *ngFor="let p of uniqueZone" [value]="p">{{ p }}</option>
+        </select>
+      </div>
+ 
+  </div>
+    <div class="row">
+      <div class="col-sm-2">
+        <div class="item">
+          <p>Parent Code</p>
+        </div>
+      </div>
+
+      <div class="col-sm-5">
+        <select formControlName="parentcode" (change)="onParentcodeChange($event)">
+          <option value="" selected *ngIf="uniqueParentcode?.length != 1">ALL</option>
+          <option *ngFor="let p of uniqueParentcode" [value]="p">{{ p }}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-2">
+        <div class="item">
+          <p>Work Code</p>
+        </div>
+      </div>
+
+      <div class="col-sm-5">
+        <select formControlName="workcode" (change)="onWorkcodeChange($event)">
+          <option value="" selected *ngIf="uniqueWorkcode?.length != 1">ALL</option>
+          <option *ngFor="let p of uniqueWorkcode" [value]="p">{{ p }}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-2">
+        <div class="item">
+          <p>Nallah</p>
+        </div>
+      </div>
+
+      <div class="col-sm-5">
+        <select formControlName="nalla">
+          <option value="" *ngIf="Nallalist?.length != 1">ALL</option>
+          <option *ngFor="let p of Nallalist" [value]="p.SiltQuantityID">{{ p.NallahSystem }}</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-2">
+        <div class="item">
+          <p>From Date</p>
+        </div>
+      </div>
+
+      <div class="col-sm-5">
+        <input type="date" name="fromdate" id="fromdate" formControlName="fromdate" />
+
+      </div>
+    </div>
+
+    <div class="row">
+     
+      <div class="col-sm-2">
+        <div class="item">
+          <p>End Date</p>
+        </div>
+      </div>
+
+      <div class="col-sm-5">
+        <input type="date"  name="todate" id="todate" formControlName="todate" />
+      </div>
+ 
+    </div>
+
+    <div class="btn-block">
+      <button type="submit">Search</button>
+      <button type="button" (click)="back()">Back</button>
+    </div>
+
+
+  </form>
+</div>
+
+
+
+<div class="testbox" *ngIf="lstReportData.length>0">
+  <form action="/">
+    <div class="row">
+      <c-alert color="dark" variant="solid" style="text-align: center;">
+        <h5>Major Nallah Cummulitive Silt Quantity Report</h5>
+      </c-alert>
+
+      <div class="btn-block">
+        <button type="button" style="width: 150px" (click)="exportToExcel()" >Export To Excel</button>
+        <button type="button" style="width: 150px" (click)="download()">Export To PDF</button>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <ag-grid-angular #agGrid style="width: 100%; height: 500px;" 
+      id="myGrid" 
+      class="ag-theme-balham"
+        [columnDefs]="columnDefs" 
+        [rowData]="lstReportData" 
+        [animateRows]="true" 
+        [pagination]="true"
+        [context]="context" 
+        [frameworkComponents]="frameworkComponents" 
+        [enableCellTextSelection]="true"
+        [suppressRowClickSelection]="true" 
+        [rowSelection]="rowSelection" 
+        [defaultColDef]="defaultColDef"
+        (gridReady)="OnGridReady($event)" 
+        (firstDataRendered)="headerHeightSetter($event)"
+        (columnResized)="headerHeightSetter($event)">
+      </ag-grid-angular>
+    </div>
+
+  </form>
+  <table *ngIf="lstReportData.length > 0" id="excelexporttable"  hidden>
+    <tr>
+     <th style="text-align: center; font-weight:bold;" >Nalla ID</th>
+      <th style="text-align: center; font-weight:bold;">Zone</th>
+      <th style="text-align: center; font-weight:bold;">Workcode</th>
+      <th style="text-align: center; font-weight:bold;">Ward</th>
+      <th style="text-align: center; font-weight:bold;">CatchmentNumber</th>
+      <th style="text-align: center; font-weight:bold;">Nallah No</th>
+      <th style="text-align: center; font-weight:bold;">Nallah System</th>
+      <th style="text-align: center; font-weight:bold;">Nallah Length</th>
+      <th style="text-align: center; font-weight:bold;">Avg Width</th>
+      <th style="text-align: center; font-weight:bold;">Pre monsoon Desilt Quantity</th>
+      <th style="text-align: center; font-weight:bold;">During Monsoon Desilt Quantity</th>
+      <th style="text-align: center; font-weight:bold;">After Monsoon Desilt Quantity</th>
+      <th style="text-align: center; font-weight:bold;">Total Desilt Quantity</th>
+      <th style="text-align: center; font-weight:bold;">Total Vehicle</th>
+      <th style="text-align: center; font-weight:bold;">Total Net Weight (MT)</th>
+      <th style="text-align: center; font-weight:bold;">% of completion</th>
+      <th style="text-align: center; font-weight:bold;">Total Billable Net Weight (MT)</th>
+      <th style="text-align: center; font-weight:bold;">% of completion (Billable)</th>
+      
+    </tr>
+    <tr *ngFor="let v of lstReportData" style="text-align: center;font-size: 12px;">
+      <td> {{ v.SiltQuantityID }} </td>
+      <td> {{ v.Zone }} </td>
+      <td> {{ v.Workcode }} </td>
+      <td> {{ v.Ward}} </td>
+      <td> {{ v.CatchmentNumber}} </td> 
+      <td> {{ v.NallahNo}} </td>
+      <td> {{ v.NallahSystem}} </td>
+      <td> {{ v.NallahLength}} </td>
+      <td> {{ v.AvgWidth}} </td>
+      <td> {{ v.PremonsoonDesiltQuantity}} </td>
+      <td> {{ v.DuringMonsoonDesiltQuantity}} </td>
+      <td> {{ v.AftrMonsoonDesiltQuantity}} </td>
+      <td> {{ v.TotalDesiltQuantity}} </td>    
+      <td> {{ v.TotalVehicle}} </td>
+      <td> {{ v.TotalActNetWeight}} </td>
+      <td> {{ v.PercentOfPremonsoon}} </td>
+      <td> {{ v.BillableQuantity}} </td>   
+      <td> {{ v.BillablePercent}} </td>   
+    </tr>
+    </table>
+</div>
+
+

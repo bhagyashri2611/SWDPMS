@@ -1,0 +1,44 @@
+<c-card class="mb-4">
+  <c-card-header>Widgets</c-card-header>
+  <c-card-body>
+    <app-widgets-brand></app-widgets-brand>
+  </c-card-body>
+</c-card>
+
+<app-widgets-brand></app-widgets-brand>
+<c-row ngPreserveWhitespaces>
+  <c-col xs="12">
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>Work Status</strong> <small>Progress</small>
+      </c-card-header>
+
+      <c-card-body>
+        <p class="text-medium-emphasis small">
+          <!-- Use contextual classes to color tables, table rows or individual cells. -->
+        </p>
+        <table stripedRows cTable>
+          <thead>
+            <th style="font-weight: bold;">Sr. No.</th>
+            <th style="font-weight: bold;">Work Code</th>
+            <th style="font-weight: bold;">Location Name</th>
+            <th style="font-weight: bold;">Physical Progress(%)</th>
+            <th style="font-weight: bold;">Financial Progress(%) </th>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let Fin of reportDataListFinancial;let Phy  of reportDataListFinancial; let i=index">
+              <tr>
+                <td style="text-align: center;">{{i+1}}</td>
+                <td style="text-align: center;">{{Fin.workCode}}</td>
+                <td>{{Fin.locationName}}</td>
+                <td style="text-align: center; color: green;">{{Fin.ActualWorkCompleted}}</td>
+                <td style="text-align: center; color:blue;">{{Fin.percentage}}</td>
+              </tr>
+              <tr style="height: 2px;"></tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>

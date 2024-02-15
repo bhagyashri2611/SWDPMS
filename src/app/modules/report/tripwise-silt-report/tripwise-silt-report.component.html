@@ -1,0 +1,205 @@
+<div class="testbox">
+  <form [formGroup]="Form" (ngSubmit)="onSubmit()">
+    <h5>Tripwise Search Report</h5>
+    <hr>
+    <div class="row">
+      <div class="col-2">
+        <div class="item">
+          <p>Zone</p>
+        </div>
+      </div>
+      <div class="col-5">
+        <select formControlName="zone" (change)="onZoneChange($event)">
+          <option value="" selected *ngIf="uniqueZone?.length != 1">ALL</option>
+          <option *ngFor="let p of uniqueZone" [value]="p">{{ p }}</option>
+        </select>
+      </div>
+
+    </div>
+
+    <div class="row">
+      <div class="col-2">
+        <div class="item">
+          <p>Parent Code</p>
+        </div>
+      </div>
+
+      <div class="col-5">
+        <select formControlName="parentcode" (change)="onParentcodeChange($event)">
+          <option value="" selected *ngIf="uniqueParentcode?.length != 1">ALL</option>
+          <option *ngFor="let p of uniqueParentcode" [value]="p">{{ p }}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-2">
+        <div class="item">
+          <p>Work Code</p>
+        </div>
+      </div>
+
+      <div class="col-5">
+        <select formControlName="workcode">
+          <option value="" selected *ngIf="uniqueWorkcode?.length !=1 ">ALL</option>
+          <option *ngFor="let p of uniqueWorkcode" [value]="p">{{ p }}</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-2">
+        <div class="item">
+          <p>From Date</p>
+        </div>
+      </div>
+
+      <div class="col-5">
+        <input type="date" name="fromdate" id="fromdate" formControlName="fromdate" />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-2">
+        <div class="item">
+          <p>End Date</p>
+        </div>
+      </div>
+
+      <div class="col-5">
+        <input type="date" name="todate" id="todate" formControlName="todate" />
+      </div>
+    </div>
+
+    <div class="btn-block">
+      <button type="submit">Search</button>
+      <!-- <button type="button" (click)="export()">Export</button> -->
+      <button type="button" (click)="back()">Back</button>
+    </div>
+
+  </form>
+
+
+</div>
+<div class="testbox" *ngIf="tripwiseSearchData.length>0">
+  <form action="/">
+
+    <div class="row">
+      <c-alert color="dark" variant="solid" style="text-align: center;">
+        <h5>Tripwise Search Report</h5>
+      </c-alert>
+
+      <div class="btn-block">
+        <button type="button" (click)="export()">Export To Excel</button>
+        <!-- <button type="button" (click)="download()" hidden>Export-To-PDF</button> -->
+      </div>
+    </div>
+
+
+      
+        <div class="table-responsive">
+          <ag-grid-angular #agGrid style="width: 100%; height: 500px;" id="myGrid" class="ag-theme-balham"
+            [columnDefs]="columnDefs" [rowData]="tripwiseSearchData" [animateRows]="true" [pagination]="true"
+            [context]="context" [frameworkComponents]="frameworkComponents" [enableCellTextSelection]="true"
+            [suppressRowClickSelection]="true" [rowSelection]="rowSelection" [defaultColDef]="defaultColDef"
+            (gridReady)="OnGridReady($event)" (firstDataRendered)="headerHeightSetter($event)"
+            (columnResized)="headerHeightSetter($event)">
+          </ag-grid-angular>
+        </div>
+
+        <table style="width: auto;">
+          <tr>
+            <td> <label style="font-weight: bold;"> Total No of Vehicles </label> </td>
+          <td> {{ totalNoOfVehicles }}</td>
+          </tr>
+          <tr>
+            <td> <label style="font-weight: bold;"> Total No of In Vehicles </label> </td>
+          <td> {{ totalInVehicles }}</td>
+          </tr>
+          <tr>
+            <td> <label style="font-weight: bold;"> Total No of Out Vehicles </label> </td>
+          <td> {{ totalOutVehicles }}</td>
+          </tr>
+          <tr>
+            <td> <label style="font-weight: bold;"> Total Gross Weight </label> </td>
+          <td>  {{ totalGrossWeightInKG }} KG <span> OR</span> {{ totalGrossWeightInTon }} Tons</td>
+          </tr>
+          <tr>
+            <td> <label style="font-weight: bold;"> Total Unladen Weight  </label> </td>
+          <td>  {{ totalUnladenWeightInKg }} KG <span> OR</span> {{ totalUnladenWeightInTon }} Tons</td>
+          </tr>
+          <tr>
+            <td> <label style="font-weight: bold;">  Total Net Weight  </label> </td>
+          <td>  {{ totalActualNetWeightInKG }} KG <span> OR</span> {{ totalActualNetWeightInTon }} Tons</td>
+          </tr>
+          <tr> <label style="font-size: smaller;font-weight: bold;"> Note : Cancelled Slips are excluded </label></tr>
+        </table>
+
+      <div>
+        <table *ngIf="lsttripwisewiseExportData.length > 0" id="WorkCodeExportTable" hidden>
+          <tr style="text-align: center;font-size: 15px;background-color: green;color: #fff;height: 50px;">
+            <th>Location</th>
+            <th>Slip No</th>
+            <th>Trans Date(In)</th>
+            <th>Trans Time(In)</th>
+            <th>DC No.</th>
+            <th>Agency</th>
+            <th>Vehicle No</th>
+            <th>Vehicle Type</th>
+            <th>Work Code</th>
+            <th>Ward</th>
+            <th>Type Of Waste</th>
+            <th>Gross Weight(Kg)</th>          
+            <th>Trans Date UL(Out)</th>
+            <th>Trans Time UL(Out)</th>
+            <th>Unladen Weight(Kg)</th>
+            <th>ActualNet Weight(Kg)</th>
+
+          </tr>
+          <tr *ngFor="let v of lsttripwisewiseExportData" style="text-align: center;font-size: 12px;">
+            <td> {{ v.Weighbridge }} </td>
+            <td> {{ v.SlipSrNoNew }} </td>
+            <td> {{ v.Trans_Date}} </td>
+            <td> {{ v.Trans_Time}} </td>
+            <td> {{ v.DC_No}} </td>
+            <td> {{ v.Agency_Name }} </td>
+            <td> {{ v.Vehicle_No }} </td>
+            <td> {{ v.VehicleType }} </td>
+            <td> {{ v.WorkCode}} </td>
+            <td> {{ v.Ward}} </td>
+            <td> {{ v.Type_of_Garbage}} </td>
+            <td> {{ v.Gross_Weight}} </td>           
+            <td> {{ v.Trans_Date_UL}} </td>
+            <td> {{ v.Trans_Time_UL}} </td>
+            <td> {{ v.Unladen_Weight}} </td>
+            <td> {{ v.Act_Net_Weight}} </td>
+
+          </tr>
+
+          <tr style="text-align: center;font-size: 15px;background-color: green;color: #fff;height: 50px;">
+            <th colspan="2">Total No. of Vehicles</th>
+            <th colspan="2">Total In Vehicles</th>
+            <th colspan="2">Total Out Vehicles</th>
+            <th colspan="2">Total Gross Weight</th>
+            <th colspan="2">Total Unladen Weight</th>
+            <th colspan="2">Total Actual Net Weight</th>
+            <th colspan="6" rowspan="2">Note: Cancelled slips are excluded from the above calculations.</th>
+          </tr>
+
+          <tr style="text-align: center;font-size: 12px;">
+            <td colspan="2"> {{ totalNoOfVehicles }} </td>
+            <td colspan="2"> {{ totalInVehicles}} </td>
+            <td colspan="2"> {{ totalOutVehicles}} </td>
+            <td colspan="2"> {{ grossWeightTotal}} </td>
+            <td colspan="2"> {{ unladenWeightTotal}} </td>
+            <td colspan="2"> {{ actualNetWeightTotal}} </td>
+
+
+          </tr>
+
+        </table>
+      </div>
+
+
+  </form>
+
+</div>

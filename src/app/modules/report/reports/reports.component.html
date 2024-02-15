@@ -1,0 +1,449 @@
+<div class="testbox">
+  <form action="/">
+    <h5>SWD Report</h5>
+    <hr>
+
+    <div class="row">
+
+      <div class="col-2">
+        <div class="item" style="font-weight: bold;">
+          <p>Weigh Bridge</p>
+        </div>
+      </div>
+      <div class="col-5">
+        <select (change)="getWeighBridge($event)">
+          <option value="" selected>ALL</option>
+          <option *ngFor="let w of WeighBridgeData" [ngValue]="w.Weighbridge"
+            [selected]="w.WeighBridge ===reportmodel.Weighbridge">
+            {{ w.WeighBridge }} </option>
+        </select>
+      </div>
+
+    </div>
+
+    <div class="row">
+      <div class="col-2">
+        <div class="item" style="font-weight: bold;">
+          <p>Select Nallah</p>
+        </div>
+      </div>
+
+      <div class="col-5">
+
+        <select (change)="getNallah($event)">
+          <option value="" selected disabled> ALL</option>
+          <option *ngFor="let n of uniqueZone" [ngValue]="n" [selected]="n === reportmodel.selectNallah">
+            {{ n }} </option>
+        </select>
+
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="col-2">
+        <div class="item" style="font-weight: bold;">
+          <p>From Date</p>
+        </div>
+      </div>
+
+      <div class="col-5">
+        <input type="date" name="fromdate" id="fromdate" [(ngModel)]="reportmodel.FormDate" />
+
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-2">
+        <div class="item" style="font-weight: bold;">
+          <p>End Date</p>
+        </div>
+      </div>
+
+      <div class="col-5">
+        <input type="date" name="enddate" id="enddate" [(ngModel)]="reportmodel.todate" />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-2">
+        <div class="item" style="font-weight: bold;">
+          <p>Verified Status</p>
+        </div>
+      </div>
+
+      <div class="col-5">
+        <select [(ngModel)]="reportmodel.VerifiedStatus" name="verifiedStatus">
+          <option value="">ALL</option>
+          <option value="1">Yes</option>
+          <option value="0">No</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-2">
+        <div class="item" style="font-weight: bold;">
+          <p>Authorized Status</p>
+        </div>
+      </div>
+
+      <div class="col-5">
+        <select [(ngModel)]="reportmodel.AuthorizedStatus" name="athorizedStatus">
+          <option value="">ALL</option>
+          <option value="1">Yes</option>
+          <option value="0">No</option>
+        </select>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="col-2">
+        <div class="item" style="font-weight: bold;">
+          <p>Report Type</p>
+        </div>
+      </div>
+
+      <div class="col-5">
+        <select (change)="getreportType($event)">
+          <option value="" selected disabled> Select</option>
+          <option *ngFor="let r of reportTypeList" [value]="r.id" [selected]="r.id === reportmodel.reportType">
+            {{ r.value }} </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-2">
+        <div class="item" style="font-weight: bold;">
+          <p>Report Types</p>
+        </div>
+      </div>
+
+      <div class="col-2" style="margin-left: -33px;margin-top: 10px;">
+        <input type="checkbox" name="ReportTypes" id="ReportTypes" [(ngModel)]="ReportTypesAactive" [checked]=false
+          (change)="ReportTypesCheckChange($event)" />
+      </div>
+    </div>
+
+
+    <div class="row" *ngIf="ReportTypesAactive == true">
+
+
+      <div class="col-1" style="margin-top: 10px;">
+        <input type="checkbox" name="GrossWeightInKG" id="GrossWeightInKG" [(ngModel)]="GrossWeightInKAactive"
+          (change)="isGrossWeightInKGChange($event)" />
+      </div>
+
+      <div class="col-2">
+        <div class="item">
+          <p>Gross Weight In KG</p>
+        </div>
+      </div>
+
+
+
+      <div class="col-2 " *ngIf="GrossWeightInKAactive == true">
+        <input type="number" name="Gross_Weight_From" id="Gross_Weight_From"
+          [(ngModel)]="reportmodel.Gross_Weight_From" />
+      </div>
+
+
+      <div class="col-1" *ngIf="GrossWeightInKAactive == true">
+        <label>To</label>
+      </div>
+
+      <div class="col-2" *ngIf="GrossWeightInKAactive == true">
+        <input type="number" name="Gross_Weight_To" id="Gross_Weight_To" [(ngModel)]="reportmodel.Gross_Weight_To" />
+      </div>
+
+      <!-- Agency Name -->
+      <div class="row" *ngIf="ReportTypesAactive == true">
+        <div class="col-1">
+          <input type="checkbox" name="Agencyname" id="Agencyname" [(ngModel)]="AgencynameIsAactive"
+            (change)="isAgencynameChange($event)" />
+        </div>
+
+        <div class="col-2">
+          <div class="item">
+            <p>Agency Name:</p>
+          </div>
+        </div>
+
+        <div class="col-5" *ngIf="AgencynameIsAactive == true">
+          <select (change)="getAgencyname($event)">
+            <option Value='' selected disabled> Select</option>
+            <option *ngFor="let a of AgencyData" [ngValue]="a.FirmName"
+              [selected]="a.FirmName === reportmodel.agencyName">
+              {{ a.FirmName }} </option>
+          </select>
+        </div>
+      </div>
+
+
+      <!-- vehicleNumber: -->
+      <div class="row" *ngIf="ReportTypesAactive == true">
+        <div class="col-1" style="margin-top: 10px;">
+          <input type="checkbox" name="Agencyname" id="Agencyname" [(ngModel)]="vehicleNumberIsAactive"
+            (change)="isvehicleNumberChange($event)" />
+        </div>
+
+
+        <div class="col-2">
+          <div class="item">
+            <p>Vehicle Number: </p>
+          </div>
+        </div>
+
+        <div class="col-5" *ngIf="vehicleNumberIsAactive == true">
+          <select (change)="getvehicleNumber($event)">
+            <option Value='' selected disabled> Select</option>
+            <option *ngFor="let v of VehcleData" [ngValue]="v.Veh_Num"
+              [selected]="v.Veh_Num === reportmodel.Vehicle_No">
+              {{ v.Veh_Num }} </option>
+          </select>
+        </div>
+      </div>
+
+
+      <!-- Shift: -->
+      <div class="row" *ngIf="ReportTypesAactive == true">
+
+        <div class="col-1" style="margin-top: 10px;">
+          <input type="checkbox" name="Shift" id="Shift" [(ngModel)]="ShiftIsAactive"
+            [disabled]="HourlyIsAactive == true" (change)="isShiftChange($event)" />
+        </div>
+
+        <div class="col-1">
+          <div class="item">
+            <p>Shift: </p>
+          </div>
+        </div>
+
+        <div class="col-1" style="margin-top: 10px;" *ngIf="ShiftIsAactive == true">
+          <input type="checkbox" id="shift1" name="shift1" value="I" [(ngModel)]="ShiftIsAactive1"
+            (change)="isShift1Change($event)">
+        </div>
+        <div class="col-2" style="margin-top: 10px;" *ngIf="ShiftIsAactive == true">
+          <label for="shift1"> ShiftI</label>
+        </div>
+
+        <div class="col-1" style="margin-top: 10px;" *ngIf="ShiftIsAactive == true">
+          <input type="checkbox" id="shift2" name="shift2" value="II" [(ngModel)]="ShiftIsAactive2"
+            (change)="isShift2Change($event)">
+        </div>
+        <div class="col-2" style="margin-top: 10px;" *ngIf="ShiftIsAactive == true">
+          <label for="shift2"> ShiftII</label>
+        </div>
+
+        <div class="col-1" style="margin-top: 10px;" *ngIf="ShiftIsAactive == true">
+          <input type="checkbox" id="shift3" name="shift3" value="III" [(ngModel)]="ShiftIsAactive3"
+            (change)="isShift3Change($event)">
+        </div>
+        <div class="col-2" style="margin-top: 10px;" *ngIf="ShiftIsAactive == true">
+          <label for="shift3">ShiftIII</label>
+        </div>
+
+      </div>
+
+      <!--Hourly: -->
+      <div class="row" *ngIf="ReportTypesAactive == true">
+
+        <div class="col-1" style="margin-top: 10px;">
+          <input type="checkbox" name="Hourly" id="Hourly" [disabled]="ShiftIsAactive == true"
+            [(ngModel)]="HourlyIsAactive" (change)="isHourlyChange($event)" />
+        </div>
+
+        <div class="col-1">
+          <div class="item">
+            <p>Hourly: </p>
+          </div>
+        </div>
+
+        <div class="col-1" style="margin-top: 10px;" *ngIf="HourlyIsAactive == true">
+          <input type="checkbox" id="morning" name="morning" value="morninghour" [(ngModel)]="morningHourlyIsAactive"
+            (change)="morningHourlyIsAactiveChange($event)">
+        </div>
+        <div class="col-2" style="margin-top: 10px;" *ngIf="HourlyIsAactive == true">
+          <label for="morning"> Morning</label>
+        </div>
+
+        <div class="col-3" style="margin-top: 10px;" *ngIf="morningHourlyIsAactive == true">
+          <select (change)="getMorningHour($event)" *ngIf="morningHourlyIsAactive == true">
+            <option Value='' selected disabled> Select Shift Time</option>
+            <option *ngFor="let mh of morningHourDDL" [ngValue]="mh" [selected]="mh === reportmodel.Trans_Time">
+              {{ mh }} </option>
+          </select>
+        </div>
+
+        <div class="col-1" style="margin-top: 10px;" *ngIf="HourlyIsAactive == true">
+          <input type="checkbox" id="afternoon" name="afternoon" value="afternoonhour"
+            [(ngModel)]="afternoonHourlyIsAactive" (change)="afternoonHourlyIsAactiveChange($event)">
+        </div>
+        <div class="col-2" style="margin-top: 10px;" *ngIf="HourlyIsAactive == true">
+          <label for="afternoon"> Afternoon</label>
+        </div>
+
+        <div class="col-3" style="margin-top: 10px;" *ngIf="afternoonHourlyIsAactive == true">
+          <select (change)="getafternoonHour($event)" *ngIf="afternoonHourlyIsAactive == true">
+            <option Value='' selected disabled> Select Shift Time</option>
+            <option *ngFor="let ah of afternoonHourDDL" [ngValue]="ah" [selected]="ah === reportmodel.Trans_Time">
+              {{ ah }} </option>
+          </select>
+        </div>
+
+        <div class="col-1" style="margin-top: 10px;" *ngIf="HourlyIsAactive == true">
+          <input type="checkbox" id="night" name="night" value="nighthour" [(ngModel)]="nightHourlyIsAactive"
+            (change)="nightHourlyIsAactiveChange($event)">
+        </div>
+        <div class="col-2" style="margin-top: 10px;" *ngIf="HourlyIsAactive == true">
+          <label for="night">Night</label>
+        </div>
+
+        <div class="col-3" *ngIf="nightHourlyIsAactive == true">
+          <select (change)="getnightHour($event)" *ngIf="nightHourlyIsAactive == true">
+            <option Value='' selected disabled> Select Shift Time</option>
+            <option *ngFor="let nh of nightHourDDL" [ngValue]="nh" [selected]="nh === reportmodel.Trans_Time">
+              {{ nh }} </option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Type Of Garbage -->
+      <div class="row" *ngIf="ReportTypesAactive == true">
+        <div class="col-1" style="margin-top: 10px;">
+          <input type="checkbox" name="Ward" id="Ward" [(ngModel)]="TypeOfGarbageIsAactive"
+            (change)="isTypeOfGarbageChange($event)" />
+        </div>
+
+
+        <div class="col-2">
+          <div class="item">
+            <p>Type Of Garbage: </p>
+          </div>
+        </div>
+
+        <div class="col-5" *ngIf="TypeOfGarbageIsAactive == true">
+          <select (change)="getTypeOfGarbage($event)">
+            <option Value='' selected disabled> Select</option>
+            <option *ngFor="let g of GarbageData" [ngValue]="g.GarbageType"
+              [selected]="g.GarbageType === reportmodel.TypeOfGarbage"> {{ g.GarbageType }} </option>
+          </select>
+        </div>
+      </div>
+
+      <!--Ward -->
+      <div class="row" *ngIf="ReportTypesAactive == true">
+        <div class="col-1" style="margin-top: 10px;">
+          <input type="checkbox" name="Ward" id="Ward" [(ngModel)]="WardIsAactive" (change)="isWardChange($event)" />
+        </div>
+
+
+        <div class="col-2">
+          <div class="item">
+            <p>Ward: </p>
+          </div>
+        </div>
+
+        <div class="col-5" *ngIf="WardIsAactive == true">
+          <select (change)="getWard($event)">
+            <option Value='' selected disabled> Select</option>
+            <option *ngFor="let w of WardData" [ngValue]="w.WardName" [selected]="w.WardName === reportmodel.Ward"> {{
+              w.WardName }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <!--Work Code-->
+      <div class="row" *ngIf="ReportTypesAactive == true">
+        <div class="col-1" style="margin-top: 10px;">
+          <input type="checkbox" name="WorkCode" id="WorkCode" [(ngModel)]="WorkCodeIsAactive"
+            (change)="isWorkCodeChange($event)" />
+        </div>
+
+
+        <div class="col-2">
+          <div class="item">
+            <p>Work Code: </p>
+          </div>
+        </div>
+
+        <div class="col-5" *ngIf="WorkCodeIsAactive == true">
+          <select (change)="getWorkCode($event)">
+            <option Value='' selected disabled> Select</option>
+            <option *ngFor="let c of uniqueWorkcode" [ngValue]="c" [selected]="c === reportmodel.Work_code">
+              {{ c }} </option>
+          </select>
+        </div>
+      </div>
+
+    </div>
+
+
+
+    <div class="btn-block">
+      <button type="submit" (click)="onSubmit()">Search</button>
+      <button type="submit" (click)="back()">Back</button>
+    </div>
+
+
+
+
+  </form>
+
+
+
+</div>
+
+
+<div class="testbox" *ngIf="lstReportData.length>0">
+
+  <form action="/">
+
+    <c-alert color="dark" variant="solid" style="text-align: center">
+      <h5>SWD Report</h5>
+    </c-alert>
+
+    <div class="table-responsive">
+      <ag-grid-angular #agGrid style="width: 100%; height: 500px;" id="myGrid" class="ag-theme-balham"
+        [columnDefs]="columnDefs" [rowData]="lstReportData" [animateRows]="true" [pagination]="true" [context]="context"
+        [frameworkComponents]="frameworkComponents" [enableCellTextSelection]="true" [suppressRowClickSelection]="true"
+        [rowSelection]="rowSelection" [defaultColDef]="defaultColDef" (gridReady)="OnGridReady($event)"
+        (firstDataRendered)="headerHeightSetter($event)" (columnResized)="headerHeightSetter($event)">
+      </ag-grid-angular>
+    </div>
+    <table style="width: auto;">
+      <tr>
+        <td> <label style="font-weight: bold;"> Total No of Vehicles </label> </td>
+        <td> {{ totalNoOfVehicles }}</td>
+      </tr>
+      <tr>
+        <td> <label style="font-weight: bold;"> Total No of In Vehicles </label> </td>
+        <td> {{ totalInVehicles }}</td>
+      </tr>
+      <tr>
+        <td> <label style="font-weight: bold;"> Total No of Out Vehicles </label> </td>
+        <td> {{ totalOutVehicles }}</td>
+      </tr>
+      <tr>
+        <td> <label style="font-weight: bold;"> Total Gross Weight </label> </td>
+        <td> {{ totalGrossWeightInKG }} KG <span> OR</span> {{ totalGrossWeightInTon }} Tons</td>
+      </tr>
+      <tr>
+        <td> <label style="font-weight: bold;"> Total Unladen Weight </label> </td>
+        <td> {{ totalUnladenWeightInKg }} KG <span> OR</span> {{ totalUnladenWeightInTon }} Tons</td>
+      </tr>
+      <tr>
+        <td> <label style="font-weight: bold;"> Total Net Weight </label> </td>
+        <td> {{ totalActualNetWeightInKG }} KG <span> OR</span> {{ totalActualNetWeightInTon }} Tons</td>
+      </tr>
+      <tr> <label style="font-size: smaller;font-weight: bold;"> Note : Cancelled Slips are excluded </label></tr>
+    </table>
+
+
+
+  </form>
+
+</div>

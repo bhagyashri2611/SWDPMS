@@ -1,0 +1,137 @@
+<c-col xs="12">
+    <c-card class="mb-4">
+        <c-card-body>
+            <h5>{{pageTitle}}</h5>
+            <hr style="margin-bottom: 50px;">
+
+            <form [formGroup]="form" (ngSubmit)="onSubmit()" [validated]="customStylesValidated" cForm
+                class="row g-3 needs-validation">
+
+                <c-row class="mb-3">
+                    <label cLabel class="col-sm-2" for="workCode">Work Code</label>
+                    <c-col [sm]="8">
+                        <input cFormControl id="workCode" formControlName="workCode" required type="text" />
+                        <c-form-feedback [valid]="false">Please select a Work Code</c-form-feedback>
+                    </c-col>
+                </c-row>
+                <c-row class="mb-3">
+                    <label cLabel class="col-sm-2" for="locationName">Project Name</label>
+                    <c-col [sm]="8">
+                        <input cFormControl id="locationName" formControlName="locationName" required type="text" />
+                        <c-form-feedback [valid]="false">Please select a Project Name</c-form-feedback>
+                    </c-col>
+                </c-row>
+                <c-row class="mb-3">
+                    <label cLabel class="col-sm-2" for="wardName">Ward Name</label>
+                    <c-col [sm]="8">
+                        <select cSelect id="wardName" formControlName="wardName" (change)="onWardChange($event)"
+                            required>
+                            <option *ngFor="let ward of wardList" [value]="ward._id">{{ward.wardName}}</option>
+                        </select>
+                        <c-form-feedback [valid]="false">Please select a Ward Name</c-form-feedback>
+                    </c-col>
+                </c-row>
+                <c-row class="mb-3">
+                    <label cLabel class="col-sm-2" for="zoneName">Zone Name</label>
+                    <c-col [sm]="8">
+                        <input cFormControl id="zoneName" formControlName="zoneName" required type="text" />
+                        <c-form-feedback [valid]="false">Please provide Zone Name</c-form-feedback>
+                    </c-col>
+                </c-row>
+                <c-row class="mb-3">
+                    <label cLabel class="col-sm-2" for="contractorName">Contractor Name</label>
+                    <c-col [sm]="8">
+                        <input cFormControl id="contractorName" formControlName="contractorName" required type="text" />
+                        <c-form-feedback [valid]="false">Please provide Contractor Name</c-form-feedback>
+                    </c-col>
+                </c-row>
+                <c-row class="mb-3">
+                    <label cLabel class="col-sm-2" for="description">Description</label>
+                    <c-col [sm]="8">
+                        <input cFormControl id="description" formControlName="description" required type="text" />
+                        <c-form-feedback [valid]="false">Please provide a Description</c-form-feedback>
+                    </c-col>
+                </c-row>
+                <c-row class="mb-3">
+                    <label cLabel class="col-sm-2" for="length">Length</label>
+                    <c-col [sm]="8">
+                        <input cFormControl id="length" formControlName="length" required type="text" />
+                        <c-form-feedback [valid]="false">Please provide the Length</c-form-feedback>
+                    </c-col>
+                </c-row>
+                <c-row class="mb-3">
+                    <label cLabel class="col-sm-2" for="lengthUnit">Length Unit</label>
+                    <c-col [sm]="8">
+                        <select cSelect id="lengthUnit" formControlName="lengthUnit" required>
+                            <option *ngFor="let lengthUnit of unitList" [value]="lengthUnit._id">
+                                {{lengthUnit.unitName}}</option>
+                        </select>
+                        <c-form-feedback [valid]="false">Please select a Length Unit</c-form-feedback>
+                    </c-col>
+                </c-row>
+                <c-row class="mb-3">
+                    <label cLabel class="col-sm-2" for="width">Width</label>
+                    <c-col [sm]="8">
+                        <input cFormControl id="width" formControlName="width" required type="text" />
+                        <c-form-feedback [valid]="false">Please provide the Width</c-form-feedback>
+                    </c-col>
+                </c-row>
+                <c-row class="mb-3">
+                    <label cLabel class="col-sm-2" for="widthUnit">Width Unit</label>
+                    <c-col [sm]="8">
+                        <select cSelect id="widthUnit" formControlName="widthUnit" required>
+                            <option *ngFor="let widthUnit of unitList" [value]="widthUnit._id">
+                                {{widthUnit.unitName}}</option>
+                        </select>
+                        <c-form-feedback [valid]="false">Please select a Width Unit</c-form-feedback>
+                    </c-col>
+                </c-row>
+                <c-row class="mb-3">
+                    <label cLabel class="col-sm-2" for="startDate">Start Date</label>
+                    <c-col [sm]="8">
+                        <input cFormControl id="startDate" formControlName="startDate" required type="date" />
+                        <c-form-feedback [valid]="false">Please provide the Start Date</c-form-feedback>
+                    </c-col>
+                </c-row>
+                <c-row class="mb-3">
+                    <label cLabel class="col-sm-2" for="endDate">End Date</label>
+                    <c-col [sm]="8">
+                        <input cFormControl id="endDate" formControlName="endDate" required type="date" />
+                        <c-form-feedback [valid]="false">Please provide the End Date</c-form-feedback>
+                    </c-col>
+                </c-row>
+                <c-row class="mb-3">
+                    <label cLabel class="col-sm-2" for="coordinates">Coordinates</label>
+                    <c-col [sm]="8">
+                        <input cFormControl id="coordinates" formControlName="coordinates" required type="text" />
+                        <c-form-feedback [valid]="false">Please provide the coordinates</c-form-feedback>
+                    </c-col>
+                </c-row>
+                <c-row ngPreserveWhitespaces>
+                    <c-col xs="12">
+                        <c-card-body>
+                            <c-row class="align-items-center mb-3">
+                                <c-col>
+                                    <button cButton class="me-1" color="success" type="submit">
+                                        <svg cIcon name="cilPlus" style="margin-right: 5px;"></svg>
+                                        SUBMIT
+                                    </button>
+                                    <button (click)="onReset()" cButton class="me-1" color="info" type="reset">
+                                        <svg cIcon name="cilReload" style="margin-right: 5px;"></svg>
+                                        RESET
+                                    </button>
+                                    <button (click)="Back()" cButton class="me-1" color="secondary">
+                                        <svg cIcon name="cilArrowCircleLeft" style="margin-right: 5px;"></svg>
+                                        BACK
+                                    </button>
+                                </c-col>
+                            </c-row>
+                        </c-card-body>
+                    </c-col>
+                </c-row>
+
+            </form>
+
+        </c-card-body>
+    </c-card>
+</c-col>

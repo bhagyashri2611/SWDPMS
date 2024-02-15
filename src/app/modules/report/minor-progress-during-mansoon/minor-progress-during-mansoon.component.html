@@ -1,0 +1,74 @@
+<div class="content-wrapper">
+  <section class="content">
+    <div class="row">
+      <c-alert color="dark" variant="solid" style="text-align: center;"><h5>Minor Nallah During-Monsoon Progress Report of Desilting Till Date</h5>  </c-alert>
+     
+      
+      <div class="col-md-12">
+        <div class="box box-info">
+          <div class="row">
+            <div class="btn-block">
+        
+              <button type="button"  (click)="export()" hidden>Export To Excel</button>
+              <button type="button"  (click)="download()">Export To PDF</button>
+            </div>
+            </div>
+          <div class="table-responsive">
+            <ag-grid-angular #agGrid style="width: 100%; height: 500px;" id="myGrid" class="ag-theme-balham"
+              [columnDefs]="columnDefs" [rowData]="listminor" [animateRows]="true" [pagination]="true"
+              [context]="context" [frameworkComponents]="frameworkComponents" [enableCellTextSelection]="true"
+              [suppressRowClickSelection]="true" [rowSelection]="rowSelection" [defaultColDef]="defaultColDef"
+              (gridReady)="OnGridReady($event)"   (firstDataRendered)="headerHeightSetter($event)"
+              (columnResized)="headerHeightSetter($event)">
+            </ag-grid-angular>
+          </div>
+          
+        </div>
+
+         
+         
+        </div>
+      </div>
+    
+      <table *ngIf="listminor.length > 0" id="excelexporttable"  hidden>
+        <tr>
+         <th style="text-align: center; font-weight:bold;" >Area</th>
+          <th style="text-align: center; font-weight:bold;">Zone</th>
+          <th style="text-align: center; font-weight:bold;">Ward</th>
+          <th style="text-align: center; font-weight:bold;">Workcode</th>
+          <!-- <th>Logsheet No.</th> -->
+          <th style="text-align: center; font-weight:bold;">Total Silt Quantity</th>
+          <th style="text-align: center; font-weight:bold;">Pre monsoon Quanitity</th>
+          <th style="text-align: center; font-weight:bold;">During Monsoon Quanitity</th>
+          <th style="text-align: center; font-weight:bold;">Total Vehicle</th>
+          <th style="text-align: center; font-weight:bold;">Total Act. Net Wt. (MT)</th>
+          <th style="text-align: center; font-weight:bold;">% of completion</th>
+          <th style="text-align: center; font-weight:bold;">Total Billable Net Wt. (MT)</th>
+          <th style="text-align: center; font-weight:bold;">% of completion (billable)</th>
+         
+          
+        </tr>
+        <tr *ngFor="let v of listminor" style="text-align: center;font-size: 12px;">
+          <td> {{ v.Area }} </td>
+          <td> {{ v.Zone }} </td>
+          <td> {{ v.Ward}} </td>
+          <td> {{ v.Workcode}} </td> 
+          <td> {{ v.TotalDesiltQuantity}} </td>
+          <td> {{ v.TotalPremonsoonDesiltQuantity}} </td>
+          <td> {{ v.TotalAftermonsoonDesiltQuantity}} </td>
+          <td> {{ v.VehCount}} </td>
+          <td> {{ v.ActNetWtQuantity}} </td>
+          <td> {{ v.PercentPreMonsoon}} </td>
+          <td> {{ v.BillableNetWt}} </td>
+          <td> {{ v.BillablePrcnt}} </td>
+         
+          
+        </tr>
+  
+
+      </table>
+    
+    </section>
+    
+</div>
+
