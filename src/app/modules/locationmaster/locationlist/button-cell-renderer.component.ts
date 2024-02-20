@@ -7,21 +7,12 @@ import { Router } from '@angular/router';
   template: `
     <button
       class="me-1"
-      color="light"
-      cButton
-      (click)="btnClickedAttachModuleHandler()"
-    >
-      <svg cIcon name="cilLink"></svg>
-      Attach Task
-    </button>
-    <button
-      class="me-1"
-      color="light"
+      color="success"
       cButton
       (click)="btnClickedAddModuleDetailHandler()"
     >
-      <svg cIcon name="cilPlus"></svg>
-      Task Details
+      <svg cIcon name="cilFile"></svg>
+      View
     </button>
     <button
       class="me-1"
@@ -31,6 +22,15 @@ import { Router } from '@angular/router';
     >
       <svg cIcon name="cilNoteAdd"></svg>
       Edit
+    </button>
+    <button
+      class="me-1"
+      color="light"
+      cButton
+      (click)="btnClickedAttachModuleHandler()"
+    >
+      <svg cIcon name="cilLink"></svg>
+      Attach Task
     </button>
   `,
 })

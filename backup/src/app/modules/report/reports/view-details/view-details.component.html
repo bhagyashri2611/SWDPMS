@@ -1,0 +1,140 @@
+<div class="testbox" style="margin-top: 50px;">
+  <form action="/">   
+<div class="col-md-12">
+  <div class="row"> 
+    <button type="button" style="float: left;" (click)="Close()">
+      Close
+    </button>
+<table id="MajorNallahs">
+    <tr>
+        <th> Logsheet No. </th>  
+        <th> Slip No. </th>
+        <th> Location </th>  
+        <th> WeighBridge </th>
+    </tr>
+    <tr>
+        <td> {{transData.DC_No}} </td>
+        <td> {{transData.SlipSrNo}} </td>
+        <td> {{transData.Weighbridge}} </td>
+        <td> {{transData.Weighbridge}} </td>   
+    </tr>
+
+
+    <tr>
+        <th> Vehicle Number </th>  
+        <th> Vehicle Type </th>
+        <th> Garbage </th>  
+        <th> Ward </th>
+    </tr>
+    <tr>
+        <td> {{transData.Vehicle_No}} </td>
+        <td> {{transData.VehicleType}} </td>
+        <td> {{transData.Type_of_Garbage}} </td>
+        <td> {{transData.Ward}} </td>
+    </tr>
+
+
+    <tr>
+        <!-- <th> Verified Status </th>  
+        <th> Authorized Status </th> -->
+        <th colspan="4"> Agency Name </th>  
+        
+    </tr>
+    <tr>
+        <!-- <td> {{transData.VerifiedStatus}} </td>
+        <td> {{transData.AuthorizedStatus}} </td> -->
+        <td colspan="4"> {{transData.Agency_Name}} </td>
+    </tr>
+
+    <tr>
+        <th> In Date </th>  
+        <th> In Time </th>
+        <th> Out Date </th>  
+        <th> Out Time </th>
+    </tr>
+    <tr>
+        <td> {{transData.Trans_Date}} </td>
+        <td>{{transData.Trans_Time}} </td>
+        <td> {{transData.Trans_Date_UL}} </td>
+        <td> {{transData.Trans_Time_UL}} </td>
+    </tr>
+
+    <tr>  <td colspan="4"> <br> </td>       </tr>
+
+
+    <tr>
+        <th colspan="2"> In Vehicle Image </th>  
+        <th colspan="2"> Out Vehicle Image </th>  
+        
+    </tr>
+    <tr>
+        <td colspan="2"> <img [src]="transData.inImageURL" alt="Image" 
+            style="height:500px;width:500px"> 
+        </td>
+        <td colspan="2"> <img [src]="transData.outImageURL" alt="Image" 
+            style="height:500px;width:500px"> 
+        </td>
+    </tr>
+
+</table>
+<h4>Loading Images</h4>
+<table id="MajorNallahs">
+  <tr>
+    <th>Logsheet No</th>
+    <th>Vehicle No</th>
+    <th>Nallah Name</th>
+    <th>Image Type</th>
+    <th>Image</th>
+        </tr>
+  <tr *ngFor="let i of lstLoadingImages">
+    <td>{{i.LogSheetNo}}</td>
+    <td>{{i.VehicleNo}}</td>
+    <td>{{i.NallahSystem}}</td>
+    <td>{{i.ImageCategoryName}}</td>
+    <td><div><img [src]="i.Image" style="width: 200; height: 300px;"></div></td>
+  </tr>
+</table>
+
+  <h4>Unloading Images</h4>
+
+<table id="MajorNallahs">
+  <tr>
+    <th>Logsheet No</th>
+    <th>Vehicle No</th>
+    <th>Nallah Name</th>
+    <th>Image Type</th>
+    <th>Image</th>
+        </tr>
+  <tr *ngFor="let i of lstUnLoadingImages">
+    <td>{{i.LogSheetNo}}</td>
+    <td>{{i.VehicleNo}}</td>
+    <td>{{i.NallahSystem}}</td>
+    <td>{{i.ImageCategoryName}}</td>
+    <td><div><img [src]="i.Image" style="width: 200; height: 300px;"></div></td>
+  </tr>
+</table>
+
+  <h4>Videos</h4>
+
+<table id="MajorNallahs">
+  <tr>
+    <th>Logsheet No</th>
+        <!-- <th>Nallah Name</th> -->
+    <th>Video Links</th>
+   
+  </tr>
+  
+    <tr *ngFor="let i of lstUnLoadingVideos">
+      <td>{{i.LogsheetNo}}</td>    
+      <!-- <td>{{i.NallahSystem}}</td>   -->
+      <td><div><img [src]="i.Video"></div></td>
+    </tr>
+    
+
+ 
+</table>
+     
+</div>
+</div>   
+ </form> 
+</div>   

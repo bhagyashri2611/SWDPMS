@@ -14,9 +14,12 @@ import {
   PerfectScrollbarConfigInterface,
   PerfectScrollbarModule,
 } from 'ngx-perfect-scrollbar';
-
+import { FormlyModule } from '@ngx-formly/core';
+import {FormlyHorizontalWrapper} from '../app/views/wrapper/horizontal-wrapper'
 // Import routing module
 import { AppRoutingModule } from './app-routing.module';
+// import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
+import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
 
 // Import app component
 import { AppComponent } from './app.component';
@@ -65,6 +68,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { LoadingComponent } from '../app/loading/loading.component';
 import { UnitMasterModule } from '../app/modules/unit-master/unit-master.module';
+import { PandmattributeModule } from './modules/pandmattribute/pandmattribute.module';
+import {DataentryModule} from './modules/dataentry/dataentry.module'
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
 };
@@ -76,7 +81,7 @@ const APP_CONTAINERS = [
 ];
 
 @NgModule({
-  declarations: [AppComponent, LoadingComponent, ...APP_CONTAINERS],
+  declarations: [AppComponent, LoadingComponent, ...APP_CONTAINERS,  FormlyHorizontalWrapper],
   imports: [
     CommonModule,
     BrowserModule,
@@ -93,11 +98,12 @@ const APP_CONTAINERS = [
     PerfectScrollbarModule,
     NavModule,
     ButtonModule,
-    FormModule,
-    FormsModule,
+    BrowserModule,
+    ReactiveFormsModule,
+    FormlyModule.forRoot(),
+    FormlyBootstrapModule,
     UtilitiesModule,
     ButtonGroupModule,
-    ReactiveFormsModule,
     SidebarModule,
     SharedModule,
     TabsModule,
@@ -108,6 +114,7 @@ const APP_CONTAINERS = [
     CardModule,
     LoginModule,
     DashboardModule,
+    DataentryModule,
     ReportModule,
     HttpClientModule,
     MatDialogModule,
@@ -117,6 +124,15 @@ const APP_CONTAINERS = [
     MatButtonModule,
     MatToolbarModule,
     UnitMasterModule,
+    PandmattributeModule,
+    FormlyModule.forRoot({
+      extras: { lazyRender: true },
+      wrappers: [
+        { name: 'form-field-horizontal', 
+        component: FormlyHorizontalWrapper
+       },
+      ],
+    }),
   ],
   providers: [
     IconSetService,

@@ -1,0 +1,20 @@
+<div class="login-page">
+  <div class="form" [formGroup]="loginForm">
+    <div class="login">
+      <div class="login-header">
+        <h4><b>Roads Monitoring System</b> LOGIN</h4>
+        <hr />
+        <p>Please enter your credentials to login.</p>
+      </div>
+    </div>
+    <form class="login-form" [formGroup]="loginForm">
+
+      <input type="text" formControlName="username" id="username" name="username" placeholder="username" />
+
+      <input type="password" formControlName="password" id="password" name="password" placeholder="password" />
+
+      <button (click)="loginClick()">login</button>
+      <!-- <p class="message">Not registered? <a href="#">Create an account</a></p> -->
+    </form>
+  </div>
+</div>

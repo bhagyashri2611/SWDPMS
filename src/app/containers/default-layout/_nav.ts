@@ -13,7 +13,7 @@ export const navItems: INavData[] = [
 
     children: [
       {
-        name: 'Project',
+        name: 'Roads',
         url: '/location/list',
         iconComponent: { name: 'cil-chart-line' },
       },
@@ -34,7 +34,86 @@ export const navItems: INavData[] = [
       },
     ],
   },
+
+  {
+    name: 'Attributes',
+    iconComponent: { name: 'cil-chart-line' },
+
+    children: [
+      // {
+      //   name: 'P&M Attributes',
+      //   url: '/location/assetpandmattributelist',
+      //   iconComponent: { name: 'cil-chart-line' },
+      // },
+      {
+        name: 'Data Entry Attributes',
+        url: '/location/dataentryassetpandmattributelist',
+        iconComponent: { name: 'cil-chart-line' },
+      },
+      {
+        name: 'Data Entry Group List',
+        url: '/location/dataentrygrouplist',
+        iconComponent: { name: 'cil-chart-line' },
+      },
+
+    ],
+  },
+
+  {
+    name: 'Data Entry',
+    iconComponent: { name: 'cil-chart-line' },
+
+    children: [
+      {
+        name: 'Data Entry',
+        url: '/location/createdataentry',
+        iconComponent: { name: 'cil-chart-line' },
+      },
+    ],
+  },
+  
 ];
+
+
+export const OtherThanAdmin: INavData[] = [
+  {
+    name: 'Dashboard',
+    url: '/dashboard',
+    iconComponent: { name: 'cil-speedometer' },
+  },
+  {
+    name: 'Master Data',
+    iconComponent: { name: 'cil-list-rich' },
+
+    children: [
+      {
+        name: 'Roads',
+        url: '/location/list',
+        iconComponent: { name: 'cil-chart-line' },
+      },
+      {
+        name: 'Module',
+        url: '/module/list',
+        iconComponent: { name: 'cil-description' },
+      },
+
+    ],
+  },
+  {
+    name: 'Data Entry',
+    iconComponent: { name: 'cil-plus' },
+
+    children: [
+      {
+        name: 'Data Entry',
+        url: '/location/createdataentry',
+        iconComponent: { name: 'cil-plus' },
+      },
+    ],
+  },
+  
+];
+
 
 export const navAEEEMajorItems: INavData[] = [
   {

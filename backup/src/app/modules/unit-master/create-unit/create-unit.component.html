@@ -1,0 +1,67 @@
+<c-col xs="12">
+    <c-card class="mb-4">
+        <c-card-body>
+            <h5>{{pageTitle}}</h5>
+            <hr style="margin-bottom: 50px;">
+
+            <form [formGroup]="unitForm" (ngSubmit)="onSubmit()" [validated]="customStylesValidated" cForm
+                class="row g-3 needs-validation">
+
+                <c-row class="mb-3">
+                    <label cLabel class="col-sm-2" for="unitName">Unit Name</label>
+                    <c-col [sm]="8">
+                        <input cFormControl id="unitName" required type="text" formControlName="unitName" />
+                        <c-form-feedback [valid]="false">Please Provide Unit Name</c-form-feedback>
+                    </c-col>
+                </c-row>
+                <c-row class="mb-3">
+                    <label cLabel class="col-sm-2" for="unitDescription">Unit
+                        Description</label>
+                    <c-col [sm]="8">
+                        <input cFormControl id="unitDescription" formControlName="unitDescription" required
+                            type="text" />
+                        <c-form-feedback [valid]="false">Please Provide Unit Description</c-form-feedback>
+                    </c-col>
+                </c-row>
+                <c-row class="mb-3">
+                    <label cLabel class="col-sm-2" for="unitType">Select Unit Type</label>
+                    <c-col [sm]="8">
+                        <select cSelect id="unitType" formControlName="unitType" required>
+                            <option value="">Choose...</option>
+                            <option value="Length">Length</option>
+                            <option value="Volume">Volume</option>
+                            <option value="Area">Area</option>
+                            <option value="Weight">Weight</option>
+                            <option value="Weight">Count</option>
+                        </select>
+                        <c-form-feedback [valid]="false">Please Provide Unit Type</c-form-feedback>
+                    </c-col>
+                </c-row>
+                <c-row ngPreserveWhitespaces>
+                    <c-col xs="12">
+                        <c-card-body>
+                            <c-row class="align-items-center mb-3">
+                                <c-col>
+                                    <button cButton class="me-1" color="success" type="submit">
+                                        <svg cIcon name="cilPlus" style="margin-right: 5px;"></svg>
+                                        SUBMIT
+                                    </button>
+                                    <button (click)="onReset()" cButton class="me-1" color="info" type="reset">
+                                        <svg cIcon name="cilReload" style="margin-right: 5px;"></svg>
+                                        RESET
+                                    </button>
+                                    <button (click)="Back()" cButton class="me-1" color="secondary">
+                                        <svg cIcon name="cilArrowCircleLeft" style="margin-right: 5px;"></svg>
+                                        BACK
+                                    </button>
+                                </c-col>
+                            </c-row>
+                        </c-card-body>
+                    </c-col>
+                </c-row>
+
+            </form>
+
+        </c-card-body>
+    </c-card>
+</c-col>

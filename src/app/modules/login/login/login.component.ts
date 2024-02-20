@@ -44,7 +44,9 @@ export class LoginComponent implements OnInit {
       if (result.status === 200) {
         console.log('Logged In', result);
         sessionStorage.setItem('UserId', result.data[0]._id.toString());
+        sessionStorage.setItem('FullName', String(result.data[0].firstName));
         sessionStorage.setItem('Role', String(result.data[0].role));
+        sessionStorage.setItem('UserRole',String(result.data[0].roleName))
         sessionStorage.setItem('UserName', String(result.data[0].userName));
         this.router.navigateByUrl('dashboard');
       }

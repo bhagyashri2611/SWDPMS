@@ -1,0 +1,28 @@
+<div class="testbox">
+  <form action="/">
+    <div class="row">
+      <c-alert color="dark" variant="solid" style="text-align: center;">
+    <h5>Silt Quantity Details</h5>   
+  </c-alert>
+  </div> 
+    <div class="table-responsive">
+      <ag-grid-angular #agGrid style="width: 100%; height: 500px;" 
+      id="myGrid" 
+      class="ag-theme-balham"
+        [columnDefs]="columnDefs" 
+        [rowData]="listminor" 
+        [animateRows]="true" 
+        [pagination]="true"
+        [context]="context" 
+        [frameworkComponents]="frameworkComponents" 
+        [enableCellTextSelection]="true"
+        [suppressRowClickSelection]="true" 
+        [rowSelection]="rowSelection" 
+        [defaultColDef]="defaultColDef"
+        (gridReady)="OnGridReady($event)" 
+        (firstDataRendered)="headerHeightSetter($event)"
+        (columnResized)="headerHeightSetter($event)">
+      </ag-grid-angular>
+    </div> 
+  </form>
+</div>

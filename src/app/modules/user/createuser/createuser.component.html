@@ -15,8 +15,7 @@
                 <c-row class="mb-3">
                     <label cLabel class="col-sm-2" for="lastName">Last Name</label>
                     <c-col [sm]="8">
-                        <input cFormControl id="lastName" required type="text" formControlName="lastName" />
-                        <c-form-feedback [valid]="false">Please provide your last name</c-form-feedback>
+                        <input cFormControl id="lastName"  type="text" formControlName="lastName" />
                     </c-col>
                 </c-row>
                 <c-row class="mb-3">
@@ -34,7 +33,7 @@
                     </c-col>
                 </c-row>
                 <c-row class="mb-3">
-                    <label cLabel class="col-sm-2" for="mobileNo">Mobile Number</label>
+                    <label cLabel class="col-sm-2" for="mobileNo">Mobile NO</label>
                     <c-col [sm]="8">
                         <input cFormControl id="mobileNo" required type="tel" formControlName="mobileNo" />
                         <c-form-feedback [valid]="false">Please provide a valid mobile number</c-form-feedback>
@@ -57,6 +56,18 @@
                         <c-form-feedback [valid]="false">Please provide a role</c-form-feedback>
                     </c-col>
                 </c-row>
+
+                <c-row class="mb-3">
+                    <label cLabel class="col-sm-2" for="ward">Ward</label>
+                    <c-col [sm]="8">
+                        <select class="form-control" id="ward" formControlName="ward" (change)="onWardChange($event)" multiple>
+                            <option *ngFor="let w of modelWard" [value]="w.wardName">{{w.wardName}}</option>
+                          </select>
+                        <c-form-feedback [valid]="false">Please provide a Ward</c-form-feedback>
+                    </c-col>
+                </c-row>
+
+
                 <c-row class="mb-3">
                     <label cLabel class="col-sm-2" for="isActive">Is Active</label>
                     <c-col [sm]="8">
@@ -91,6 +102,30 @@
                     </c-col>
                 </c-row>
             </form>
+
+            <hr class="my-3">
+
+            <div style="margin-top: 50px;">
+                <form [formGroup]="form">              
+                  <h6 class="card-title">Browse Excel file for Upload</h6>   
+                  <c-row class="mb-3">
+                    <c-col [sm]="3">
+                        <input cFormControl type="file" #csvReader name="Upload File" id="txtFileUpload" (change)="uploadListener($event)"
+                               accept=".xlsx" />
+                      </c-col>    
+                      
+                      <c-col [sm]="4">
+                        <button (click)="onReset()" cButton class="me-1" color="warning" type="reset" (click)="UploadClick()">
+                            <!-- <svg cIcon name="cilUpload" style="margin-right: 5px;"></svg> -->
+                            UPLOAD
+                        </button>
+                      </c-col>
+                  </c-row>
+                  
+                         
+                </form>
+            </div>
+            
         </c-card-body>
     </c-card>
 </c-col>

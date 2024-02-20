@@ -1,0 +1,114 @@
+<div class="testbox">
+    <form [formGroup]="Form" (ngSubmit)="onSubmit()">
+      <h5>Loading Trips Search Report</h5>
+      <hr>
+      <div class="row">
+        <div class="col-2">
+          <div class="item">
+            <p>Zone</p>
+          </div>
+        </div>
+        <div class="col-4">
+          <select formControlName="zone" (change)="onZoneChange($event)">       
+            <option  value="" selected *ngIf="uniqueZone?.length != 1" >ALL</option>
+            <option *ngFor="let p of uniqueZone" [value]="p">{{ p }}</option>         
+          </select>
+        </div>
+  
+      </div>
+  
+      <div class="row">
+        <div class="col-2">
+          <div class="item">
+            <p>Parent Code</p>
+          </div>
+        </div>
+  
+        <div class="col-4">
+          <select formControlName="parentcode" (change)="onParentcodeChange($event)">        
+            <option value="" selected *ngIf="uniqueParentcode?.length != 1" >ALL</option>
+            <option *ngFor="let p of uniqueParentcode" [value]="p">{{ p }}</option>       
+          </select>
+        </div>
+      </div>
+  
+      <div class="row">
+        <div class="col-2">
+          <div class="item">
+            <p>Work Code</p>
+          </div>
+        </div>
+  
+        <div class="col-4">
+          <select formControlName="workcode">
+            <option value="" selected *ngIf="uniqueWorkcode?.length !=1 ">ALL</option>
+            <option *ngFor="let p of uniqueWorkcode" [value]="p">{{ p }}</option>     
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-2">
+          <div class="item">
+            <p>From Date</p>
+          </div>
+        </div>
+  
+        <div class="col-4">
+          <input type="date" name="fromdate" id="fromdate" formControlName="fromdate" />
+        </div>
+      </div>
+  
+      <div class="row">
+        <div class="col-2">
+          <div class="item">
+            <p>End Date</p>
+          </div>
+        </div>
+  
+        <div class="col-4">
+          <input type="date" name="todate" id="todate" formControlName="todate" />
+        </div>
+      </div>
+  
+      <div class="btn-block">
+        <button type="submit">Search</button>
+        <!-- <button type="button" (click)="export()">Export</button> -->
+        <button type="button" (click)="back()">Back</button>
+      </div>
+  
+  
+  
+  
+  
+  
+      <div class="row" *ngIf="tripwiseSearchData.length>0">
+        <div class="col-md-12">
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title" style="margin-top: 20px;"> Search Results </h3>
+  
+            </div><!-- /.box-header -->
+            <div class="table-responsive">
+              <ag-grid-angular #agGrid style="width: 100%; height: 500px;" id="myGrid" class="ag-theme-balham"
+                [columnDefs]="columnDefs" [rowData]="tripwiseSearchData" [animateRows]="true" [pagination]="true"
+                [context]="context" [frameworkComponents]="frameworkComponents" [enableCellTextSelection]="true"
+                [suppressRowClickSelection]="true" [rowSelection]="rowSelection" [defaultColDef]="defaultColDef"
+                (gridReady)="OnGridReady($event)">
+              </ag-grid-angular>
+            </div>
+  
+          
+  
+          </div>
+  
+  
+  
+        </div>
+      </div>
+  
+    
+  
+  
+  
+    </form>
+  </div>

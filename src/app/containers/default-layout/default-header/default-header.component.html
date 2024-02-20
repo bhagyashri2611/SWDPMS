@@ -7,7 +7,7 @@
 
     <c-header-nav class="d-none d-lg-flex me-auto">
       <c-nav-item>
-        <a cNavLink routerLink="/dashboard" routerLinkActive="active" style="font-weight: bold; font-size: 18px;">Roads
+        <a cNavLink routerLink="/dashboard" routerLinkActive="active" style=" font-size: 28px!important;font-family: Barlow,sans-serif;">Road Works
           Monitoring System </a>
       </c-nav-item>
     </c-header-nav>
@@ -47,7 +47,7 @@
       <c-avatar cTextColor="primary" shape="rounded-1" size="md" src="./assets/img/avatars/1.jpg" status="success">
       </c-avatar>
     </button>
-    {{uName}}
+    {{FullName}}
     <ul cDropdownMenu class="pt-0 pr-5 w-auto">
       <li>
         <h6 cDropdownHeader class="bg-light fw-semibold py-2">Account</h6>
@@ -92,12 +92,12 @@
         <h6 cDropdownHeader class="bg-light fw-semibold py-2">Settings</h6>
       </li>
       <li></li> -->
-      <li>
-        <a routerLink="./" cDropdownItem>
+      <!-- <li>
+        <a (click)="profileclick()" cDropdownItem>
           <svg cIcon class="me-2" name="cilUser"></svg>
           Profile
         </a>
-      </li>
+      </li> -->
       <!-- <li>
         <a routerLink="./" cDropdownItem>
           <svg cIcon class="me-2" name="cilSettings"></svg>
@@ -125,6 +125,12 @@
       <li>
         <hr cDropdownDivider/>
       </li> -->
+      <li (click)="changePwd()">
+        <button type="button" cDropdownItem>
+          <svg cIcon class="me-2" name="cilPen"></svg>
+          Change Password
+        </button>
+      </li>
       <li (click)="logOut()">
         <button type="button" cDropdownItem>
           <svg cIcon class="me-2" name="cilLockLocked"></svg>

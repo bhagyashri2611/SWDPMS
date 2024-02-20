@@ -1,0 +1,171 @@
+<div class="testbox">
+  <form [formGroup]="Form" (ngSubmit)="onSubmit()">
+    <h5>Workcode Wise Silt Quantity Report</h5>
+    <hr />
+
+    <div class="row">
+      <div class="col-2">
+        <div class="item">
+          <p>Zone</p>
+        </div>
+      </div>
+      <div class="col-5">
+        <select formControlName="zone" (change)="onZoneChange($event)">
+          <option value="" selected *ngIf="uniqueZone?.length > 1">ALL</option>
+          <option *ngFor="let p of uniqueZone" [value]="p">{{ p }}</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- <div class="row">
+      <div class="col-2">
+        <div class="item">
+          <p>Parent Code</p>
+        </div>
+      </div>
+
+      <div class="col-2">
+        <select formControlName="parentcode" (change)="onParentcodeChange($event)">        
+          <option value="ALL" selected>ALL</option>
+          <option *ngFor="let p of uniqueParentcode" [value]="p">{{ p }}</option>       
+        </select>
+      </div>
+    </div> -->
+    <div class="row">
+      <div class="col-2">
+        <div class="item">
+          <p>Work Code</p>
+        </div>
+      </div>
+      <div class="col-5">
+        <select formControlName="workcode">
+          <option value="" selected *ngIf="uniqueWorkcode.length != 1">
+            ALL
+          </option>
+          <option *ngFor="let p of uniqueWorkcode" [value]="p">{{ p }}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-2">
+        <div class="item">
+          <p>From Date</p>
+        </div>
+      </div>
+
+      <div class="col-5">
+        <input
+          type="date"
+          name="fromdate"
+          id="fromdate"
+          formControlName="fromdate"
+        />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-2">
+        <div class="item">
+          <p>End Date</p>
+        </div>
+      </div>
+
+      <div class="col-5">
+        <input type="date" name="todate" id="todate" formControlName="todate" />
+      </div>
+    </div>
+
+    <div class="btn-block">
+      <button type="submit">Search</button>
+    
+     
+      <button type="button" (click)="back()">Back</button>
+    </div>
+  </form>
+</div>
+
+<div class="testbox" *ngIf="workcodewiseSearchData.length>0">
+  <form action="/">
+    <div class="row">
+      <c-alert color="dark" variant="solid" style="text-align: center">
+        <h5>Workcode Wise Silt Quantity Report</h5>
+      </c-alert>
+
+      <div class="btn-block">
+        <button type="button" style="width: 150px" (click)="export('excel')">
+          Export To Excel
+        </button>
+        <button type="button" style="width: 150px" (click)="export('pdf')">
+          Export To PDF
+        </button>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <ag-grid-angular
+        #agGrid
+        style="width: 100%; height: 500px"
+        id="myGrid"
+        class="ag-theme-balham"
+        [columnDefs]="columnDefs"
+        [rowData]="workcodewiseSearchData"
+        [animateRows]="true"
+        [pagination]="true"
+        [context]="context"
+        [frameworkComponents]="frameworkComponents"
+        [enableCellTextSelection]="true"
+        [suppressRowClickSelection]="true"
+        [rowSelection]="rowSelection"
+        [defaultColDef]="defaultColDef"
+        (gridReady)="OnGridReady($event)"
+        (firstDataRendered)="headerHeightSetter($event)"
+        (columnResized)="headerHeightSetter($event)"
+      >
+      </ag-grid-angular>
+    </div>
+  </form>
+
+  <div>
+    <table
+      *ngIf="lstWorkCodewiseExportData.length > 0"
+      id="WorkCodeExportTable"
+      hidden
+    >
+      <tr
+        style="
+          text-align: center;
+          font-size: 15px;
+          background-color: green;
+          color: #fff;
+          height: 50px;
+        "
+      >
+        <th>Zone</th>
+        <th>Parent code</th>
+        <th>Work code</th>
+        <th>Premonsoon Desilt Quantity</th>
+        <th>During Monsoon Desilt Quantity</th>
+        <th>Aftr Monsoon Desilt Quantity</th>
+        <th>Desilt Quantity</th>
+        <th>Total Net Weight</th>
+        <th>Total Vehicle</th>
+        <th>% of (Pre Monsoon Desilt Quantity)</th>
+      </tr>
+      <tr
+        *ngFor="let v of lstWorkCodewiseExportData"
+        style="text-align: center; font-size: 12px"
+      >
+        <td>{{ v.Zone }}</td>
+        <td>{{ v.Parentcode }}</td>
+        <td>{{ v.Workcode }}</td>
+        <td>{{ v.PremonsoonDesiltQuantity }}</td>
+        <td>{{ v.DuringMonsoonDesiltQuantity }}</td>
+        <td>{{ v.AftrMonsoonDesiltQuantity }}</td>
+        <td>{{ v.TotalDesiltQuantity }}</td>
+        <td>{{ v.TotalActNetWeight }}</td>
+        <td>{{ v.TotalVehicle }}</td>
+        <td>{{ v.PercentOfPremonsoon }}</td>
+      </tr>
+    </table>
+  </div>
+</div>

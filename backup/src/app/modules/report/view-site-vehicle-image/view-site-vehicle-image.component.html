@@ -1,0 +1,76 @@
+<div class="testbox">
+    <form [formGroup]="Form" (ngSubmit)="onSubmit()">
+      <h4>On Site Vehicle Images</h4>
+      <hr>
+      <div class="row">
+        <div class="col-2">
+          <div class="item" style="font-weight: bold;">
+            <p>Log Sheet Number</p>
+          </div>
+        </div>  
+        <div class="col-5">
+          <input type="text" name="logsheet" id="logsheet"  formControlName="logsheet"/>
+        </div>
+      </div>      
+      <div class="btn-block">
+        <button type="submit">Search</button>
+      </div>
+      <h4>Loading Images</h4>
+<table id="MajorNallahs">
+  <tr>
+    <th>Logsheet No</th>
+    <th>Vehicle No</th>
+    <th>Nallah Name</th>
+    <th>Image Type</th>
+    <th>Image</th>
+        </tr>
+  <tr *ngFor="let i of lstLoadingImages">
+    <td>{{i.LogSheetNo}}</td>
+    <td>{{i.VehicleNo}}</td>
+    <td>{{i.NallahSystem}}</td>
+    <td>{{i.ImageCategoryName}}</td>
+    <td><div><img [src]="i.Image" style="width: 200; height: 300px;"></div><a [href]="i.Image"  target="_blank" download>Download</a></td>
+  </tr>
+</table>
+
+  <h4>Unloading Images</h4>
+
+<table id="MajorNallahs">
+  <tr>
+    <th>Logsheet No</th>
+    <th>Vehicle No</th>
+    <th>Nallah Name</th>
+    <th>Image Type</th>
+    <th>Image</th>
+        </tr>
+  <tr *ngFor="let i of lstUnLoadingImages">
+    <td>{{i.LogSheetNo}}</td>
+    <td>{{i.VehicleNo}}</td>
+    <td>{{i.NallahSystem}}</td>
+    <td>{{i.ImageCategoryName}}</td>
+    <td><div><img [src]="i.Image" style="width: 200; height: 300px;"></div><a [href]="i.Image"  target="_blank" download>Download</a></td>
+  </tr>
+</table>
+
+  <h4>Videos</h4>
+
+<table id="MajorNallahs">
+  <tr>
+    <th>Logsheet No</th>
+        <!-- <th>Nallah Name</th> -->
+    <th>Video Links</th>
+   
+  </tr>
+  
+    <tr *ngFor="let i of lstUnLoadingVideos">
+      <td>{{i.LogsheetNo}}</td>    
+      <!-- <td>{{i.NallahName}}</td>   -->
+      <td><div><a [href]="i.Video" target="_blank">View Video</a></div></td>
+    </tr>
+    
+
+ 
+</table>
+     
+    </form>
+  </div>

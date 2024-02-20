@@ -41,11 +41,25 @@ export class ModulesInLocationComponent implements OnInit {
     private moduleService: ModuleService
   ) {}
 
+
+  gridOptions = {
+    rowHeight: 40,
+    getRowHeight: function (params) {
+      return 40;
+    },
+  };
+
   ngOnInit(): void {
     this.route.paramMap.subscribe((param) => {
       let id = param.get('id');
       this.locID = id;
       if (id) {
+
+        this.locationService.getLocationById(id).subscribe(
+          (result)=>{
+            this.locationName =result.data[0].locationName
+          }
+        )
         this.locationService.getModulesInLocation(id).subscribe(
           (result) => {
             if (result.status === 200) {
@@ -123,7 +137,7 @@ export class ModulesInLocationComponent implements OnInit {
       createdOn: new Date(),
       createdBy: sessionStorage.getItem('userName'),
       modifiedOn: new Date(),
-      modifiedBy: sessionStorage.getItem('userName'),
+      modifiedBy: sessionStorage.getItem('userName'),  
       _id: '0',
       isActive: 1,
     };

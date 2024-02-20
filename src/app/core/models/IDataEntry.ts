@@ -1,4 +1,5 @@
 
+import { UserModule } from 'src/app/modules/user/user.module';
 import { AssetModel } from './IAsset';
 import { AssetInstanceModel } from './IAssetInstance';
 import { LocationModel } from './ILocation';
@@ -6,6 +7,7 @@ import { ModuleModel } from './IModule';
 import { ModulesInLocationModel } from './IModules-In-Location';
 
 import { PandMAttribute } from './IPandMAttribute';
+import { User } from './IUser';
 
 
 export interface AttributeValues{    
@@ -13,19 +15,32 @@ export interface AttributeValues{
     keyValue:any   
 }
 
+
 export interface DataEntryModel{     
     location:LocationModel,       
     module :ModulesInLocationModel,
     assetInstance : AssetInstanceModel,
     dataDate: Date,
     attributeValues:any,   
+
+    locationName:String,
+    moduleName:String,
+    assetnstanceName:String,
+
+    ward:String,
+    zone:String,
+    workCode:String,
+
+    contractorName:String,
+    roadStatus:String,
+
+    assignedSE:User,
     createdOn: Date,
     createdBy:  String,
     modifiedOn: Date ,
     modifiedBy: string ,
 
 }
-
 export interface IDataEntryModelResponce{    
     message:String; 
     status :number;

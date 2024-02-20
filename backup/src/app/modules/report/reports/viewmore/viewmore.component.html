@@ -1,0 +1,71 @@
+
+<div class="testbox" style="margin-top: 50px;">
+  <form action="/">
+
+  
+    
+<div class="col-md-12">
+  <div class="row"> 
+    <button type="button" style="float: left;" (click)="Close()">
+      Close
+    </button>
+<h4>Loading Images</h4>
+<table id="MajorNallahs">
+  <tr>
+    <th>Logsheet No</th>
+    <th>Vehicle No</th>
+    <th>Nallah Name</th>
+    <th>Image Type</th>
+    <th>Image</th>
+        </tr>
+  <tr *ngFor="let i of lstLoadingImages">
+    <td>{{i.LogSheetNo}}</td>
+    <td>{{i.VehicleNo}}</td>
+    <td>{{i.NallahSystem}}</td>
+    <td>{{i.ImageCategoryName}}</td>
+    <td><div><img [src]="i.Image" style="width: 200; height: 300px;"></div></td>
+  </tr>
+</table>
+
+  <h4>Unloading Images</h4>
+
+<table id="MajorNallahs">
+  <tr>
+    <th>Logsheet No</th>
+    <th>Vehicle No</th>
+    <th>Nallah Name</th>
+    <th>Image Type</th>
+    <th>Image</th>
+        </tr>
+  <tr *ngFor="let i of lstUnLoadingImages">
+    <td>{{i.LogSheetNo}}</td>
+    <td>{{i.VehicleNo}}</td>
+    <td>{{i.NallahSystem}}</td>
+    <td>{{i.ImageCategoryName}}</td>
+    <td><div><img [src]="i.Image" style="width: 200; height: 300px;"></div></td>
+  </tr>
+</table>
+
+  <h4>Videos</h4>
+
+<table id="MajorNallahs">
+  <tr>
+    <th>Logsheet No</th>
+        <!-- <th>Nallah Name</th> -->
+    <th>Video Links</th>
+   
+  </tr>
+  
+    <tr *ngFor="let i of lstUnLoadingVideos">
+      <td>{{i.LogsheetNo}}</td>    
+      <!-- <td>{{i.NallahName}}</td>   -->
+      <td><div><a [href]="i.Video" target="_blank">View Video</a></div></td>
+    </tr>
+    
+
+ 
+</table>
+ </div>
+ </div>   
+  </form> 
+</div>  

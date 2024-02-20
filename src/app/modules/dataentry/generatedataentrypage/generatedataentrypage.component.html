@@ -1,0 +1,67 @@
+<c-col xs="12">
+  <c-card class="mb-4">
+      <c-card-body>
+        <button (click)="Back()" cButton class="me-1" color="secondary" style="float: right;">
+          <svg cIcon name="cilArrowCircleLeft" style="margin-right: 5px;"></svg>
+          BACK
+      </button>  
+      </c-card-body>
+  </c-card>
+</c-col>
+
+<c-col xs="12">
+  <c-card class="mb-4">
+      <c-card-body>
+        <!-- <c-row>
+          <h5>{{pageTitle}}</h5>
+          <button (click)="Back()" cButton class="me-1" color="secondary" style="float: right;">
+            <svg cIcon name="cilArrowCircleLeft" style="margin-right: 5px;"></svg>
+            BACK
+          </button> 
+        </c-row> -->
+       
+
+        <c-row class="mb-3">
+          <h5>{{pageTitle}}</h5>
+          <!-- <c-col [sm]="8">
+            <button (click)="Back()" style="float: right;" cButton class="me-1" color="secondary" style="float: right;">
+              <svg cIcon name="cilArrowCircleLeft" style="margin-right: 5px;"></svg>
+              BACK
+            </button>           
+          </c-col> -->
+      </c-row>
+        <hr style="margin-bottom: 50px;">
+
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+          <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
+        
+  
+
+          <c-row ngPreserveWhitespaces>
+            <c-col xs="12">
+                <c-card-body>
+                    <c-row class="align-items-center mb-3">
+                        <c-col>
+                            <button cButton class="me-1" color="success" type="submit">
+                                <svg cIcon name="cilPlus" style="margin-right: 5px;"></svg>
+                                SUBMIT
+                            </button>
+                            <!-- <button (click)="onReset()" cButton class="me-1" color="info" type="reset">
+                                <svg cIcon name="cilReload" style="margin-right: 5px;"></svg>
+                                RESET
+                            </button> -->
+                            <button (click)="Back()" cButton class="me-1" color="secondary">
+                                <svg cIcon name="cilArrowCircleLeft" style="margin-right: 5px;"></svg>
+                                BACK
+                            </button>
+                        </c-col>
+                    </c-row>
+                </c-card-body>
+            </c-col>
+        </c-row>
+        </form>
+      </c-card-body>
+  </c-card>
+</c-col>
+
+

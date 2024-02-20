@@ -34,6 +34,7 @@ import { IconModule } from '@coreui/icons-angular';
 import { AgGridModule } from 'ag-grid-angular';
 import { UserlocationComponent } from './userlocation/userlocation.component';
 import { BtnCellRenderer } from './userlist/button-cell-renderer.component';
+import { ChangepasswordComponent } from './changepassword/changepassword.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { BtnCellRenderer } from './userlist/button-cell-renderer.component';
     CreateuserComponent,
     UserlocationComponent,
     BtnCellRenderer,
+    ChangepasswordComponent,
   ],
   imports: [
     CommonModule,

@@ -71,7 +71,15 @@ export class DataentryService {
     })
       .pipe(catchError(this.handleError));
   }
-  getData(data: DataEntryModel): Observable<any> {
+  // getData(data: DataEntryModel): Observable<any> {
+  //   // return this.getDataEntryGroup(String(data.module));
+  //   return forkJoin([this.getDataEntryGroup({module:data.location,typeOfModuleID:"ModuleInLocation"}),
+  //   this.locationService.getModulesInLocation(data.location),  
+  //   this.searchExistingData(data),
+  //   this.getCumulativeData(data)]);
+  // }
+
+  getData(data: any): Observable<any> {
     // return this.getDataEntryGroup(String(data.module));
     return forkJoin([this.getDataEntryGroup({module:data.location,typeOfModuleID:"ModuleInLocation"}),
     this.locationService.getModulesInLocation(data.location),  

@@ -58,24 +58,79 @@ export class LocationlistComponent implements OnInit {
         headerName: 'Action',
         field: '_id',
         cellRenderer: 'btnCellRenderer',
+        minWidth: 180,
       },
       { headerName: '_id', field: '_id', hide: true },
+      //  { headerName: 'locationID', field: 'locationID' },
+      { headerName: 'Ward Name', field: 'wardName.wardName' },
+      { headerName: 'Zone Name', field: 'zoneName' },
+
       { headerName: 'Work Code', field: 'workCode' },
+
       {
         headerName: 'Location Name',
         field: 'locationName',
+        minWidth: 150,
+        // headerCheckboxSelection: true,
+        // headerCheckboxSelectionFilteredOnly: true,
+        // checkboxSelection: true,
       },
-      { headerName: 'Ward Name', field: 'wardName.wardName' },
-      { headerName: 'Zone Name', field: 'zoneName' },
+
+      { headerName: 'Length (m)', field: 'length' },
+      { headerName: 'Width (m)', field: 'width' },
+      { headerName: 'Contractor Name', field: 'contractorName', minWidth: 180  },
+      { headerName: 'Status', field: 'status',  cellStyle: this.getCellStyle.bind(this) },      
+      { headerName: 'Start Date', field: 'startDate',valueGetter: (params) => {
+        return this.commonService.DateFormatter(params.data.startDate);
+      }, },
+      { headerName: 'End Date', field: 'endDate',valueGetter: (params) => {
+        return this.commonService.DateFormatter(params.data.endDate);
+      }, },
       {
-        headerName: 'Contractor Name',
-        field: 'contractorName',
+        headerName: 'Q1 End Date',
+        field: 'quater1EndDate',
+        valueGetter: (params) => {
+          return this.commonService.DateFormatter(params.data.quater1EndDate);
+        },
       },
       {
-        headerName: 'Start Date',
-        field: 'starteDate',
+        headerName: 'Q2 End Date',
+        field: 'quater2EndDate',
+        valueGetter: (params) => {
+          return this.commonService.DateFormatter(params.data.quater2EndDate);
+        },
+      },
+      {
+        headerName: 'Q3 End Date',
+        field: 'quater3EndDate',
+        valueGetter: (params) => {
+          return this.commonService.DateFormatter(params.data.quater3EndDate);
+        },
+      },
+      {
+        headerName: 'Q4 End Date',
+        field: 'quater4EndDate',
+        valueGetter: (params) => {
+          return this.commonService.DateFormatter(params.data.quater4EndDate);
+        },
+      },
+      {
+        headerName: 'Q5 End Date',
+        field: 'quater5EndDate',
+        valueGetter: (params) => {
+          return this.commonService.DateFormatter(params.data.quater5EndDate);
+        },
+      },
+      { headerName: 'Remarks', field: 'description',minWidth:200 },
+
+      // { headerName: 'Is Automated', field: 'isAutomated', valueGetter: this.commonService.isAutomatedValueGetter },
+      // { headerName: 'Is Active', field: 'isActive',valueGetter:  this.commonService.isActiveValueGetter },
+      {
+        headerName: 'Created On',
+        field: 'createdOn',
         valueGetter: this.commonService.createdOnDateFormatter,
       },
+      { headerName: 'Created By', field: 'createdBy' },
     ];
     this.rowSelection = 'multiple';
     this.frameworkComponents = {
@@ -86,6 +141,7 @@ export class LocationlistComponent implements OnInit {
     this.defaultColDef = {
       sortable: true,
       flex: 1,
+      minWidth: 120,
       filter: true,
       resizable: true,
       wrapText: true,
@@ -105,6 +161,7 @@ export class LocationlistComponent implements OnInit {
       (result) => {
         if (result.status === 200) {
           this.locationList = result.data;
+          debugger;
           this.rowData = this.locationList;
         }
       },
@@ -141,7 +198,27 @@ export class LocationlistComponent implements OnInit {
   methodFromParent(cell) {
     alert('Parent Component Method from ' + cell.id + '!');
   }
-
+  getCellStyle(params: any) {
+    // Check if a row should have a specific color based on some condition
+    if (params.data.status == "Started") {
+      return { background: '#D5F5E3', color: 'black' };
+    } 
+    else if (params.data.status == "Not Started") {
+      return { background: '#FADBD8', color: 'black' };
+    } 
+    else if (params.data.status == "On Hold") { 
+      return { background: '#F8D6B3', color: 'black' };
+    } 
+    else if (params.data.status == "Delayed") {
+      return { background: '#FCF3CF', color: 'black' };
+    } 
+    else if (params.data.status == "Complted") {
+      return { background: '#D6EAF8', color: 'black' };
+    }
+    else {
+    }
+    return null;
+  }
   setRowData(params) {
     params.api.forEachNode(function (node) {
       if (

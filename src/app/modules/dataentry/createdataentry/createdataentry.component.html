@@ -1,0 +1,68 @@
+<c-col xs="12">
+  <c-card class="mb-4">
+    <c-card-body>
+      <h5>{{ pageTitle }}</h5>
+      <hr style="margin-bottom: 50px" />
+      <form
+        [formGroup]="form"
+        (ngSubmit)="onSubmit()"
+        [validated]="customStylesValidated"
+        cForm
+        class="row g-3 needs-validation"
+      >
+        <c-row class="mb-3">
+          <label cLabel class="col-sm-2" for="location">Road Name</label>
+          <c-col [sm]="8">
+            <select cSelect id="location" formControlName="location" required>
+              <option *ngFor="let ward of locationList" [value]="ward._id">
+                {{ ward.locationName }}
+              </option>
+            </select>
+            <c-form-feedback [valid]="false"
+              >Please select a Road Name</c-form-feedback
+            >
+          </c-col>
+        </c-row>
+
+        <c-row class="mb-3">
+          <label cLabel class="col-sm-2" for="dataDate">Data Date</label>
+          <c-col [sm]="8">
+            <input
+              cFormControl
+              id="dataDate"
+              formControlName="dataDate"
+              required
+              type="date"
+            />
+            <c-form-feedback [valid]="false"
+              >Please provide the Data Date</c-form-feedback
+            >
+          </c-col>
+        </c-row>
+
+        <c-row ngPreserveWhitespaces>
+            <c-col xs="12">
+                <c-card-body>
+                    <c-row class="align-items-center mb-3">
+                        <c-col>
+                            <button cButton class="me-1" color="success" type="submit">
+                                <svg cIcon name="cilPlus" style="margin-right: 5px;"></svg>
+                                SUBMIT
+                            </button>
+                            <!-- <button (click)="onReset()" cButton class="me-1" color="info" type="reset">
+                                <svg cIcon name="cilReload" style="margin-right: 5px;"></svg>
+                                RESET
+                            </button> -->
+                            <button (click)="Back()" cButton class="me-1" color="secondary">
+                                <svg cIcon name="cilArrowCircleLeft" style="margin-right: 5px;"></svg>
+                                BACK
+                            </button>
+                        </c-col>
+                    </c-row>
+                </c-card-body>
+            </c-col>
+        </c-row>
+      </form>
+    </c-card-body>
+  </c-card>
+</c-col>

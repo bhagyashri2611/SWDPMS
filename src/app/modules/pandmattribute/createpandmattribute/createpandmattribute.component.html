@@ -1,0 +1,132 @@
+<c-col xs="12">
+    <c-card class="mb-4">
+        <c-card-body>
+            <h5>{{pageTitle}}</h5>
+            <hr style="margin-bottom: 50px;">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()" [validated]="customStylesValidated" cForm
+            class="row g-3 needs-validation">
+            <c-row class="mb-3">
+                <label cLabel class="col-sm-2" for="displayLabel">Display Label</label>
+                <c-col [sm]="8">
+                    <input cFormControl id="displayLabel" formControlName="displayLabel" required type="text" />
+                    <c-form-feedback [valid]="false">Fill Display Label</c-form-feedback>
+                </c-col>
+            </c-row>
+            <c-row class="mb-3">
+                <label cLabel class="col-sm-2" for="description">Description</label>
+                <c-col [sm]="8">
+                    <input cFormControl id="description" formControlName="description" required type="text" />
+                    <c-form-feedback [valid]="false">Fill Description</c-form-feedback>
+                </c-col>
+            </c-row>
+            <c-row class="mb-3">
+                <label cLabel class="col-sm-2" for="mandatory">Mandatory</label>
+                <c-col [sm]="8">
+                    <select cSelect id="mandatory" formControlName="mandatory"
+                        required>
+                        <option [value]="1">Yes</option>
+                        <option [value]="0">No</option>
+                    </select>
+                    <c-form-feedback [valid]="false">Please select</c-form-feedback>
+                </c-col>
+            </c-row>
+            <c-row class="mb-3">
+                <label cLabel class="col-sm-2" for="mandatory">Data Type</label>
+                <c-col [sm]="8">
+                    <select cSelect id="dataType" formControlName="dataType"
+                        required>
+                        <option value="text">Text</option>
+                        <option value="number">Number</option>
+                        <option value="datetime">DateTime</option>
+                        <option value="boolean">Boolean</option>
+                        <option value="longtext">LongText</option>
+                        <option value="Time">Time</option>
+                    </select>
+                    <c-form-feedback [valid]="false">Please select</c-form-feedback>
+                </c-col>
+            </c-row>
+            <c-row class="mb-3">
+                <label cLabel class="col-sm-2" for="mandatory">UOM</label>
+                <c-col [sm]="8">
+                    <select cSelect id="uom" formControlName="uom"
+                        required>
+                        <option *ngFor="let uom of unitList" [value]="uom._id">{{uom.unitName}}</option>
+                    </select>
+                    <c-form-feedback [valid]="false">Please select</c-form-feedback>
+                </c-col>
+            </c-row>
+            <c-row class="mb-3">
+                <label cLabel class="col-sm-2" for="mandatory">Multiline</label>
+                <c-col [sm]="8">
+                    <select cSelect id="multiline" formControlName="multiline"
+                        required>
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>                    
+                    </select>
+                    <c-form-feedback [valid]="false">Please select</c-form-feedback>
+                </c-col>
+            </c-row>
+            <c-row class="mb-3">
+                <label cLabel class="col-sm-2" for="maxLength">Max Length</label>
+                <c-col [sm]="8">
+                    <input cFormControl id="maxLength" formControlName="maxLength" required type="text" />
+                    <c-form-feedback [valid]="false">Fill Max Length</c-form-feedback>
+                </c-col>
+            </c-row>
+            <c-row class="mb-3">
+                <label cLabel class="col-sm-2" for="integerPart">Integer Part</label>
+                <c-col [sm]="8">
+                    <input cFormControl id="integerPart" formControlName="integerPart" required type="text" />
+                    <c-form-feedback [valid]="false">Fill Integer Part</c-form-feedback>
+                </c-col>
+            </c-row>
+            <c-row class="mb-3">
+                <label cLabel class="col-sm-2" for="decimalPart">Decimal Part</label>
+                <c-col [sm]="8">
+                    <input cFormControl id="decimalPart" formControlName="decimalPart" required type="text" />
+                    <c-form-feedback [valid]="false">Fill Decimal Part</c-form-feedback>
+                </c-col>
+            </c-row>
+            <c-row class="mb-3">
+                <label cLabel class="col-sm-2" for="maxValue">Max Value</label>
+                <c-col [sm]="8">
+                    <input cFormControl id="maxValue" formControlName="maxValue" required type="text" />
+                    <c-form-feedback [valid]="false">Fill Max Value</c-form-feedback>
+                </c-col>
+            </c-row>
+            <c-row class="mb-3">
+                <label cLabel class="col-sm-2" for="minValue">Min Value</label>
+                <c-col [sm]="8">
+                    <input cFormControl id="minValue" formControlName="minValue" required type="text" />
+                    <c-form-feedback [valid]="false">Fill Min Value</c-form-feedback>
+                </c-col>
+            </c-row>
+
+            <c-row ngPreserveWhitespaces>
+                <c-col xs="12">
+                    <c-card-body>
+                        <c-row class="align-items-center mb-3">
+                            <c-col>
+                                <button cButton class="me-1" color="success" type="submit">
+                                    <svg cIcon name="cilPlus" style="margin-right: 5px;"></svg>
+                                    SUBMIT
+                                </button>
+                                <!-- <button (click)="onReset()" cButton class="me-1" color="info" type="reset">
+                                    <svg cIcon name="cilReload" style="margin-right: 5px;"></svg>
+                                    RESET
+                                </button> -->
+                                <button (click)="Back()" cButton class="me-1" color="secondary">
+                                    <svg cIcon name="cilArrowCircleLeft" style="margin-right: 5px;"></svg>
+                                    BACK
+                                </button>
+                            </c-col>
+                        </c-row>
+                    </c-card-body>
+                </c-col>
+            </c-row>
+
+            </form> 
+
+        </c-card-body>
+    </c-card>
+</c-col>

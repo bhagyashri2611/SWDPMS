@@ -1,1 +1,61 @@
-<p>moduledetail works!</p>
+<c-col xs="12">
+    <c-card class="mb-4">
+      <c-card-body>
+        <h5> Task Details List For : {{ locationName ? locationName : "" }} </h5>
+  
+        <hr class="my-3">
+  
+        <ag-grid-angular #agGrid style="width: 100%; height: 300px" id="myGrid" class="ag-theme-balham"
+          [columnDefs]="columnDefs" [rowData]="rowData"   [gridOptions]="gridOptions" 
+          [animateRows]="true" [pagination]="true" [context]="context" [suppressRowClickSelection]="true"
+          [rowSelection]="rowSelection" [frameworkComponents]="frameworkComponents" [defaultColDef]="defaultColDef"
+          (gridReady)="OnGridReady($event)">
+        </ag-grid-angular>
+      </c-card-body>
+  
+      <c-card-body>
+        <h4 class="card-title">
+          Data Entry History For : {{ locationName ? locationName : "" }}
+        </h4>
+        <!-- <button type="button" class="btn btn-social-icon-text btn-facebook" (click)="Click()">
+          <i class="mdi mdi-plus-box"></i>Enter Data</button> -->
+          <button cButton class="me-1" color="success"  (click)="Click()">
+            <svg cIcon name="cilPlus" style="margin-right: 5px;"></svg>
+            Enter Data
+        </button>
+  
+        <hr style="margin-top: 5px" />
+        <div class="table-responsive">
+          <div class="table-responsive">
+            <ag-grid-angular #agGrid style="width: 100%; height: 300px; overflow: auto" id="myGrid"
+              class="ag-theme-balham" [gridOptions]="gridOptions"  [columnDefs]="columnDefs1" [rowData]="rowData1" [animateRows]="true"
+              [pagination]="true" [context]="context" [suppressRowClickSelection]="true" [rowSelection]="rowSelection"
+              [frameworkComponents]="frameworkComponents" [defaultColDef]="defaultColDef"
+              (gridReady)="OnGridReady($event)">
+            </ag-grid-angular>
+          </div>
+        </div>
+  
+        <c-row ngPreserveWhitespaces>
+          <c-col xs="12">
+            <c-card-body>
+              <c-row class="align-items-center mb-3">
+                <c-col>
+                  <button (click)="Back()" cButton class="me-1" color="secondary">
+                    <svg cIcon name="cilArrowCircleLeft" style="margin-right: 5px;"></svg>
+                    BACK
+                  </button>
+                </c-col>
+                <c-col>
+                  <div class="message-container" *ngIf="yourMessage">
+                    <div class="message">{{ yourMessage  }}</div>
+                  </div>
+                </c-col>
+              </c-row>
+            </c-card-body>
+          </c-col>
+        </c-row>
+  
+      </c-card-body>
+    </c-card>
+  </c-col>

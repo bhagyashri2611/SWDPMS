@@ -1,0 +1,12 @@
+<c-row ngPreserveWhitespaces>
+  <c-col *ngFor="let widget of brandData; index as i" sm="6" xl="3">
+    <c-widget-stat-d [color]="widget.color ?? ''" [style]="widget.capBg ?? null" [values]="widget.values" class="mb-4">
+      <!-- <svg [name]="widget.icon" cIcon class="my-4 text-white" height="52"></svg> -->
+      <h4 style="color:white;">{{widget.icon}}</h4>
+      <ng-container *ngIf="withCharts">
+        <c-chart #chart="cChart" [data]="widget.data" [options]="chartOptions" class="position-absolute w-100 h-100"
+          type="line">{{ chart.id }}</c-chart>
+      </ng-container>
+    </c-widget-stat-d>
+  </c-col>
+</c-row>
