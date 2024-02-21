@@ -41,14 +41,21 @@ export class LoginComponent implements OnInit {
     this.loginModel.userName = this.loginForm.value.username;
     this.loginModel.password = this.loginForm.value.password;
     this.userService.login(this.loginModel).subscribe((result) => {
+      debugger;
       if (result.status === 200) {
-        console.log('Logged In', result);
+        //console.log('Logged In', result);
         sessionStorage.setItem('UserId', result.data[0]._id.toString());
         sessionStorage.setItem('FullName', String(result.data[0].firstName));
         sessionStorage.setItem('Role', String(result.data[0].role));
-        sessionStorage.setItem('UserRole',String(result.data[0].roleName))
+        sessionStorage.setItem('UserRole', String(result.data[0].roleName));
         sessionStorage.setItem('UserName', String(result.data[0].userName));
         this.router.navigateByUrl('dashboard');
+      } 
+      if (result.status === 201) {
+        Swal.fire({
+          text: 'Invalid UserName Or Password !',
+          icon: 'warning',
+        });
       }
     });
 
