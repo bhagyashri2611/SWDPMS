@@ -62,16 +62,16 @@ export class CreateUnitComponent implements OnInit {
     this.customStylesValidated = true;
     if (this.unitForm.valid) {
       if (this.idforEdit) {
-        console.log('update call');
+        //console.log('update call');
         this.unitModel = {
           _id: '0',
           unitID: 0,
           unitName: this.unitForm.value.unitName,
           description: this.unitForm.value.unitDescription,
           type: this.unitForm.value.unitType,
-          createdBy: sessionStorage.getItem('userName'),
+          createdBy: sessionStorage.getItem('FullName'),
           createdOn: new Date(),
-          modifiedBy: sessionStorage.getItem('userName'),
+          modifiedBy: sessionStorage.getItem('FullName'),
           modifiedOn: new Date(),
         };
 
@@ -100,7 +100,7 @@ export class CreateUnitComponent implements OnInit {
           unitName: this.unitForm.value.unitName,
           description: this.unitForm.value.unitDescription,
           type: this.unitForm.value.unitType,
-          createdBy: 'admin',
+          createdBy: sessionStorage.getItem('FullName'),
           // createdBy:sessionStorage.getItem('userName'),
           createdOn: new Date(),
           modifiedBy: null,

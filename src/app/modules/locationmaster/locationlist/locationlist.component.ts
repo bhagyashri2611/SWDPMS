@@ -62,11 +62,9 @@ export class LocationlistComponent implements OnInit {
       },
       { headerName: '_id', field: '_id', hide: true },
       //  { headerName: 'locationID', field: 'locationID' },
-      { headerName: 'Ward Name', field: 'wardName.wardName' },
+      { headerName: 'Ward Name', field: 'wardName.wardName'},
       { headerName: 'Zone Name', field: 'zoneName' },
-
       { headerName: 'Work Code', field: 'workCode' },
-
       {
         headerName: 'Location Name',
         field: 'locationName',
@@ -75,7 +73,6 @@ export class LocationlistComponent implements OnInit {
         // headerCheckboxSelectionFilteredOnly: true,
         // checkboxSelection: true,
       },
-
       { headerName: 'Length (m)', field: 'length' },
       { headerName: 'Width (m)', field: 'width' },
       { headerName: 'Contractor Name', field: 'contractorName', minWidth: 180  },
@@ -132,6 +129,7 @@ export class LocationlistComponent implements OnInit {
       },
       { headerName: 'Created By', field: 'createdBy' },
     ];
+    debugger
     this.rowSelection = 'multiple';
     this.frameworkComponents = {
       btnCellRenderer: BtnCellRenderer,
@@ -156,22 +154,87 @@ export class LocationlistComponent implements OnInit {
   ngAfterViewInit() {
     this.selectAllAmerican();
   }
+  userRole=sessionStorage.getItem("UserRole")
+
   getLocation() {
-    this.locationService.getLocations().subscribe(
-      (result) => {
-        if (result.status === 200) {
-          this.locationList = result.data;
-          debugger;
-          this.rowData = this.locationList;
+
+    if(this.userRole==='Data Owner')
+    {
+      this.locationService.getLocations().subscribe((result) => {
+        debugger;
+        if(result != null) {
+          if (result.status === 200) {
+            this.locationList = result.data;
+            this.locationList=this.locationList.sort((a, b) => (String(a.locationName)).localeCompare(String(b.locationName)));
+
+            debugger;
+            this.rowData = this.locationList;
+          }
         }
-      },
-      (err) => {
-        Swal.fire({
-          text: err,
-          icon: 'error',
-        });
-      }
-    );
+        else {
+          Swal.fire({
+            title: 'Seesion Expired',
+            text: 'Login Again to Continue',
+            icon: 'warning',
+            confirmButtonText: 'Ok',
+          }).then((result) => {
+            if (result.value) {
+              debugger;
+              this.logOut();
+            }
+          });
+        }
+          
+        },
+        (err) => {
+          Swal.fire({
+            text: err,
+            icon: 'error',
+          });
+        }
+      );
+    }else {
+      this.locationService.getLocationByUser().subscribe((result) => {
+        debugger;
+        if(result != null) {
+          if (result.status === 200) {
+            this.locationList = result.data;
+            this.locationList=this.locationList.sort((a, b) => (String(a.locationName)).localeCompare(String(b.locationName)));
+
+            debugger;
+            this.rowData = this.locationList;
+          }
+        }
+        else {
+          Swal.fire({
+            title: 'Seesion Expired',
+            text: 'Login Again to Continue',
+            icon: 'warning',
+            confirmButtonText: 'Ok',
+          }).then((result) => {
+            if (result.value) {
+              debugger;
+              this.logOut();
+            }
+          });
+        }
+         
+        },
+        (err) => {
+          Swal.fire({
+            text: err,
+            icon: 'error',
+          });
+        }
+      );
+    }
+   
+  }
+
+  logOut(){
+    this.router.navigate(["/login/"]);
+    sessionStorage.clear();
+    window.location.reload();
   }
 
   OnGridReady(params) {

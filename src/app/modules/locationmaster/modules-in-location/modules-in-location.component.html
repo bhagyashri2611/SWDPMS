@@ -7,9 +7,9 @@
             <div cdkDropListGroup>
                 <div class="example-container">
                     <h6>Task List</h6>
-                    <div cdkDropList [cdkDropListData]="moduleList" class="example-list"
+                    <div cdkDropList [cdkDropListData]="notSelectedModuleList" class="example-list"
                         (cdkDropListDropped)="drop($event)">
-                        <div class="example-box" *ngFor="let item of moduleList" cdkDrag>{{item.moduleName}}</div>
+                        <div class="example-box" *ngFor="let item of notSelectedModuleList" cdkDrag>{{item.moduleName}}</div>
                     </div>
                 </div>
                 <div class="example-container">

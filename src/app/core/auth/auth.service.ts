@@ -10,13 +10,10 @@ export class AuthService {
   constructor(private router: Router) { }
 
   isLogisLoggedInin(): boolean {
-    debugger;
     if (sessionStorage.getItem('UserId') != null) {
       return true;
-      debugger;
     } else {
       return false;
-      debugger;
     }
   }
 

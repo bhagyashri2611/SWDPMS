@@ -24,6 +24,7 @@ import {
 import { UnitModel } from 'src/app/core/models/IUnit';
 import { AgGridAngular } from 'ag-grid-angular';
 import { BtnSaveCellRenderer } from './button-save-renderer.component';
+import { BtnConSaveCellRenderer } from './button-con-save-renderer.component';
 import { CommonService } from 'src/app/core/services/common.service';
 import { DataentryService } from 'src/app/core/services/dataentry.service';
 import { DataEntryModel } from 'src/app/core/models/IDataEntry';
@@ -32,6 +33,7 @@ import { GeneratedataentrypageComponent } from '../../dataentry/generatedataentr
 import { DatePipe } from '@angular/common';
 import { UserService } from 'src/app/core/services/user.service';
 import { User } from 'src/app/core/models/IUser';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-moduledetail',
@@ -60,7 +62,7 @@ export class ModuledetailComponent {
   unitList: UnitModel[];
   today = new Date();
   locationName: String;
-  userData:User;
+  userData: User;
   @ViewChild('agGrid', { static: false }) agGrid: AgGridAngular;
   //@ViewChild('agGrid') agGrid: AgGridAngular;
 
@@ -76,7 +78,7 @@ export class ModuledetailComponent {
   selected;
   rowData: any;
   rowData1: any;
-  
+
   dataEntryDataList: any = [];
   sortedEntryList: any = [];
 
@@ -99,7 +101,7 @@ export class ModuledetailComponent {
     private router: Router,
     private commonService: CommonService,
     private locationService: LocationService,
-    private userService:UserService,
+    private userService: UserService,
     public matDialog: MatDialog
   ) {
     this.dataEntryService.getDataEntries().subscribe((res) => {
@@ -111,24 +113,49 @@ export class ModuledetailComponent {
           this.sortedEntryList.push(item);
         }
       });
-      console.log('Final Data Entry List', this.sortedEntryList); 
+      console.log('Final Data Entry List', this.sortedEntryList);
       debugger;
       this.rowData1 = this.sortedEntryList.filter(
         (f) => f.location._id === this.locID
       );
-      
+
       debugger;
     });
 
     this.userService
-    .getUserById(sessionStorage.getItem('UserId'))
-    .subscribe((result) => {
-      this.userData= result.data[0];
-      this.rowData1=this.rowData1.filter(f=>String(f.assignedSE)===String(this.userData._id))
-      debugger;
-    })
-  
+      .getUserById(sessionStorage.getItem('UserId'))
+      .subscribe((result) => {
+        debugger;
+        if (result != null) {
+          this.userData = result.data[0];
+
+          if (this.userRole === 'Sub Engineer') {
+            debugger;
+            console.log('UserRole:', this.userRole);
+            console.log('UserData ID:', this.userData._id);
+            this.rowData1 = this.rowData1.filter((f) => {
+              const match = String(f.assignedSE) === String(this.userData._id);
+              return match;
+            });
+          }
+        } else {
+          Swal.fire({
+            title: 'Seesion Expired',
+            text: 'Login Again to Continue',
+            icon: 'warning',
+            confirmButtonText: 'Ok',
+          }).then((result) => {
+            if (result.value) {
+              debugger;
+              this.logOut();
+            }
+          });
+        }
+      });
   }
+
+  userRole = sessionStorage.getItem('UserRole');
+  contractor = false;
 
   ngOnInit(): void {
     this.getModuleInLocation();
@@ -140,99 +167,283 @@ export class ModuledetailComponent {
         maxWidth: 120,
         cellRenderer: 'BtnSaveCellRenderer',
         pinned: 'left',
+        hide: this.userRole !== 'Data Owner',
       },
       { headerName: '_id', field: '_id', hide: true },
       {
         headerName: 'Project Name',
         minWidth: 120,
         field: 'location.locationName',
+        sortable: true,
+        flex: 1,
+
+        filter: true,
+        resizable: true,
+        wrapText: true,
+        autoHeight: true,
       },
-      { headerName: 'Task Name', field: 'module.moduleName', minWidth: 120 },
-      
-      { headerName: 'Total Target', minWidth: 150, field: 'quantity' },
       {
-        headerName: 'Achieved Cumulative Quantity',
+        headerName: 'Task Name',
+        field: 'module.moduleName',
+        minWidth: 120,
+        sortable: true,
+        flex: 1,
+
+        filter: true,
+        resizable: true,
+        wrapText: true,
+        autoHeight: true,
+      },
+      {
+        headerName: 'Cumulative Achieved',
         minWidth: 180,
         field: 'cumulativeQuantity',
+        sortable: true,
+        flex: 1,
+
+        filter: true,
+        resizable: true,
+        wrapText: true,
+        autoHeight: true,
       },
       {
-        headerName: 'Planned Quantity/Day',
-        minWidth: 180,
-        field: 'quantityPerDay',
-      },
-      {
-        headerName: 'Planned Quantity',
+        headerName: 'Expected Target Till Today',
         minWidth: 180,
         field: 'plannedQuantity',
+        flex: 1,
+
+        filter: true,
+        resizable: true,
+        wrapText: true,
+        autoHeight: true,
       },
+
+      {
+        headerName: 'Total Target',
+        minWidth: 150,
+        field: 'quantity',
+        sortable: true,
+        flex: 1,
+
+        filter: true,
+        resizable: true,
+        wrapText: true,
+        autoHeight: true,
+      },
+
+      {
+        headerName: 'Planned Target/Day',
+        minWidth: 180,
+        field: 'quantityPerDay',
+        sortable: true,
+        flex: 1,
+
+        filter: true,
+        resizable: true,
+        wrapText: true,
+        autoHeight: true,
+      },
+
       {
         headerName: 'Quater I Target',
         minWidth: 150,
+        flex: 1,
+
+        filter: true,
+        resizable: true,
+        wrapText: true,
+        autoHeight: true,
         field: 'quantityQuarter1',
-        editable: true,
-        cellStyle: { border: '1px dashed black' },
+        cellStyle: (params) => {
+          if (this.userRole === 'Data Owner') {
+            return { border: '1px dashed black' };
+          }
+          return {};
+        },
+        editable: (params) => {
+          return this.userRole === 'Data Owner';
+        },
         valueParser: this.numberValueParser.bind(this),
       },
       {
         headerName: 'Quater II Target',
         minWidth: 150,
+        flex: 1,
+
+        filter: true,
+        resizable: true,
+        wrapText: true,
+        autoHeight: true,
         field: 'quantityQuarter2',
-        editable: true,
-        cellStyle: { border: '1px dashed black' },
+        cellStyle: (params) => {
+          if (this.userRole === 'Data Owner') {
+            return { border: '1px dashed black' };
+          }
+          return {};
+        },
+        editable: (params) => {
+          return this.userRole === 'Data Owner';
+        },
         valueParser: this.numberValueParser.bind(this),
       },
 
       {
         headerName: 'Quater III Target',
         minWidth: 150,
+        flex: 1,
+
+        filter: true,
+        resizable: true,
+        wrapText: true,
+        autoHeight: true,
         field: 'quantityQuarter3',
-        editable: true,
-        cellStyle: { border: '1px dashed black' },
+        cellStyle: (params) => {
+          if (this.userRole === 'Data Owner') {
+            return { border: '1px dashed black' };
+          }
+          return {};
+        },
+        editable: (params) => {
+          return this.userRole === 'Data Owner';
+        },
         valueParser: this.numberValueParser.bind(this),
       },
       {
         headerName: 'Quater IV Target',
         minWidth: 150,
+        flex: 1,
+
+        filter: true,
+        resizable: true,
+        wrapText: true,
+        autoHeight: true,
         field: 'quantityQuarter4',
-        editable: true,
-        cellStyle: { border: '1px dashed black' },
+        cellStyle: (params) => {
+          if (this.userRole === 'Data Owner') {
+            return { border: '1px dashed black' };
+          }
+          return {};
+        },
+        editable: (params) => {
+          return this.userRole === 'Data Owner';
+        },
         valueParser: this.numberValueParser.bind(this),
       },
       {
         headerName: 'Quater V Target',
         minWidth: 150,
+        flex: 1,
+
+        filter: true,
+        resizable: true,
+        wrapText: true,
+        autoHeight: true,
         field: 'quantityQuarter5',
-        editable: true,
-        cellStyle: { border: '1px dashed black' },
+        cellStyle: (params) => {
+          if (this.userRole === 'Data Owner') {
+            return { border: '1px dashed black' };
+          }
+          return {};
+        },
+        editable: (params) => {
+          return this.userRole === 'Data Owner';
+        },
         valueParser: this.numberValueParser.bind(this),
       },
       {
         headerName: 'Rate',
         field: 'rateofwork',
         minWidth: 150,
-        editable: true,
-        cellStyle: { border: '1px dashed black' },
+        flex: 1,
+
+        filter: true,
+        resizable: true,
+        wrapText: true,
+        autoHeight: true,
+        cellStyle: (params) => {
+          if (this.userRole === 'Data Owner') {
+            return { border: '1px dashed black' };
+          }
+          return {};
+        },
+        editable: (params) => {
+          return this.userRole === 'Data Owner';
+        },
         valueParser: this.numberValueParser.bind(this),
       },
-      { headerName: 'Total Cost', field: 'totalCost', minWidth: 150 },
+      {
+        headerName: 'Total Cost',
+        field: 'totalCost',
+        minWidth: 150,
+        flex: 1,
+
+        filter: true,
+        resizable: true,
+        wrapText: true,
+        autoHeight: true,
+      },
       {
         headerName: 'Created On',
         minWidth: 150,
         field: 'createdOn',
+        flex: 1,
+
+        filter: true,
+        resizable: true,
+        wrapText: true,
+        autoHeight: true,
         valueGetter: this.commonService.createdOnDateFormatter,
       },
-      { headerName: 'Created By', minWidth: 150, field: 'createdBy' },
+      {
+        headerName: 'Created By',
+        flex: 1,
+
+        filter: true,
+        resizable: true,
+        wrapText: true,
+        autoHeight: true,
+        minWidth: 150,
+        field: 'createdBy',
+      },
+      {
+        headerName: 'Modified On',
+        flex: 1,
+
+        filter: true,
+        resizable: true,
+        wrapText: true,
+        autoHeight: true,
+        minWidth: 150,
+        field: 'modifiedOn',
+        valueGetter: (params) => {
+          return this.commonService.DateFormatter(params.data.modifiedOn);
+        },
+      },
+      {
+        headerName: 'Modified By',
+        flex: 1,
+
+        filter: true,
+        resizable: true,
+        wrapText: true,
+        autoHeight: true,
+        minWidth: 150,
+        field: 'modifiedBy',
+      },
     ];
 
     this.rowSelection = 'multiple';
     this.frameworkComponents = {
       BtnSaveCellRenderer: BtnSaveCellRenderer,
+      BtnConSaveCellRenderer: BtnConSaveCellRenderer,
     };
 
     this.context = { componentParent: this };
+
     this.defaultColDef = {
       sortable: true,
       flex: 1,
+      minWidth: 120,
       filter: true,
       resizable: true,
       wrapText: true,
@@ -244,33 +455,83 @@ export class ModuledetailComponent {
       enableCellTextSelection: true,
     };
 
+    if (this.userRole == 'Contractor') {
+      this.contractor = true;
+    } else {
+      this.contractor = false;
+    }
+
+    debugger;
     this.columnDefs1 = [
+      {
+        headerName: 'Action',
+        field: '_id',
+        maxWidth: 120,
+        cellRenderer: 'BtnConSaveCellRenderer',
+        pinned: 'left',
+        hide: !this.contractor,
+      },
       {
         headerName: 'Location',
         field: 'location.locationName',
         minWidth: 150,
         pinned: 'left',
+        sortable: true,
+        flex: 1,
+
+        filter: true,
+        resizable: true,
+        wrapText: true,
+        autoHeight: true,
       },
       {
         headerName: 'Task Name',
         field: 'moduleName',
         minWidth: 100,
         pinned: 'left',
+        sortable: true,
+        flex: 1,
+
+        filter: true,
+        resizable: true,
+        wrapText: true,
+        autoHeight: true,
       },
-      { 
-        headerName: 'Work Code', 
-        field: 'location.workCode', 
-        minWidth: 150 
+      {
+        headerName: 'Work Code',
+        field: 'location.workCode',
+        minWidth: 150,
+        sortable: true,
+        flex: 1,
+
+        filter: true,
+        resizable: true,
+        wrapText: true,
+        autoHeight: true,
       },
       {
         headerName: 'Contractor Name',
         field: 'location.contractorName',
         minWidth: 250,
+        sortable: true,
+        flex: 1,
+
+        filter: true,
+        resizable: true,
+        wrapText: true,
+        autoHeight: true,
       },
       {
         headerName: 'Data Entry Date',
         field: 'dataDate',
         minWidth: 150,
+        sortable: true,
+        flex: 1,
+
+        filter: true,
+        resizable: true,
+        wrapText: true,
+        autoHeight: true,
         valueGetter: (params) => {
           return this.commonService.DateFormatter(params.data.dataDate);
         },
@@ -279,24 +540,122 @@ export class ModuledetailComponent {
         headerName: 'Consumed Quantity',
         field: 'attributeValues.consumedquantity',
         minWidth: 150,
+        sortable: true,
+        flex: 1,
+
+        filter: true,
+        resizable: true,
+        wrapText: true,
+        autoHeight: true,
       },
       //{ headerName: 'Cumulative Quantity', field: 'attributeValues.cumulativequantity',minWidth: 150,},
       //  { headerName: 'Total Target Quantity', field: 'attributeValues.totalquantity',minWidth: 150,},
-      { 
-        headerName: 'Remark', 
-        field: 'attributeValues.remark', 
-        minWidth: 150 
+      {
+        headerName: 'Remark',
+        field: 'attributeValues.remark',
+        minWidth: 150,
+        sortable: true,
+        flex: 1,
+
+        filter: true,
+        resizable: true,
+        wrapText: true,
+        autoHeight: true,
       },
-      { 
-        headerName: 'Created By', 
-        field: 'createdBy', 
-        minWidth: 150 
+      {
+        headerName: 'Contractor Remark',
+        field: 'attributeValues.contractorremark',
+        minWidth: 150,
+        sortable: true,
+        flex: 1,
+        filter: true,
+        resizable: true,
+        wrapText: true,
+        autoHeight: true,
+        cellStyle: (params) => {
+          if (this.contractor === true) {
+            return { border: '1px dashed black' };
+          }
+          return {};
+        },
+        editable: (params) => {
+          return this.contractor === true;
+        },
+      },
+      {
+        headerName: 'Contractor Quantity',
+        field: 'attributeValues.contractorquantity',
+        minWidth: 150,
+        sortable: true,
+        flex: 1,
+        filter: true,
+        resizable: true,
+        wrapText: true,
+        autoHeight: true,
+        cellStyle: (params) => {
+          if (this.contractor === true) {
+            return { border: '1px dashed black' };
+          }
+          return {};
+        },
+        editable: (params) => {
+          return this.contractor === true;
+        },
+      },
+      {
+        headerName: 'Created By',
+        field: 'createdBy',
+        minWidth: 150,
+        sortable: true,
+        flex: 1,
+
+        filter: true,
+        resizable: true,
+        wrapText: true,
+        autoHeight: true,
       },
       {
         headerName: 'Created On',
         field: 'createdOn',
         minWidth: 150,
+        sortable: true,
+        flex: 1,
+
+        filter: true,
+        resizable: true,
+        wrapText: true,
+        autoHeight: true,
         valueGetter: this.commonService.createdOnDateFormatter,
+      },
+
+      {
+        headerName: 'Modified By Contractor',
+        field: 'modifiedByContractor',
+        minWidth: 150,
+        sortable: true,
+        flex: 1,
+
+        filter: true,
+        resizable: true,
+        wrapText: true,
+        autoHeight: true,
+      },
+      {
+        headerName: 'Mdified On Contractor',
+        field: 'modifiedOnContractor',
+        minWidth: 150,
+        sortable: true,
+        flex: 1,
+
+        filter: true,
+        resizable: true,
+        wrapText: true,
+        autoHeight: true,
+        valueGetter: (params) => {
+          return this.commonService.DateFormatter(
+            params.data.modifiedOnContractor
+          );
+        },
       },
     ];
   }
@@ -355,21 +714,40 @@ export class ModuledetailComponent {
 
     this.locationService.addModuleDetails(modID, data).subscribe(
       (result) => {
-        if (result.status === 201) {
-          debugger;
-          this.yourMessage = this.field + ' value Updated';
-          const delay = 1000;
-          setTimeout(() => {
-            this.yourMessage = '';
-          }, delay);
-          this.getModuleInLocation();
-          // window.location.reload()
+        if (result != null) {
+          if (result.status === 201) {
+            debugger;
+            this.yourMessage = this.field + ' value Updated';
+            const delay = 1000;
+            setTimeout(() => {
+              this.yourMessage = '';
+            }, delay);
+            this.getModuleInLocation();
+            // window.location.reload()
+          }
+        } else {
+          Swal.fire({
+            title: 'Seesion Expired',
+            text: 'Login Again to Continue',
+            icon: 'warning',
+            confirmButtonText: 'Ok',
+          }).then((result) => {
+            if (result.value) {
+              debugger;
+              this.logOut();
+            }
+          });
         }
       },
       (err) => {
         // this.notificationService.warn(':: ' + err);
       }
     );
+  }
+  logOut() {
+    this.router.navigate(['/login/']);
+    sessionStorage.clear();
+    window.location.reload();
   }
 
   // ============================================================================================================
@@ -378,7 +756,7 @@ export class ModuledetailComponent {
   dataEntryModel: DataEntryModel;
   Click() {
     // this.router.navigate(['location/createdataentry']);
-    
+
     debugger;
     this.customStylesValidated = true;
     if (this.form.invalid) {
@@ -390,7 +768,7 @@ export class ModuledetailComponent {
     let formattedDate = datePipe.transform(currentDate, 'yyyy-MM-dd');
     debugger;
     // this.dataEntryModel = {
-    //   location: this.rowData[0].location._id, 
+    //   location: this.rowData[0].location._id,
     //   module: null,
     //   assetInstance: null,
     //   dataDate: new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate()),
@@ -409,7 +787,7 @@ export class ModuledetailComponent {
     //   attributeValues: null,
     // };
     let obj = {
-      location: this.rowData[0].location._id, 
+      location: this.rowData[0].location._id,
       module: null,
       assetInstance: null,
       dataDate: formattedDate,
@@ -422,7 +800,6 @@ export class ModuledetailComponent {
       contractorName: null,
       roadStatus: null,
       assignedSE: this.userData,
-
       createdBy: null,
       createdOn: null,
       modifiedBy: null,
@@ -440,25 +817,24 @@ export class ModuledetailComponent {
     // dialogConfig.position = {
     //   top: '100px', // Example: 50px from the top of the viewport
     //   left: '300px' // Example: 50px from the left of the viewport
-    // };    
+    // };
     // this.matDialog.open(
     //   GeneratedataentrypageComponent
     // );
 
-  debugger;
-  const dialogConfig = new MatDialogConfig();
-  dialogConfig.disableClose = true; // Allow closing by clicking outside
-  dialogConfig.id = 'modal-component';
-  dialogConfig.height = '950px';
-  dialogConfig.width = '900px';
-  // dialogConfig.position = {
-  //   top: '100px',
-  //   left: '300px'
-  // };    
-  debugger;
-  dialogConfig.panelClass = 'rounded-dialog'; // Apply custom CSS class for rounded corners
-  this.matDialog.open(GeneratedataentrypageComponent, dialogConfig);
-  
+    debugger;
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true; // Allow closing by clicking outside
+    dialogConfig.id = 'modal-component';
+    dialogConfig.height = '950px';
+    dialogConfig.width = '900px';
+    // dialogConfig.position = {
+    //   top: '100px',
+    //   left: '300px'
+    // };
+    debugger;
+    dialogConfig.panelClass = 'rounded-dialog'; // Apply custom CSS class for rounded corners
+    this.matDialog.open(GeneratedataentrypageComponent, dialogConfig);
   }
 
   getModuleInLocation() {
@@ -468,20 +844,34 @@ export class ModuledetailComponent {
       if (id) {
         this.locationService.getModulesInLocation(id).subscribe(
           (result) => {
-            if (result.status === 200) {
-              this.form.reset();
-              //this.form =
-              //this._fb.group({}).reset()
-              this.moduleInLocationList = result.data;
-              if (this.moduleInLocationList) {
-                debugger;
-                this.rowData = this.moduleInLocationList;
-                this.locationName =
-                  this.moduleInLocationList[0]?.location.locationName;
-                this.moduleInLocationList.forEach((element) => {
-                  this.moduleList.push(element.module);
-                });
+            if (result != null) {
+              if (result.status === 200) {
+                this.form.reset();
+                //this.form =
+                //this._fb.group({}).reset()
+                this.moduleInLocationList = result.data;
+                if (this.moduleInLocationList) {
+                  debugger;
+                  this.rowData = this.moduleInLocationList;
+                  this.locationName =
+                    this.moduleInLocationList[0]?.location.locationName;
+                  this.moduleInLocationList.forEach((element) => {
+                    this.moduleList.push(element.module);
+                  });
+                }
               }
+            } else {
+              Swal.fire({
+                title: 'Seesion Expired',
+                text: 'Login Again to Continue',
+                icon: 'warning',
+                confirmButtonText: 'Ok',
+              }).then((result) => {
+                if (result.value) {
+                  debugger;
+                  this.logOut();
+                }
+              });
             }
           },
           (err) => {
@@ -492,25 +882,43 @@ export class ModuledetailComponent {
         // get asset instance by assetinstace id
         this.locationService.getModulesInLocation(id).subscribe(
           (result) => {
-            this.pageTitle = 'Edit Asset Instance';
-            if (result.status === 200) {
-              this.model = result.data;
-              this.moduleInLoc = result.data[0];
-              this.idforEdit = id;
-              // this.onLocationChange(this.assetInstanceModel.location);
-              // this.onModuleChange(this.assetInstanceModel.module)
-              //edit data in controls
-              console.log(this.model);
-              // this.form.patchValue({
-              //   qauntity:this.moduleInLoc.quantity,
-              //   rateofwork:this.moduleInLoc.rateofwork,
-              //   units:this.moduleInLoc.units,
-              //   totaldays:this.moduleInLoc.totaldays,
-              // })
+            if (result != null) {
+              this.pageTitle = 'Edit Asset Instance';
+              if (result.status === 200) {
+                this.model = result.data;
+                this.moduleInLoc = result.data[0];
+                this.idforEdit = id;
+                // this.onLocationChange(this.assetInstanceModel.location);
+                // this.onModuleChange(this.assetInstanceModel.module)
+                //edit data in controls
+                console.log(this.model);
+                // this.form.patchValue({
+                //   qauntity:this.moduleInLoc.quantity,
+                //   rateofwork:this.moduleInLoc.rateofwork,
+                //   units:this.moduleInLoc.units,
+                //   totaldays:this.moduleInLoc.totaldays,
+                // })
+              }
+            } else {
+              Swal.fire({
+                title: 'Seesion Expired',
+                text: 'Login Again to Continue',
+                icon: 'warning',
+                confirmButtonText: 'Ok',
+              }).then((result) => {
+                if (result.value) {
+                  debugger;
+                  this.logOut();
+                }
+              });
             }
           },
           (err) => {
-            // this.notificationService.warn(':: ' + err);
+            Swal.fire({
+              text: err.message,
+              icon: 'warning',
+              confirmButtonText: 'Ok',
+            });
           }
         );
       }
@@ -566,7 +974,11 @@ export class ModuledetailComponent {
         }
       },
       (err) => {
-        // this.notificationService.warn(':: ' + err);
+        Swal.fire({
+          text: err.message,
+          icon: 'warning',
+          confirmButtonText: 'Ok',
+        });
       }
     );
   }
@@ -589,6 +1001,8 @@ export class ModuledetailComponent {
   }
 
   Back() {
-    this.router.navigate(['location/list']);
+    this.router.navigate(['location/list']).then(() => {
+      window.location.reload();
+    });
   }
 }

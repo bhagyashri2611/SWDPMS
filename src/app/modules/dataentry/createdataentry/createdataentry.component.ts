@@ -25,6 +25,8 @@ import * as moment from 'moment';
 import { CommonService } from 'src/app/core/services/common.service';
 import { UserService } from 'src/app/core/services/user.service';
 import { User } from 'src/app/core/models/IUser';
+import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-createdataentry',
   templateUrl: './createdataentry.component.html',
@@ -45,7 +47,7 @@ export class CreatedataentryComponent implements OnInit {
   assetInstanceList: AssetInstanceListModel[] = [];
   dataEntryModel: DataEntryModel;
   dataentryGroup: DataEntryGroupModel;
-  userData:User;
+  userData: User;
   customStylesValidated = false;
 
   constructor(
@@ -59,24 +61,87 @@ export class CreatedataentryComponent implements OnInit {
     private commonService: CommonService,
     private userService: UserService,
     public matDialog: MatDialog
-
   ) {
-    this.locationService.getLocations().subscribe(
-      (result) => {
-        if (result.status === 200) {
-          this.locationList = result.data;
+    let userRole = sessionStorage.getItem('UserRole');
+    if (userRole === 'Data Owner') {
+      this.locationService.getLocations().subscribe(
+        (result) => {
+          if (result != null) {
+            if (result.status === 200) {
+              this.locationList = result.data;
+              this.locationList = this.locationList.sort((a, b) =>
+                String(a.locationName).localeCompare(String(b.locationName))
+              );
+            }
+          } else {
+            Swal.fire({
+              title: 'Seesion Expired',
+              text: 'Login Again to Continue',
+              icon: 'warning',
+              confirmButtonText: 'Ok',
+            }).then((result) => {
+              if (result.value) {
+                debugger;
+                this.logOut();
+              }
+            });
+          }
+        },
+        (err) => {
+          console.log(err);
         }
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
+      );
+    } else {
+      this.locationService.getLocationByUser().subscribe(
+        (result) => {
+          if (result != null) {
+            if (result.status === 200) {
+              this.locationList = result.data;
+              this.locationList = this.locationList.sort((a, b) =>
+                String(a.locationName).localeCompare(String(b.locationName))
+              );
+            }
+          } else {
+            Swal.fire({
+              title: 'Seesion Expired',
+              text: 'Login Again to Continue',
+              icon: 'warning',
+              confirmButtonText: 'Ok',
+            }).then((result) => {
+              if (result.value) {
+                debugger;
+                this.logOut();
+              }
+            });
+          }
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    }
 
     this.userService
-          .getUserById(sessionStorage.getItem('UserId'))
-          .subscribe((result) => {
-            this.userData= result.data[0];
-          })
+      .getUserById(sessionStorage.getItem('UserId'))
+      .subscribe((result) => {
+        if (result != null) {
+          this.userData = result.data[0];
+        }
+        else {
+          Swal.fire({
+            title: 'Seesion Expired',
+            text: 'Login Again to Continue',
+            icon: 'warning',
+            confirmButtonText: 'Ok',
+          }).then((result) => {
+            if (result.value) {
+              debugger;
+              this.logOut();
+            }
+          });
+
+        }
+      });
   }
 
   ngOnInit(): void {
@@ -89,6 +154,12 @@ export class CreatedataentryComponent implements OnInit {
       // assetInstance: ['', Validators.required],
       dataDate: ['', Validators.required],
     });
+  }
+
+  logOut() {
+    this.router.navigate(['/login/']);
+    sessionStorage.clear();
+    window.location.reload();
   }
 
   //get module list under location by lication id
@@ -113,6 +184,7 @@ export class CreatedataentryComponent implements OnInit {
         modifiedBy: null,
         modifiedOn: null,
         attributeValues: null,
+        modifiedByContractor: null,
       };
       this.dataEntryService.getDataEntrySearchParams(this.dataEntryModel);
       const dialogConfig = new MatDialogConfig();
@@ -173,6 +245,7 @@ export class CreatedataentryComponent implements OnInit {
       modifiedBy: null,
       modifiedOn: null,
       attributeValues: null,
+      modifiedByContractor: null,
     };
     debugger;
     this.dataEntryService.getDataEntrySearchParams(this.dataEntryModel);

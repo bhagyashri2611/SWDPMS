@@ -110,13 +110,31 @@
                 <c-row class="mb-3">
                     <label cLabel class="col-sm-2" for="status">Status</label>
                     <c-col [sm]="8">
-                        <select cSelect id="status" formControlName="status" required>
+                        <select cSelect id="status" required formControlName="status" required>
                             <option value="Started">Started</option>
                             <option value="Not Started">Not Started</option>
                             <option value="On Hold">On Hold</option>
                             <option value="Delayed">Delayed</option>
                             <option value="Completed">Completed</option>
+                            <option value="In Progress">In Progress</option>
                         </select>
+                        <c-form-feedback [valid]="false">Please select Road type</c-form-feedback>
+                    </c-col>
+                </c-row>
+                <c-row class="mb-3">
+                    <label cLabel class="col-sm-2" for="roadType">Road Type</label>
+                    <c-col [sm]="8">
+                        <select cSelect id="roadType" required formControlName="roadType">
+                            <option value="Target Road">Target Road</option>
+                            <option value="Additional Road">Additional Road</option>         
+                        </select>
+                        <c-form-feedback [valid]="false">Please select Road type</c-form-feedback>
+                    </c-col>
+                </c-row>
+                <c-row class="mb-3">
+                    <label cLabel class="col-sm-2" for="remarks">Remarks</label>
+                    <c-col [sm]="8">
+                        <input cFormControl id="remarks" formControlName="remarks" type="text" />
                     </c-col>
                 </c-row>
                 <c-row ngPreserveWhitespaces>
@@ -144,9 +162,9 @@
 
             </form>
 
-            <hr class="my-3">
 
-            <div style="margin-top: 50px;">
+            <div *ngIf="userRole === 'Data Owner'" style="margin-top: 50px;">
+                <hr class="my-3">
                 <form [formGroup]="form">              
                   <h6 class="card-title">Browse Excel file for Upload</h6>   
                   <c-row class="mb-3">
@@ -154,8 +172,6 @@
                         <input cFormControl type="file" #csvReader name="Upload File" id="txtFileUpload" (change)="uploadListener($event)"
                                accept=".xlsx" />
                       </c-col>    
-                      
-             
                       <c-col [sm]="4">
                         <button cButton class="me-1" color="warning" type="reset" [disabled]="upload == false"
                                 (click)="UploadClick()">
@@ -165,11 +181,8 @@
                         </button>
                       </c-col>
                   </c-row>
-                  
-                         
                 </form>
             </div>
-
         </c-card-body>
     </c-card>
 </c-col>

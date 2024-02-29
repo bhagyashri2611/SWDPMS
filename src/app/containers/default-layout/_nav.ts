@@ -9,80 +9,6 @@ export const navItems: INavData[] = [
 
   {
     name: 'Master Data',
-    iconComponent: { name: 'cil-chart-line' },
-
-    children: [
-      {
-        name: 'Roads',
-        url: '/location/list',
-        iconComponent: { name: 'cil-chart-line' },
-      },
-      {
-        name: 'Module',
-        url: '/module/list',
-        iconComponent: { name: 'cil-description' },
-      },
-      {
-        name: 'Unit',
-        url: '/unit/list',
-        iconComponent: { name: 'cil-description' },
-      },
-      {
-        name: 'User',
-        url: '/user/list',
-        iconComponent: { name: 'cil-chart-line' },
-      },
-    ],
-  },
-
-  {
-    name: 'Attributes',
-    iconComponent: { name: 'cil-chart-line' },
-
-    children: [
-      // {
-      //   name: 'P&M Attributes',
-      //   url: '/location/assetpandmattributelist',
-      //   iconComponent: { name: 'cil-chart-line' },
-      // },
-      {
-        name: 'Data Entry Attributes',
-        url: '/location/dataentryassetpandmattributelist',
-        iconComponent: { name: 'cil-chart-line' },
-      },
-      {
-        name: 'Data Entry Group List',
-        url: '/location/dataentrygrouplist',
-        iconComponent: { name: 'cil-chart-line' },
-      },
-
-    ],
-  },
-
-  {
-    name: 'Data Entry',
-    iconComponent: { name: 'cil-chart-line' },
-
-    children: [
-      {
-        name: 'Data Entry',
-        url: '/location/createdataentry',
-        iconComponent: { name: 'cil-chart-line' },
-      },
-    ],
-  },
-  
-];
-
-
-export const OtherThanAdmin: INavData[] = [
-  {
-    name: 'Dashboard',
-    url: '/dashboard',
-    iconComponent: { name: 'cil-speedometer' },
-  },
-  {
-    name: 'Master Data',
     iconComponent: { name: 'cil-list-rich' },
 
     children: [
@@ -92,12 +18,100 @@ export const OtherThanAdmin: INavData[] = [
         iconComponent: { name: 'cil-chart-line' },
       },
       {
-        name: 'Module',
+        name: 'Tasks',
         url: '/module/list',
-        iconComponent: { name: 'cil-description' },
+        iconComponent: { name: 'cil-link' },
+      },
+      {
+        name: 'Unit',
+        url: '/unit/list',
+        iconComponent: { name: 'cil-balance-scale' },
+      },
+      {
+        name: 'User',
+        url: '/user/list',
+        iconComponent: { name: 'cil-user' },
+      },
+    ],
+  },
+
+  {
+    name: 'Data Entry Attributes',
+    iconComponent: { name: 'cil-notes' },
+
+    children: [
+      // {
+      //   name: 'P&M Attributes',
+      //   url: '/location/assetpandmattributelist',
+      //   iconComponent: { name: 'cil-chart-line' },
+      // },
+      {
+        name: 'Attributes List',
+        url: '/location/dataentryassetpandmattributelist',
+        iconComponent: { name: 'cil-list' },
+      },
+      {
+        name: 'Attach Attributes',
+        url: '/location/dataentrygrouplist',
+        iconComponent: { name: 'cil-pin' },
       },
 
     ],
+  },
+
+  {
+    name: 'Data Entry',
+    iconComponent: { name: 'cil-plus' },
+
+    children: [
+      {
+        name: 'Data Entry',
+        url: '/location/createdataentry',
+        iconComponent: { name: 'cil-plus' },
+      },
+    ],
+  },
+  
+];
+
+export const OtherThanAdmin: INavData[] = [
+  {
+    name: 'Dashboard',
+    url: '/dashboard',
+    iconComponent: { name: 'cil-speedometer' },
+  },
+  {
+    name: 'Roads',
+    iconComponent: { name: 'cil-list-rich' },
+    url: '/location/list',
+    // children: [
+    //   {
+    //     name: 'Roads',
+    //     url: '/location/list',
+    //     iconComponent: { name: 'cil-chart-line' },
+    //   },
+    // ],
+  },
+  
+];
+
+export const OtherThanAdminWithDataEntry: INavData[] = [
+  {
+    name: 'Dashboard',
+    url: '/dashboard',
+    iconComponent: { name: 'cil-speedometer' },
+  },
+  {
+    name: 'Roads',
+    iconComponent: { name: 'cil-list-rich' },
+    url: '/location/list',
+    // children: [
+    //   {
+    //     name: 'Roads',
+    //     url: '/location/list',
+    //     iconComponent: { name: 'cil-chart-line' },
+    //   },
+    // ],
   },
   {
     name: 'Data Entry',

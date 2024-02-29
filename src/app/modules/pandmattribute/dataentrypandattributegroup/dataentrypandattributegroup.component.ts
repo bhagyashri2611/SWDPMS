@@ -19,6 +19,7 @@ import { DataEntryGroupModel } from 'src/app/core/models/IDataEntry';
 import { PandmattributegroupService } from 'src/app/core/services/pandmattributegroup.service';
 import { LocationService } from 'src/app/core/services/location.service';
 import { LocationModel } from 'src/app/core/models/ILocation';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-dataentrypandattributegroup',
@@ -51,11 +52,26 @@ export class DataentrypandattributegroupComponent implements OnInit {
     //  private dialogService: DialogService,
     private locationService: LocationService // private notificationService: NotificationService
   ) {
-    this.locationService.getLocations().subscribe(
-      (result) => {
+    this.locationService.getLocations().subscribe((result) => {
+      if(result != null) {
         if (result.status === 200) {
           this.locationList = result.data;
+          this.locationList=this.locationList.sort((a, b) => (String(a.locationName)).localeCompare(String(b.locationName)));
         }
+      }  
+      else {
+        Swal.fire({
+          title: 'Seesion Expired',
+          text: 'Login Again to Continue',
+          icon: 'warning',
+          confirmButtonText: 'Ok',
+        }).then((result) => {
+          if (result.value) {
+            debugger;
+            this.logOut();
+          }
+          });
+      }      
       },
       (err) => {
         console.log(err);
@@ -71,6 +87,12 @@ export class DataentrypandattributegroupComponent implements OnInit {
         // this.notificationService.warn(':: ' + err);
       }
     );
+  }
+
+  logOut(){
+    this.router.navigate(["/login/"]);
+    sessionStorage.clear();
+    window.location.reload();
   }
 
   ngOnInit(): void {
@@ -99,7 +121,6 @@ export class DataentrypandattributegroupComponent implements OnInit {
       this.idforEdit = id;
       if (id) {
         debugger;
-        this.pageTitle = 'Edit Attached Dataentry Attribute';
         this.pandmattributegroupService.getDataentryGroupByID(id).subscribe(
           (result) => {
             if (result.status === 200) {
@@ -125,6 +146,8 @@ export class DataentrypandattributegroupComponent implements OnInit {
               }
               this.idforEdit = id;
               console.log(this.dataentryGroupModel);
+              this.pageTitle = 'Edit Attached Dataentry Attribute for : '+  this.dataentryGroupModel.module.locationName;
+
               debugger;
               this.form.patchValue({
                 module: this.dataentryGroupModel.module._id,
@@ -134,6 +157,7 @@ export class DataentrypandattributegroupComponent implements OnInit {
                 // pandmattribute:
                 //   this.dataentryGroupModel.attributes[0].pandmAttribute._id,
               });
+              debugger;
             }
           },
           (err) => {
@@ -178,7 +202,7 @@ export class DataentrypandattributegroupComponent implements OnInit {
         levelScaleValue:this.form.value.levelscalevalue,
         attributes: pandmAttr,
         dataEntryScreen: [objDefaulyM],
-        createdBy: sessionStorage.getItem('userName'),
+        createdBy: sessionStorage.getItem('FullName'),
         createdOn: new Date(),
         modifiedBy: null,
         modifiedOn: null,
@@ -190,14 +214,20 @@ export class DataentrypandattributegroupComponent implements OnInit {
           .subscribe(
             (result) => {
               if (result.status === 201) {
-                //  this.notificationService.success(':: ' + result.message);
+                Swal.fire({
+                  text: 'Attached Tasks !',
+                  icon: 'success',
+                });                 
                 this.router.navigate([
                   'location/dataentrygrouplist',
                 ]);
               }
             },
             (err) => {
-              // this.notificationService.warn(':: ' + err);
+              Swal.fire({
+                text: err.message,
+                icon: 'error',
+              });             
             }
           );
       } else {
@@ -207,14 +237,20 @@ export class DataentrypandattributegroupComponent implements OnInit {
             (result) => {
               debugger;
               if (result.status === 201) {
-                // this.notificationService.success(':: ' + result.message);
+                Swal.fire({
+                  text: 'Attached Tasks !',
+                  icon: 'success',
+                });                
                 this.router.navigate([
                   'location/dataentrygrouplist',
                 ]);
               }
             },
             (err) => {
-              // this.notificationService.warn(':: ' + err);
+              Swal.fire({
+                text: err.message,
+                icon: 'error',
+              }); 
             }
           );
       }

@@ -39,6 +39,7 @@ export interface DataEntryModel{
     createdBy:  String,
     modifiedOn: Date ,
     modifiedBy: string ,
+    modifiedByContractor: string ,
 
 }
 export interface IDataEntryModelResponce{    

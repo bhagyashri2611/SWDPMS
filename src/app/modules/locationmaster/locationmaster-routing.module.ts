@@ -11,6 +11,7 @@ import { DataentrypandattributegrouplistComponent } from '../pandmattribute/data
 import { DataentrypandattributegroupComponent } from '../pandmattribute/dataentrypandattributegroup/dataentrypandattributegroup.component';
 import { CreatedataentryComponent } from '../dataentry/createdataentry/createdataentry.component';
 import { GeneratedataentrypageComponent} from '../dataentry/generatedataentrypage/generatedataentrypage.component';
+import { NumberWidgetComponent} from '../../CustomViews/dashboard-widgets/number-widget/number-widget.component'
 
 const routes: Routes = [
   { path: 'create', component: CreatelocationComponent },
@@ -23,12 +24,12 @@ const routes: Routes = [
   {path:"createdataentrypandm", component:CreatepandmattributeComponent},
   {path:"createdataentrypandm/:id", component:CreatepandmattributeComponent},
   {path:"dataentrygrouplist", component:DataentrypandattributegrouplistComponent},
-
   {path:"dataentrypandmgroup",component:DataentrypandattributegroupComponent},
   {path:"dataentrypandmgroup/:id",component:DataentrypandattributegroupComponent},
-
   {path:"createdataentry",component:CreatedataentryComponent},
   {path:"screendataentry",component:GeneratedataentrypageComponent},     
+  {path:"numberdWidget",component:NumberWidgetComponent}, 
+
 
 
 ];

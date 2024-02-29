@@ -64,8 +64,8 @@ export class ChangepasswordComponent implements OnInit {
         this.pageTitle = 'Edit User';
 
         
-        this.userService.getUserById(id).subscribe(
-          (result) => {
+        this.userService.getUserById(id).subscribe((result) => {
+          if(result != null){
             if (result.status === 200) {
               this.userModel = result.data[0];
               console.log(this.userModel);
@@ -76,13 +76,28 @@ export class ChangepasswordComponent implements OnInit {
               this.form.patchValue({
                 userName: this.userModel.userName,
                 // password: this.userModel.password,
-
-                createdBy: sessionStorage.getItem('UserName'),
+                createdBy: sessionStorage.getItem('FullName'),
                 createdOn: new Date(),
-                modifiedBy: sessionStorage.getItem('UserName'),
+                modifiedBy: sessionStorage.getItem('FullName'),
                 modifiedOn: new Date(),
               });
             }
+          }
+          else {
+            Swal.fire({
+              title: 'Seesion Expired',
+              text: 'Login Again to Continue',
+              icon: 'warning',
+              confirmButtonText: 'Ok',
+            }).then((result) => {
+              if (result.value) {
+                debugger;
+                this.logOut();
+              }
+            });
+  
+          }
+            
           },
           (err) => {
             // this.notificationService.warn(':: ' + err);
@@ -132,14 +147,15 @@ export class ChangepasswordComponent implements OnInit {
             locations: [],
             wards: resultDatta,
             roleName: this.userModel.roleName,
-            createdBy: sessionStorage.getItem('UserName'),
+            isDataEntry:this.userModel.isDataEntry,
+            createdBy: sessionStorage.getItem('FullName'),
             createdOn: new Date(),
-            modifiedBy: sessionStorage.getItem('UserName'),
+            modifiedBy: sessionStorage.getItem('FullName'),
             modifiedOn: new Date(),
           };
           
-          this.userService.updateUser(this.idForChangePassword, this.userModel).subscribe(
-            (result) => {
+          this.userService.updateUser(this.idForChangePassword, this.userModel).subscribe((result) => {
+            if(result != null){
               if (result.status === 201) {
                 Swal.fire({
                   text: 'Password Changed, Login with new Password!',
@@ -147,6 +163,22 @@ export class ChangepasswordComponent implements OnInit {
                 });                 
                  this.logOut();
               }
+            }
+            else {
+              Swal.fire({
+                title: 'Seesion Expired',
+                text: 'Login Again to Continue',
+                icon: 'warning',
+                confirmButtonText: 'Ok',
+              }).then((result) => {
+                if (result.value) {
+                  debugger;
+                  this.logOut();
+                }
+              });
+    
+            }
+
             },
             (err) => {
               // this.notificationService.warn(':: ' + err);
@@ -154,7 +186,11 @@ export class ChangepasswordComponent implements OnInit {
           );
         }
       } else {
-        alert('Password & Confirm Password did not Match!');
+       
+        Swal.fire({
+          text: 'Password & Confirm Password did not Match!',
+          icon: 'error',
+        }); 
       }
     }
   }

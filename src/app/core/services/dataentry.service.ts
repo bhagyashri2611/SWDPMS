@@ -18,6 +18,13 @@ export class DataentryService {
   // baseURL="http://swm.mcgm.gov.in/rurbanapi/userservice.svc/user";  
   baseURL = this.API_URL + "dataentry/";
 
+  jwtToken = sessionStorage.getItem('jwttoken');
+  headers = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('Authorization', `Bearer ${this.jwtToken}`);
+  options = { headers: this.headers };
+
+
   constructor(private _httpClient: HttpClient, private assetInstanceService: AssetinstanceService,  private locationService: LocationService,) { }
   private content = new BehaviorSubject<any>({});
   public dataEntrySearchParams = this.content.asObservable();
@@ -54,6 +61,18 @@ export class DataentryService {
       })
     })
       .pipe(catchError(this.handleError));
+  }
+
+  saveConData(data: DataEntryModel): Observable<IDataEntryModelResponce> {
+      return this._httpClient.post<IDataEntryModelResponce>(this.baseURL+"savecon/" , JSON.stringify(data), this.options).pipe(
+        catchError((error: HttpErrorResponse) => {
+          debugger;
+          if (error.status === 204 && error.error.message === 'jwt expired') {
+            console.log('JWT token expired');
+          }
+          return throwError(error);
+        })
+      );
   }
   searchExistingData(data: DataEntryModel): Observable<IDataEntryModelResponce> {
     return this._httpClient.post<IDataEntryModelResponce>(this.baseURL + "searchdata/", JSON.stringify(data), {

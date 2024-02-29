@@ -6,7 +6,6 @@ import { UserService } from 'src/app/core/services/user.service';
 import { RoleService } from 'src/app/core/services/role.service';
 import { roleModel } from 'src/app/core/models/IRole';
 import Swal from 'sweetalert2';
-
 import * as XLSX from 'xlsx';
 type AOA = any[][];
 
@@ -22,7 +21,7 @@ export class CreateuserComponent implements OnInit {
   form: FormGroup;
   idforEdit: string;
   roleList: roleModel[];
-
+  userRole:String;
   constructor(
     private _fb: FormBuilder,
     private route: ActivatedRoute,
@@ -65,8 +64,9 @@ export class CreateuserComponent implements OnInit {
       userName: ['', Validators.required],
       email: ['', Validators.required],
       ward: ['', Validators.required],
+      isDataEntry: [''],
     });
-
+    this.userRole=sessionStorage.getItem('UserRole')
     this.route.paramMap.subscribe((params) => {
       let id = params.get('id');
       if (id) {
@@ -74,6 +74,7 @@ export class CreateuserComponent implements OnInit {
         
         debugger;
         this.userService.getUserById(id).subscribe((result) => {
+          if(result != null) {
             if (result.status === 200) {
               this.userModel = result.data[0];
               console.log(this.userModel);
@@ -96,12 +97,29 @@ export class CreateuserComponent implements OnInit {
                 ward: selectedWardNames,
                 roleName: this.userModel.roleName,
                 isActive: this.userModel.isActive === true ? '1' : '0',
-                createdBy: sessionStorage.getItem('UserName'),
+                isDataEntry: this.userModel.isDataEntry,
+                createdBy: sessionStorage.getItem('FullName'),
                 createdOn: new Date(),
-                modifiedBy: sessionStorage.getItem('UserName'),
+                modifiedBy: sessionStorage.getItem('FullName'),
                 modifiedOn: new Date(),
               });
             }
+          }
+          else {
+            Swal.fire({
+              title: 'Seesion Expired',
+              text: 'Login Again to Continue',
+              icon: 'warning',
+              confirmButtonText: 'Ok',
+            }).then((result) => {
+              if (result.value) {
+                debugger;
+                this.logOut();
+              }
+            });
+  
+          }
+          
           },
           (err) => {
             // this.notificationService.warn(':: ' + err);
@@ -151,13 +169,14 @@ export class CreateuserComponent implements OnInit {
           locations: [],
           wards: resultDatta,
           roleName: (document.getElementById('role') as HTMLSelectElement).selectedOptions[0].innerText,
-          createdBy: sessionStorage.getItem('UserName'),
+          isDataEntry: this.form.value.isDataEntry,
+          createdBy: sessionStorage.getItem('FullName'),
           createdOn: new Date(),
-          modifiedBy: sessionStorage.getItem('UserName'),
+          modifiedBy: sessionStorage.getItem('FullName'),
           modifiedOn: new Date(),
         };
-        this.userService.updateUser(this.idforEdit, this.userModel).subscribe(
-          (result) => {
+        this.userService.updateUser(this.idforEdit, this.userModel).subscribe((result) => {
+          if(result != null) {
             if (result.status === 201) {
               // this.notificationService.success(':: ' + result.message);
               Swal.fire({
@@ -166,6 +185,22 @@ export class CreateuserComponent implements OnInit {
               });
               this.router.navigate(['user/list']);
             }
+          }
+          else {
+            Swal.fire({
+              title: 'Seesion Expired',
+              text: 'Login Again to Continue',
+              icon: 'warning',
+              confirmButtonText: 'Ok',
+            }).then((result) => {
+              if (result.value) {
+                debugger;
+                this.logOut();
+              }
+            });
+  
+          }
+            
           },
           (err) => {
             // this.notificationService.warn(':: ' + err);
@@ -188,7 +223,8 @@ export class CreateuserComponent implements OnInit {
           wards: resultDatta,
           roleName: (document.getElementById('role') as HTMLSelectElement)
             .selectedOptions[0].innerText,
-          createdBy: sessionStorage.getItem('UserName'),
+          isDataEntry: this.form.value.isDataEntry,
+          createdBy: sessionStorage.getItem('FullName'),
           createdOn: new Date(),
           modifiedBy: null,
           modifiedOn: null,
@@ -270,7 +306,7 @@ export class CreateuserComponent implements OnInit {
             locations: [],
             wards: resultDatta,
             roleName: this.data[i][6],
-            createdBy: sessionStorage.getItem('UserName'),
+            createdBy: sessionStorage.getItem('FullName'),
             createdOn: new Date(),
             modifiedBy: null,
             modifiedOn: null,
@@ -290,14 +326,31 @@ export class CreateuserComponent implements OnInit {
   addUser(userModel1) {
     debugger;
     this.userService.AddUser(userModel1).subscribe((result) => {
+      if(result != null){
         if (result.status === 201) {
-          // this.notificationService.success(':: ' + result.message);
           this.router.navigate(['user/list']);
         }
-      },
-      (err) => {
-        // this.notificationService.warn(':: ' + err);
       }
+      else {
+        Swal.fire({
+          title: 'Seesion Expired',
+          text: 'Login Again to Continue',
+          icon: 'warning',
+          confirmButtonText: 'Ok',
+        }).then((result) => {
+          if (result.value) {
+            debugger;
+            this.logOut();
+          }
+          });
+      } 
+      },
+      (err) => {  }
     );
+  }
+  logOut(){
+    this.router.navigate(["/login/"]);
+    sessionStorage.clear();
+    window.location.reload();
   }
 }

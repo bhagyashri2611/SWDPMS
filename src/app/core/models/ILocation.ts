@@ -25,6 +25,7 @@ export interface LocationModel {
     coordinates:String,
     remarks:String,
     status:String,
+    roadType:String,
     //latitude: number,
     // longitude:number,
     createdOn:Date,

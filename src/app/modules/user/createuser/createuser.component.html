@@ -79,6 +79,17 @@
                         <c-form-feedback [valid]="false">Please provide</c-form-feedback>
                     </c-col>
                 </c-row>
+                <c-row class="mb-3">
+                    <label cLabel class="col-sm-2" for="isDataEntry">Is Data Entry</label>
+                    <c-col [sm]="8">
+                        <select cSelect id="isDataEntry" formControlName="isDataEntry" required>
+                            <option value="">Choose...</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                        <c-form-feedback [valid]="false">Please provide</c-form-feedback>
+                    </c-col>
+                </c-row>
                 <c-row ngPreserveWhitespaces>
                     <c-col xs="12">
                         <c-card-body>
@@ -103,29 +114,24 @@
                 </c-row>
             </form>
 
-            <hr class="my-3">
-
-            <div style="margin-top: 50px;">
+            <div *ngIf="userRole === 'Data Owner'" style="margin-top: 50px;">
+                <hr class="my-3">
                 <form [formGroup]="form">              
                   <h6 class="card-title">Browse Excel file for Upload</h6>   
                   <c-row class="mb-3">
                     <c-col [sm]="3">
                         <input cFormControl type="file" #csvReader name="Upload File" id="txtFileUpload" (change)="uploadListener($event)"
                                accept=".xlsx" />
-                      </c-col>    
-                      
+                      </c-col>
                       <c-col [sm]="4">
                         <button (click)="onReset()" cButton class="me-1" color="warning" type="reset" (click)="UploadClick()">
                             <!-- <svg cIcon name="cilUpload" style="margin-right: 5px;"></svg> -->
                             UPLOAD
                         </button>
                       </c-col>
-                  </c-row>
-                  
-                         
+                  </c-row>      
                 </form>
-            </div>
-            
+            </div>  
         </c-card-body>
     </c-card>
 </c-col>

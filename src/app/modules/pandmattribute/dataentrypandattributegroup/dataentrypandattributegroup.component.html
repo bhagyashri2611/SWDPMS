@@ -3,7 +3,7 @@
     <c-card-body>
       <h5>{{pageTitle}}</h5>
       <hr style="margin-bottom: 20px" />
-      <label for="module" class="col-sm-2 col-form-label"> Location</label>
+      <label for="module" class="col-sm-2 col-form-label"> Road Name</label>
       <div class="col-sm-7">
         <select class="form-control" id="module" formControlName="module">
           <option *ngFor="let mod of locationList" [value]="mod._id">

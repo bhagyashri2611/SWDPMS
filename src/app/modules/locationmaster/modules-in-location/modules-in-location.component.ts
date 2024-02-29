@@ -25,6 +25,8 @@ export class ModulesInLocationComponent implements OnInit {
   locationList: LocationModel[];
   objLocation: LocationModel;
   moduleList: ModuleModel[] = [];
+  notSelectedModuleList: ModuleModel[] = [];
+
   existingModuleList: ModuleModel[] = [];
   moduleInLocationList: ModulesInLocationModel[] = [];
   selectedModuleList: ModuleModel[] = [];
@@ -55,13 +57,28 @@ export class ModulesInLocationComponent implements OnInit {
       this.locID = id;
       if (id) {
 
-        this.locationService.getLocationById(id).subscribe(
-          (result)=>{
+        this.locationService.getLocationById(id).subscribe((result)=>{
+          if(result != null){
             this.locationName =result.data[0].locationName
           }
+          else {
+            Swal.fire({
+              title: 'Seesion Expired',
+              text: 'Login Again to Continue',
+              icon: 'warning',
+              confirmButtonText: 'Ok',
+            }).then((result) => {
+              if (result.value) {
+                debugger;
+                this.logOut();
+              }
+            });
+          }
+            
+          }
         )
-        this.locationService.getModulesInLocation(id).subscribe(
-          (result) => {
+        this.locationService.getModulesInLocation(id).subscribe((result) => {
+          if(result != null){
             if (result.status === 200) {
               this.moduleInLocationList = result.data;
               if (this.moduleInLocationList) {
@@ -72,9 +89,28 @@ export class ModulesInLocationComponent implements OnInit {
                   this.selectedModuleList.push(element.module);
                 });
               }
+              debugger;
               //this.selectedModuleList=result.data[0]
               this.locID = id;
+
+              this.getModules();
             }
+          }
+          else {
+            Swal.fire({
+              title: 'Seesion Expired',
+              text: 'Login Again to Continue',
+              icon: 'warning',
+              confirmButtonText: 'Ok',
+            }).then((result) => {
+              if (result.value) {
+                debugger;
+                this.logOut();
+              }
+            });
+  
+          }
+            
           },
           (err) => {
             Swal.fire({
@@ -85,7 +121,12 @@ export class ModulesInLocationComponent implements OnInit {
         );
       }
     });
-    this.getModules();
+   
+  }
+  logOut(){
+    this.router.navigate(["/login/"]);
+    sessionStorage.clear();
+    window.location.reload();
   }
   getModules() {
     this.moduleService.getModules().subscribe(
@@ -94,7 +135,8 @@ export class ModulesInLocationComponent implements OnInit {
           this.moduleList = result.data;
           if (this.moduleList) {
             if (this.selectedModuleList) {
-              this.moduleList = this.moduleList.filter(
+              debugger;
+              this.notSelectedModuleList = this.moduleList.filter(
                 (n) => !this.selectedModuleList.some((n2) => n._id == n2._id)
               );
             }
@@ -135,21 +177,36 @@ export class ModulesInLocationComponent implements OnInit {
       location: this.locID,
       module: mdls,
       createdOn: new Date(),
-      createdBy: sessionStorage.getItem('userName'),
+      createdBy: sessionStorage.getItem('FullName'),
       modifiedOn: new Date(),
-      modifiedBy: sessionStorage.getItem('userName'),  
+      modifiedBy: sessionStorage.getItem('FullName'),  
       _id: '0',
       isActive: 1,
     };
     console.log(data);
-    this.locationService.addModulesInLocation(this.locID, data).subscribe(
-      (result) => {
+    this.locationService.addModulesInLocation(this.locID, data).subscribe((result) => {
+      if(result != null) {
         if (result.status === 201) {
           Swal.fire({
             text: String(result.message),
             icon: 'success',
           });
         }
+      }
+      else {
+        Swal.fire({
+          title: 'Seesion Expired',
+          text: 'Login Again to Continue',
+          icon: 'warning',
+          confirmButtonText: 'Ok',
+        }).then((result) => {
+          if (result.value) {
+            debugger;
+            this.logOut();
+          }
+          });
+      }
+       
       },
       (err) => {
         Swal.fire({

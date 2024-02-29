@@ -60,7 +60,7 @@ export class BtnSaveCellRenderer implements ICellRendererAngularComp {
         ? new Date()
         : new Date(this.params.data.location.endDate)
     ).length;
-    let pQuantity = qPerDay * tillDays;
+    let pQuantity = (qPerDay * tillDays).toFixed(2);
     debugger;
 
     const modID = this.params.data._id;
@@ -78,9 +78,9 @@ export class BtnSaveCellRenderer implements ICellRendererAngularComp {
       totalCost:
         (this.params.data.rateofwork === '' ? 1 : this.params.data.rateofwork) *
         this.params.data.quantity,
-      cumulativeQuantity: null,
       quantityPerDay: qPerDay,
       plannedQuantity: pQuantity,
+      modifiedBy:sessionStorage.getItem('FullName')
     };
 
 
@@ -94,8 +94,8 @@ export class BtnSaveCellRenderer implements ICellRendererAngularComp {
       cancelButtonText: 'Cancel'
     }).then((result) => {
       if (result.value) {
-        this.locationService.addModuleDetails(modID, data).subscribe(
-          (result) => {
+        this.locationService.addModuleDetails(modID, data).subscribe((result) => {
+          if(result != null){
             if (result.status === 201) {
               debugger;
               Swal.fire({
@@ -105,37 +105,35 @@ export class BtnSaveCellRenderer implements ICellRendererAngularComp {
                 window.location.reload();
               });              
             }
+          }
+          else {
+            Swal.fire({
+              title: 'Seesion Expired',
+              text: 'Login Again to Continue',
+              icon: 'warning',
+              confirmButtonText: 'Ok',
+            }).then((result) => {
+              if (result.value) {
+                debugger;
+                this.logOut();
+              }
+            });
+          }
+           
           },
           (err) => {
             //  this.notificationService.warn(':: ' + err);
           }
         );
           } 
-
     })
-
-
-    // this.locationService.addModuleDetails(modID, data).subscribe(
-    //   (result) => {
-    //     if (result.status === 201) {
-    //       debugger;
-
-
-    //       Swal.fire({
-    //         text: 'Updated',
-    //         icon: 'success',
-    //       });
-    //       window.location.reload();
-    //     }
-    //   },
-    //   (err) => {
-    //     //  this.notificationService.warn(':: ' + err);
-    //   }
-    // );
-
-    // this.router.navigate(['location/edit/' + this.params.data._id]);
   }
 
+  logOut(){
+    this.router.navigate(["/login/"]);
+    sessionStorage.clear();
+    window.location.reload();
+  }
   refresh(): boolean {
     return false;
   }

@@ -6,6 +6,7 @@ import { UserService } from 'src/app/core/services/user.service';
 import { AgGridAngular } from 'ag-grid-angular';
 import { BtnCellRenderer } from './button-cell-renderer.component';
 import { RoleService } from 'src/app/core/services/role.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-userlist',
@@ -126,8 +127,9 @@ export class UserlistComponent implements OnInit {
 
   getUsers() {
     console.log('calling  User List');
-    this.userService.getUsers().subscribe(
-      (result) => {
+    this.userService.getUsers().subscribe((result) => {
+      debugger;
+      if(result != null ) {
         if (result.status === 200) {
           this.userList = result.data;
           debugger;
@@ -143,11 +145,34 @@ export class UserlistComponent implements OnInit {
           debugger;
           this.rowData = this.userList;
         }
+      }
+
+      else {
+        Swal.fire({
+          title: 'Seesion Expired',
+          text: 'Login Again to Continue',
+          icon: 'warning',
+          confirmButtonText: 'Ok',
+        }).then((result) => {
+          if (result.value) {
+            debugger;
+            this.logOut();
+          }
+        });
+      }
+        
       },
       (err) => {
         // this.notificationService.warn(':: ' + err);
       }
     );
+  }
+
+  logOut(){
+    this.router.navigate(["/login/"]); 
+    sessionStorage.clear();
+    window.location.reload();
+    
   }
 
   OnGridReady(params) {

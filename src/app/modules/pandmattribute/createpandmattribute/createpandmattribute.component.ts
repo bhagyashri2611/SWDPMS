@@ -5,6 +5,7 @@ import { PandMAttribute } from 'src/app/core/models/IPandMAttribute';
 import { PandmattributeService } from 'src/app/core/services/pandmattribute.service';
 import { UnitModulesService } from 'src/app/core/services/unit-modules.service';
 import { UnitModel } from 'src/app/core/models/IUnit';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-createpandmattribute',
@@ -86,9 +87,9 @@ export class CreatepandmattributeComponent implements OnInit {
                 maxValue: this.PandMAttributeModel.maxValue.toString(),
                 minValue: this.PandMAttributeModel.maxLength.toString(),
                 displayLabel: this.PandMAttributeModel.displayLabel,
-                createdBy: sessionStorage.getItem('userName'),
+                createdBy: sessionStorage.getItem('FullName'),
                 createdOn: new Date(),
-                modifiedBy: sessionStorage.getItem('userName'),
+                modifiedBy: sessionStorage.getItem('FullName'),
                 modifiedOn: new Date(),
               });
             }
@@ -126,9 +127,9 @@ export class CreatepandmattributeComponent implements OnInit {
           minValue: Number(this.form.value.minValue),
           displayLabel: this.form.value.displayLabel,
           isHidden:this.form.value.isHidden,
-          createdBy:sessionStorage.getItem('UserName'),
+          createdBy:sessionStorage.getItem('FullName'),
           createdOn: new Date(),
-          modifiedBy:sessionStorage.getItem('UserName'),
+          modifiedBy:sessionStorage.getItem('FullName'),
           modifiedOn: new Date(),
         }
         this.pandmattributeservice
@@ -136,7 +137,10 @@ export class CreatepandmattributeComponent implements OnInit {
           .subscribe(
             (result) => {
               if (result.status == 201) {
-              //  this.notificationService.success(':: ' + result.message);
+                Swal.fire({
+                  text: 'Data Entry Attribute Created',
+                  icon: 'success',
+                });                
                 this.router.navigate(['location/dataentryassetpandmattributelist']);
               }
             },
@@ -162,7 +166,7 @@ export class CreatepandmattributeComponent implements OnInit {
           minValue: Number(this.form.value.minValue),
           displayLabel: this.form.value.displayLabel,
           isHidden:this.form.value.isHidden,
-          createdBy:sessionStorage.getItem('UserName'),
+          createdBy:sessionStorage.getItem('FullName'),
           createdOn: new Date(),
           modifiedBy:null,
           modifiedOn: null,
@@ -173,7 +177,7 @@ export class CreatepandmattributeComponent implements OnInit {
             (result) => {
               if (result.status === 201) {
                // this.notificationService.success(':: ' + result.message);
-                this.router.navigate(['pandmattribute/list']);
+                this.router.navigate(['location/dataentryassetpandmattributelist']);
               }
             },
             (err) => {

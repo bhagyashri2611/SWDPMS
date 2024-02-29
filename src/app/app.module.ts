@@ -15,7 +15,7 @@ import {
   PerfectScrollbarModule,
 } from 'ngx-perfect-scrollbar';
 import { FormlyModule } from '@ngx-formly/core';
-import {FormlyHorizontalWrapper} from '../app/views/wrapper/horizontal-wrapper'
+import { FormlyHorizontalWrapper } from '../app/views/wrapper/horizontal-wrapper';
 // Import routing module
 import { AppRoutingModule } from './app-routing.module';
 // import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
@@ -69,7 +69,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { LoadingComponent } from '../app/loading/loading.component';
 import { UnitMasterModule } from '../app/modules/unit-master/unit-master.module';
 import { PandmattributeModule } from './modules/pandmattribute/pandmattribute.module';
-import {DataentryModule} from './modules/dataentry/dataentry.module'
+import { DataentryModule } from './modules/dataentry/dataentry.module';
+import { DashboardWidgetsModule } from './CustomViews/dashboard-widgets/dashboard-widgets.module';
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
 };
@@ -81,7 +82,12 @@ const APP_CONTAINERS = [
 ];
 
 @NgModule({
-  declarations: [AppComponent, LoadingComponent, ...APP_CONTAINERS,  FormlyHorizontalWrapper],
+  declarations: [
+    AppComponent,
+    LoadingComponent,
+    ...APP_CONTAINERS,
+    FormlyHorizontalWrapper,
+  ],
   imports: [
     CommonModule,
     BrowserModule,
@@ -125,12 +131,11 @@ const APP_CONTAINERS = [
     MatToolbarModule,
     UnitMasterModule,
     PandmattributeModule,
+    DashboardWidgetsModule,
     FormlyModule.forRoot({
       extras: { lazyRender: true },
       wrappers: [
-        { name: 'form-field-horizontal', 
-        component: FormlyHorizontalWrapper
-       },
+        { name: 'form-field-horizontal', component: FormlyHorizontalWrapper },
       ],
     }),
   ],

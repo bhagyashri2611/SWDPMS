@@ -1,28 +1,51 @@
 <c-col xs="12">
     <c-card class="mb-4">
         <c-card-body>
-            <h5> Locations For User: {{userName?userName:""}}</h5>
+            <h5> Roads For User: {{userName?userName:""}}</h5>
+            <hr style="margin-bottom: 20px;">
+
+            <form [formGroup]="form" cForm>
+                <c-row class="mb-1">
+                    <label cLabel class="col-sm-1" for="ward">Ward</label>
+                    <c-col [sm]="3">
+                        <select class="form-control" id="ward" formControlName="ward" (change)="onWardChange($event)" multiple [(ngModel)]="selectedWards">
+                            <option *ngFor="let w of modelWard" [value]="w.wardName">{{w.wardName}}</option>
+                        </select>
+                    </c-col>
+                        
+                    <c-col [sm]="3">
+                        <button cButton class="me-1" color="success" (click)="filterLocations()" style="margin-bottom: 10px;">
+                            <svg cIcon name="cilFilter" style="margin-right: 5px;"></svg>
+                            Filter Roads
+                        </button>
+                        <button cButton class="me-1" color="success" (click)="reset()">
+                            <svg cIcon name="cilArrowCircleLeft" style="margin-right: 5px;"></svg>
+                            Reset Selection
+                        </button>                        
+                    </c-col>
+                </c-row>
+            </form>
+
+
             <hr style="margin-bottom: 20px;">
 
             <div cdkDropListGroup>
                 <div class="example-container">
-                    <h6>Location List</h6>
+                    <h6>All Roads List</h6>
                     <div cdkDropList [cdkDropListData]="locationList" class="example-list"
                         (cdkDropListDropped)="drop($event)">
                         <div class="example-box" *ngFor="let item of locationList" cdkDrag>{{item.locationName}}</div>
                     </div>
                 </div>
                 <div class="example-container">
-                    <h6>Added Locations</h6>
+                    <h6>Added Roads</h6>
                     <div cdkDropList [cdkDropListData]="selectedLocationList" class="example-list"
                         (cdkDropListDropped)="drop($event)">
                         <div class="example-box" *ngFor="let item of selectedLocationList" cdkDrag>{{item.locationName}}
                         </div>
                     </div>
                 </div>
-
             </div>
-
             <c-row ngPreserveWhitespaces>
                 <c-col xs="12">
                     <c-card-body>

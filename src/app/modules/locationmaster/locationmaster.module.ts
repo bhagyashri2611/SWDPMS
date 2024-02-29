@@ -34,7 +34,8 @@ import {
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModulesInLocationComponent } from './modules-in-location/modules-in-location.component';
 import { ModuledetailComponent } from './moduledetail/moduledetail.component';
-import {BtnSaveCellRenderer} from './moduledetail/button-save-renderer.component'
+import { BtnSaveCellRenderer } from './moduledetail/button-save-renderer.component';
+import { BtnConSaveCellRenderer } from './moduledetail/button-con-save-renderer.component';
 @NgModule({
   declarations: [
     CreatelocationComponent,
@@ -42,7 +43,8 @@ import {BtnSaveCellRenderer} from './moduledetail/button-save-renderer.component
     BtnCellRenderer,
     ModulesInLocationComponent,
     ModuledetailComponent,
-    BtnSaveCellRenderer
+    BtnSaveCellRenderer,
+    BtnConSaveCellRenderer,
   ],
   imports: [
     CommonModule,

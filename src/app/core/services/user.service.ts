@@ -21,6 +21,13 @@ import { IwardResponce } from '../models/IWard';
 export class UserService {
   API_URL = environment.baseUrl;
   baseURL = this.API_URL + 'user/';
+  baseURL1 = this.API_URL + 'login/';
+
+  jwtToken = sessionStorage.getItem('jwttoken');
+  headers = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('Authorization', `Bearer ${this.jwtToken}`);
+  options = { headers: this.headers };
 
   constructor(private _httpClient: HttpClient) {}
 
@@ -34,23 +41,27 @@ export class UserService {
   }
 
   AddUser(users: User): Observable<IUserResponce> {
-    return this._httpClient
-      .post<IUserResponce>(this.baseURL, JSON.stringify(users), {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json',
-        }),
-      })
-      .pipe(catchError(this.handleError));
+      return this._httpClient.post<IUserResponce>(this.baseURL, JSON.stringify(users), this.options).pipe(
+        catchError((error: HttpErrorResponse) => {
+          debugger;
+          if (error.status === 204 && error.error.message === 'jwt expired') {
+            console.log('JWT token expired');
+          }
+          return throwError(error);
+        })
+      );
   }
 
   updateUser(userid: string, users: User): Observable<IUserResponce> {
-    return this._httpClient
-      .patch<IUserResponce>(this.baseURL + userid, JSON.stringify(users), {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json',
-        }),
+    return this._httpClient.patch<IUserResponce>(this.baseURL + userid, JSON.stringify(users), this.options).pipe(
+      catchError((error: HttpErrorResponse) => {
+        debugger;
+        if (error.status === 204 && error.error.message === 'jwt expired') {
+          console.log('JWT token expired');
+        }
+        return throwError(error);
       })
-      .pipe(catchError(this.handleError));
+    );
   }
 
   checkUser(user: User): Observable<IUserResponce> {
@@ -63,37 +74,64 @@ export class UserService {
       .pipe(catchError(this.handleError));
   }
 
+  
   getUsers(): Observable<IUserResponce> {
-    return this._httpClient
-      .get<IUserResponce>(this.baseURL)
-      .pipe(catchError(this.handleError));
-  }
-
-  adduserlocation(userid: string, users: User): Observable<IUserResponce> {
-    return this._httpClient
-      .patch<IUserResponce>(
-        this.baseURL + userid + '/location',
-        JSON.stringify(users),
-        {
-          headers: new HttpHeaders({
-            'Content-Type': 'application/json',
-          }),
+    return this._httpClient.get<IUserResponce>(this.baseURL, this.options).pipe(
+      catchError((error: HttpErrorResponse) => {
+        debugger;
+        if (error.status === 204 && error.error.message === 'jwt expired') {
+          // Handle JWT token expiration here, for example, you might want to redirect to the login page
+          console.log('JWT token expired');
+          // Perform actions such as showing a notification or redirecting to the login page
         }
-      )
-      .pipe(catchError(this.handleError));
+        return throwError(error);
+      })
+    );
+  }
+  
+  adduserlocation(userid: string, users: User): Observable<IUserResponce> {
+    return this._httpClient.patch<IUserResponce>( this.baseURL + userid + '/location', JSON.stringify(users), this.options).pipe(
+      catchError((error: HttpErrorResponse) => {
+        debugger;
+        if (error.status === 204 && error.error.message === 'jwt expired') {
+          console.log('JWT token expired');
+        }
+        return throwError(error);
+      })
+    );
   }
 
   getUserLocation(userid: string): Observable<IUserResponce> {
-    return this._httpClient
-      .get<IUserResponce>(this.baseURL + userid + '/location')
+      return this._httpClient.get<IUserResponce>(this.baseURL + userid + '/location', this.options).pipe(
+      catchError((error: HttpErrorResponse) => {
+        debugger;
+        if (error.status === 204 && error.error.message === 'jwt expired') {
+          console.log('JWT token expired');
+        }
+        return throwError(error);
+      })
+    );
+  }
+
+  // getUserById(userid: string): Observable<IUserResponce> {
+  //   debugger;
+  //     return this._httpClient .get<IUserResponce>(this.baseURL + userid, this.options).pipe(
+  //       catchError((error: HttpErrorResponse) => {
+  //         debugger;
+  //         if (error.status === 204 && error.error.message === 'jwt expired') {
+  //           console.log('JWT token expired');
+  //         }
+  //         return throwError(error);
+  //       })
+  //     );
+  // }
+
+  
+  getUserById(userid: string): Observable<IUserResponce> {
+    return this._httpClient.get<IUserResponce>(this.baseURL + userid)
       .pipe(catchError(this.handleError));
   }
 
-  getUserById(userid: string): Observable<IUserResponce> {
-    return this._httpClient
-      .get<IUserResponce>(this.baseURL + userid)
-      .pipe(catchError(this.handleError));
-  }
 
   getUserViewById(userid: string): Observable<IUserResponce> {
     return this._httpClient
@@ -103,7 +141,7 @@ export class UserService {
 
   login(user: any): Observable<IUserResponce> {
     return this._httpClient
-      .post<IUserResponce>(this.baseURL + 'login', JSON.stringify(user), {
+      .post<IUserResponce>(this.baseURL1 , JSON.stringify(user), {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
         }),

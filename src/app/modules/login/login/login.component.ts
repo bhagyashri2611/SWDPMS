@@ -49,6 +49,9 @@ export class LoginComponent implements OnInit {
         sessionStorage.setItem('Role', String(result.data[0].role));
         sessionStorage.setItem('UserRole', String(result.data[0].roleName));
         sessionStorage.setItem('UserName', String(result.data[0].userName));
+        sessionStorage.setItem('jwttoken', String(result.token));
+        sessionStorage.setItem('isDataEntry', String(result.data[0].isDataEntry));
+
         this.router.navigateByUrl('dashboard');
       } 
       if (result.status === 201) {

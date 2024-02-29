@@ -11,14 +11,15 @@ import { Router } from '@angular/router';
       cButton
       (click)="btnClickedAddModuleDetailHandler()"
     >
-      <svg cIcon name="cilFile"></svg>
-      View
+      <svg cIcon name="cilMagnifyingGlass"></svg>
+      Enter Data
     </button>
     <button
       class="me-1"
       color="light"
       cButton
       (click)="btnClickedEditHandler()"
+      *ngIf="userRole === 'Data Owner'"
     >
       <svg cIcon name="cilNoteAdd"></svg>
       Edit
@@ -28,6 +29,7 @@ import { Router } from '@angular/router';
       color="light"
       cButton
       (click)="btnClickedAttachModuleHandler()"
+      *ngIf="userRole === 'Data Owner'"
     >
       <svg cIcon name="cilLink"></svg>
       Attach Task
@@ -36,6 +38,7 @@ import { Router } from '@angular/router';
 })
 export class BtnCellRenderer implements ICellRendererAngularComp {
   private params: any;
+  userRole = sessionStorage.getItem("UserRole")
   constructor(private router: Router) {}
   agInit(params: any): void {
     this.params = params;

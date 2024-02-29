@@ -44,6 +44,7 @@ export class CreatelocationComponent {
   unitList: UnitModel[];
   locationModel1: LocationModel;
   upload = false;
+  userRole:String;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -92,14 +93,16 @@ export class CreatelocationComponent {
       zoneName: ['', Validators.required],
       coordinates: [''],
       status: [''],
+      roadType:[''],
+      remarks:['']
     });
-
+    this.userRole=sessionStorage.getItem("UserRole")
     this.route.paramMap.subscribe((param) => {
       let id = param.get('id');
       if (id) {
         this.pageTitle = 'Edit Project';
-        this.locationService.getLocationById(id).subscribe(
-          (result) => {
+        this.locationService.getLocationById(id).subscribe((result) => {
+          if(result != null){
             if (result.status === 200) {
               console.log(result.data[0]);
               this.locationModel1 = result.data[0];
@@ -127,11 +130,27 @@ export class CreatelocationComponent {
                 zoneName: result.data[0].wardName.zoneName,
                 coordinates: result.data[0].coordinates,
                 status: result.data[0].status,
+                roadType:result.data[0].roadType,
+                remarks:result.data[0].remarks
               });
 
               console.log(this.locationModel1);
               this.locID = id;
             }
+          }  
+          else {
+            Swal.fire({
+              title: 'Seesion Expired',
+              text: 'Login Again to Continue',
+              icon: 'warning',
+              confirmButtonText: 'Ok',
+            }).then((result) => {
+              if (result.value) {
+                debugger;
+                this.logOut();
+              }
+            });
+          }        
           },
           (err) => {}
         );
@@ -191,11 +210,26 @@ export class CreatelocationComponent {
   }
 
   getLocation() {
-    this.locationService.getLocations().subscribe(
-      (result) => {
+    this.locationService.getLocations().subscribe((result) => {
+      if(result != null){
         if (result.status === 200) {
           this.locationList = result.data;
         }
+      }
+      else {
+        Swal.fire({
+          title: 'Seesion Expired',
+          text: 'Login Again to Continue',
+          icon: 'warning',
+          confirmButtonText: 'Ok',
+        }).then((result) => {
+          if (result.value) {
+            debugger;
+            this.logOut();
+          }
+          });
+      }
+       
       },
       (err) => {}
     );
@@ -247,26 +281,41 @@ export class CreatelocationComponent {
         quater5EndDate:null,
         coordinates: this.form.value.coordinates,
         remarks:this.form.value.remarks,
-  
+        roadType: this.form.value.roadType,
         //   latitude: Number(this.form.value.latitude),
         // longitude: Number(this.form.value.longitude),
         createdOn: new Date(),
-        createdBy: sessionStorage.getItem('UserName'),
+        createdBy: sessionStorage.getItem('FullName'),
         modifiedOn: new Date(),
-        modifiedBy: sessionStorage.getItem('UserName'),
+        modifiedBy: sessionStorage.getItem('FullName'),
       };
       console.log(this.objLocation);
       debugger;
 
-      this.locationService.updateLocation(this.locID, this.objLocation).subscribe(
-          (result) => {
-            if (result.status === 201) {
-              Swal.fire({
-                text: 'Road Updated',
-                icon: 'success',
-              });
-              this.router.navigate(['location/list']);
+      this.locationService.updateLocation(this.locID, this.objLocation).subscribe((result) => {
+        if(result != null){
+          if (result.status === 201) {
+            Swal.fire({
+              text: 'Road Updated',
+              icon: 'success',
+            });
+            this.router.navigate(['location/list']);
+          }
+        }
+        else {
+          Swal.fire({
+            title: 'Seesion Expired',
+            text: 'Login Again to Continue',
+            icon: 'warning',
+            confirmButtonText: 'Ok',
+          }).then((result) => {
+            if (result.value) {
+              debugger;
+              this.logOut();
             }
+          });
+        }
+           
           },
           (err) => {}
         );
@@ -295,12 +344,13 @@ export class CreatelocationComponent {
         coordinates: this.form.value.coordinates,
         remarks:this.form.value.remarks,
         status:this.form.value.status,
+        roadType:this.form.value.roadType,
         //latitude: Number(this.form.value.latitude),
         // longitude: Number(this.form.value.longitude),
         createdOn: new Date(),
-        createdBy: sessionStorage.getItem('UserName'),
+        createdBy: sessionStorage.getItem('FullName'),
         modifiedOn: new Date(),
-        modifiedBy: sessionStorage.getItem('UserName'),
+        modifiedBy: sessionStorage.getItem('FullName'),
       };
       debugger;
       console.log(this.objLocation);
@@ -410,11 +460,12 @@ export class CreatelocationComponent {
             coordinates: this.data[i][13],
             remarks:this.data[i][14],
             status:this.data[i][15],
+            roadType:this.data[i][16],
 
             createdOn: new Date(),
-            createdBy: sessionStorage.getItem('UserName'),
+            createdBy: sessionStorage.getItem('FullName'),
             modifiedOn: new Date(),
-            modifiedBy: sessionStorage.getItem('UserName'),
+            modifiedBy: sessionStorage.getItem('FullName'),
           };
           debugger;
           console.log('attr1', attr1);
@@ -436,6 +487,7 @@ export class CreatelocationComponent {
     this.objLocation = objLocation;
     this.locationService.addLocation(this.objLocation).subscribe((result) => {
       debugger;
+      if(result != null) {
         if (result.status === 201) {
           var loc: any = result.data;
           let locID = loc._id;
@@ -446,54 +498,69 @@ export class CreatelocationComponent {
                 location: locID,
                 module: this.moduleIdList,
                 createdOn: new Date(),
-                createdBy: sessionStorage.getItem('UserName'),
+                createdBy: sessionStorage.getItem('FullName'),
                 modifiedOn: new Date(),
-                modifiedBy: sessionStorage.getItem('UserName'),
+                modifiedBy: sessionStorage.getItem('FullName'),
                 _id: '0',
                 isActive: 1,
               };
               debugger;
               this.locationService.addModulesInLocation(locID, data).subscribe((result) => {
                     debugger;
-                    let objDefaulyM = {}
-                    this.pandmAttr=[]
-                    this.pandmAttrList.forEach((pm) => {
-                      debugger;
-                      const kName = pm.displayLabel.replace(/[^a-zA-Z0-9 ]/g, '').replace(/\s/g, '').toLowerCase();
-                      let obj = {   keyName: kName,  pandmAttribute: pm};
-                      debugger;
-                      this.pandmAttr.push(obj);
-                      objDefaulyM[kName] = ' ';
-                    });
-
-                    if (result.status === 201) {
-                      const objSaveModel = {
-                        groupName: this.objLocation.locationName,
-                        module: locID,
-                        asset: '',
-                        isLevelData: this.form.value.islevel,
-                        levelScale: this.form.value.levelscale,
-                        levelScaleValue: this.form.value.levelscalevalue,
-                        attributes: this.pandmAttr,
-                        dataEntryScreen: [objDefaulyM],
-                        createdBy: sessionStorage.getItem('userName'),
-                        createdOn: new Date(),
-                        modifiedBy: null,
-                        modifiedOn: null,
-                      };
-                      this.pandmattributegroupService.addDataEntryGroup(objSaveModel).subscribe((result) => {
-                            debugger;
-                            if (result.status === 201) {
-                              // this.notificationService.success(
-                              //   ':: ' + 'Location Created Successfully!'
-                              // );
+                    if(result != null){
+                      let objDefaulyM = {}
+                      this.pandmAttr=[]
+                      this.pandmAttrList.forEach((pm) => {
+                        debugger;
+                        const kName = pm.displayLabel.replace(/[^a-zA-Z0-9 ]/g, '').replace(/\s/g, '').toLowerCase();
+                        let obj = {   keyName: kName,  pandmAttribute: pm};
+                        debugger;
+                        this.pandmAttr.push(obj);
+                        objDefaulyM[kName] = ' ';
+                      });
+  
+                      if (result.status === 201) {
+                        const objSaveModel = {
+                          groupName: this.objLocation.locationName,
+                          module: locID,
+                          asset: '',
+                          isLevelData: this.form.value.islevel,
+                          levelScale: this.form.value.levelscale,
+                          levelScaleValue: this.form.value.levelscalevalue,
+                          attributes: this.pandmAttr,
+                          dataEntryScreen: [objDefaulyM],
+                          createdBy: sessionStorage.getItem('FullName'),
+                          createdOn: new Date(),
+                          modifiedBy: null,
+                          modifiedOn: null,
+                        };
+                        this.pandmattributegroupService.addDataEntryGroup(objSaveModel).subscribe((result) => {
+                              debugger;
+                              if (result.status === 201) {
+                                // this.notificationService.success(
+                                //   ':: ' + 'Location Created Successfully!'
+                                // );
+                              }
+                            },
+                            (err) => {
+                              // this.notificationService.warn(':: ' + err);
                             }
-                          },
-                          (err) => {
-                            // this.notificationService.warn(':: ' + err);
-                          }
-                        );
-                    }
+                          );
+                      }
+                    }    
+                    else {
+                      Swal.fire({
+                        title: 'Seesion Expired',
+                        text: 'Login Again to Continue',
+                        icon: 'warning',
+                        confirmButtonText: 'Ok',
+                      }).then((result) => {
+                        if (result.value) {
+                          debugger;
+                          this.logOut();
+                        }
+                      });
+                    }              
                   },
                   (err) => {
                     // this.notificationService.warn(':: ' + err);
@@ -516,11 +583,31 @@ export class CreatelocationComponent {
           // this.notificationService.success(':: ' + result.message);
           // this.router.navigate(['location/list'])
         }
+      }
+      else {
+        Swal.fire({
+          title: 'Seesion Expired',
+          text: 'Login Again to Continue',
+          icon: 'warning',
+          confirmButtonText: 'Ok',
+        }).then((result) => {
+          if (result.value) {
+            debugger;
+            this.logOut();
+          }
+        });
+      }
+        
       },
       (err) => {
         // this.notificationService.warn(':: ' + err);
       }
     );
 
+  }
+  logOut(){
+    this.router.navigate(["/login/"]);
+    sessionStorage.clear();
+    window.location.reload();
   }
 }

@@ -1,4 +1,4 @@
-   import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -36,6 +36,7 @@ import { ReportService } from 'src/app/core/services/report.service';
 import { DataentryModule } from '../dataentry.module';
 import { UserService } from 'src/app/core/services/user.service';
 import { User } from 'src/app/core/models/IUser';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-generatedataentrypage',
@@ -72,7 +73,7 @@ export class GeneratedataentrypageComponent implements OnInit {
   dataEntryModel: DataEntryModel;
   dataEntrySearchParams: DataEntryModel;
   objDataEntryModel: DataEntryModel;
-  userData:User;
+  userData: User;
   objDatatest = {};
 
   public visible = false;
@@ -85,8 +86,6 @@ export class GeneratedataentrypageComponent implements OnInit {
     this.visible = event;
   }
 
-
-
   constructor(
     public dialogRef: MatDialogRef<GeneratedataentrypageComponent>,
     private route: ActivatedRoute,
@@ -94,11 +93,10 @@ export class GeneratedataentrypageComponent implements OnInit {
     private moduleService: ModuleService,
     private locationService: LocationService,
     private reportService: ReportService,
-    private userService:UserService,
+    private userService: UserService,
     private assetInstanceService: AssetinstanceService,
-    private dataEntryService: DataentryService
-  ) // private dialogService: DialogService,
-  // private notificationService: NotificationService
+    private dataEntryService: DataentryService // private dialogService: DialogService,
+  ) // private notificationService: NotificationService
   {
     this.dataEntryService.dataEntrySearchParams.subscribe((result) => {
       this.dataEntrySearchParams = result;
@@ -109,9 +107,23 @@ export class GeneratedataentrypageComponent implements OnInit {
         .getLocationById(this.dataEntrySearchParams.location)
         .subscribe(
           (result) => {
-            if (result.status === 200) {
-              this.locationList = result.data;
-              debugger;
+            if (result != null) {
+              if (result.status === 200) {
+                this.locationList = result.data;
+                debugger;
+              }
+            } else {
+              Swal.fire({
+                title: 'Seesion Expired',
+                text: 'Login Again to Continue',
+                icon: 'warning',
+                confirmButtonText: 'Ok',
+              }).then((result) => {
+                if (result.value) {
+                  debugger;
+                  this.logOut();
+                }
+              });
             }
           },
           (err) => {
@@ -120,273 +132,326 @@ export class GeneratedataentrypageComponent implements OnInit {
         );
     });
 
-    this.userService
-    .getUserById(sessionStorage.getItem('UserId'))
-    .subscribe((result) => {
-      this.userData= result.data[0];
-    })
+    this.userService.getUserById(sessionStorage.getItem('UserId')).subscribe((result) => {
+      if(result != null) {
+        this.userData = result.data[0];
+      }
+      else {
+        Swal.fire({
+          title: 'Seesion Expired',
+          text: 'Login Again to Continue',
+          icon: 'warning',
+          confirmButtonText: 'Ok',
+        }).then((result) => {
+          if (result.value) {
+            debugger;
+            this.logOut();
+          }
+          });
+
+      }
+        
+      });
+  }
+
+  logOut() {
+    this.router.navigate(['/login/']);
+    sessionStorage.clear();
+    window.location.reload();
   }
   ngOnInit(): void {
     console.log(this.dataEntrySearchParams);
     this.form = new FormGroup({});
-    this.dataEntryService
-      .getData(this.dataEntrySearchParams)
-      .subscribe((result) => {
+    this.dataEntryService.getData(this.dataEntrySearchParams).subscribe((result) => {
         debugger;
-        this.dataEntryGroupModelResponce = result[0];
-        this.modulesInLocationResponse = result[1];
-        this.dataEntryModelResponce = result[2];
+        if (result != null) {
+          this.dataEntryGroupModelResponce = result[0];
+          this.modulesInLocationResponse = result[1];
+          this.dataEntryModelResponce = result[2];
 
-        debugger;
-        this.cumulativeReportGroupByModelResponse = result[3];
-        if (this.modulesInLocationResponse.data.length > 0) {
-          this.cumulativeReportGroupByModel =
-            this.cumulativeReportGroupByModelResponse.data;
-          this.moduleInLocationList = this.modulesInLocationResponse.data;
+          debugger;
+          this.cumulativeReportGroupByModelResponse = result[3];
+          if (this.modulesInLocationResponse.data.length > 0) {
+            this.cumulativeReportGroupByModel =
+              this.cumulativeReportGroupByModelResponse.data;
+            this.moduleInLocationList = this.modulesInLocationResponse.data;
 
-          this.dataentryGroup = this.dataEntryGroupModelResponce.data[0];
-          //Asset Instance Loop
-          this.moduleInLocationList.forEach((element) => {
-            const ttlcumlativeVal = this.cumulativeReportGroupByModel.find(
-              (c) => c._id.module === element._id
-            );
-            let cval = 0;
-            let plannedQuantity=element.plannedQuantity
-            if (ttlcumlativeVal) {
-              cval = Number(ttlcumlativeVal?.cumulativetotal);
-            }
-
-            if (this.dataEntryModelResponce.data.length > 0) {
-              this.dataEntryList = this.dataEntryModelResponce.data;
-              const data = this.dataEntryList.find(
-                (f) => f.module._id === element._id
+            this.dataentryGroup = this.dataEntryGroupModelResponce.data[0];
+            debugger;
+            //Asset Instance Loop
+            this.moduleInLocationList.forEach((element) => {
+              debugger;
+              const ttlcumlativeVal = this.cumulativeReportGroupByModel.find(
+                (c) => c._id.module === element._id
               );
-              if (data) {
-                if (data.attributeValues.hasOwnProperty('cumulativequantity')) {
-                  data.attributeValues['cumulativequantity'] = cval;
-                }
+              let cval = 0;
+              let plannedQuantity = element.plannedQuantity;
+              if (ttlcumlativeVal) {
+                cval = Number(ttlcumlativeVal?.cumulativetotal);
+              }
 
-                if (data.attributeValues.hasOwnProperty('totalquantity')) {
-                  data.attributeValues['totalquantity'] = element.quantity;
-                }
+              if (this.dataEntryModelResponce.data.length > 0) {
+                this.dataEntryList = this.dataEntryModelResponce.data;
+                const data = this.dataEntryList.find(
+                  (f) => f.module._id === element._id
+                );
+                if (data) {
+                  if (
+                    data.attributeValues.hasOwnProperty('cumulativequantity')
+                  ) {
+                    data.attributeValues['cumulativequantity'] = cval;
+                  }
 
-                
-                if (data.attributeValues.hasOwnProperty('plannedquantity')) {
-                  data.attributeValues['plannedquantity'] = element.plannedQuantity;
+                  if (data.attributeValues.hasOwnProperty('totalquantity')) {
+                    data.attributeValues['totalquantity'] = element.quantity;
+                  }
+
+                  if (data.attributeValues.hasOwnProperty('plannedquantity')) {
+                    data.attributeValues['plannedquantity'] =
+                      element.plannedQuantity;
+                  }
+                  this.objDatatest[element._id] = [data.attributeValues];
+                } else {
+                  const objDeflt = {
+                    consumedquantity: 0,
+                    cumulativequantity: cval,
+                    totalquantity: element.quantity,
+                    remark: '',
+                    plannedquantity: element.plannedQuantity,
+                  };
+                  // const dd = this.dataentryGroup.dataEntryScreen[0]
+                  // if (dd.hasOwnProperty("cumulativequantity")) {
+                  //   dd["cumulativequantity"] = cval
+                  // }
+                  this.objDatatest[element._id] = [objDeflt];
                 }
-                this.objDatatest[element._id] = [data.attributeValues];
               } else {
                 const objDeflt = {
                   consumedquantity: 0,
                   cumulativequantity: cval,
                   totalquantity: element.quantity,
                   remark: '',
-                  plannedquantity:element.plannedQuantity
+                  plannedquantity: element.plannedQuantity,
                 };
                 // const dd = this.dataentryGroup.dataEntryScreen[0]
                 // if (dd.hasOwnProperty("cumulativequantity")) {
                 //   dd["cumulativequantity"] = cval
+                //   console.log(cval)
                 // }
                 this.objDatatest[element._id] = [objDeflt];
+                // this.objDatatest[element._id] = this.dataentryGroup.dataEntryScreen;
               }
-            } else {
-              const objDeflt = {
-                consumedquantity: 0,
-                cumulativequantity: cval,
-                totalquantity: element.quantity,
-                remark: '',
-                plannedquantity:element.plannedQuantity,
-              };
-              // const dd = this.dataentryGroup.dataEntryScreen[0]
-              // if (dd.hasOwnProperty("cumulativequantity")) {
-              //   dd["cumulativequantity"] = cval
-              //   console.log(cval)
-              // }
-              this.objDatatest[element._id] = [objDeflt];
-              // this.objDatatest[element._id] = this.dataentryGroup.dataEntryScreen;
-            }
 
-            this.model = this.objDatatest;
+              this.model = this.objDatatest;
+              this.dataentryGroup.attributes=this.dataentryGroup.attributes.filter(f=>f.pandmAttribute.mandatory===true)
 
-            let fieldGroupData = [];
-            //P&M Attributes Loop
-            this.dataentryGroup.attributes.forEach((inpitFields) => {
-              if (inpitFields.keyName === 'consumedquantity') {
-                let InptData = {
-                  //className: "col-sm-2",
-                  type: 'input',
-                  key: inpitFields.keyName,
-                //  wrappers: ['form-field-horizontal'],
-                  templateOptions: {
-                    type: inpitFields.pandmAttribute.dataType,
-                    label: inpitFields.pandmAttribute.description,
-                    // +(inpitFields.keyName === 'consumedquantity'
-                    //   ? '( in ' + element.units.unitName + ')'
-                    //   : '')
-                    change: (field, $event) => {
-                      // console.log(field),
-                      //  console.log($event.target)
-                      //this.parseMarkDownText(field.form.controls.editor.value);
-                    },
-                  },
-                };
-                fieldGroupData.push(InptData);
-              } else if (inpitFields.keyName === 'cumulativequantity') {
-                let InptData = {
-                  //className: "col-sm-2",
-                  type: 'input',
-                  key: inpitFields.keyName,
-                //  wrappers: ['form-field-horizontal'],
-                  defaultValue: cval,
-                  templateOptions: {
-                    type: inpitFields.pandmAttribute.dataType,
-                    label: inpitFields.pandmAttribute.description,
-                    disabled: true,
-                  },
-                };
-                fieldGroupData.push(InptData);
-              } else if (inpitFields.keyName === 'plannedquantity') {
-                let InptData = {
-                  //className: "col-sm-2",
-                  type: 'input',
-                  key: inpitFields.keyName,
-                //  wrappers: ['form-field-horizontal'],
-                  defaultValue: plannedQuantity,
-                  templateOptions: {
-                    type: inpitFields.pandmAttribute.dataType,
-                    label: inpitFields.pandmAttribute.description,
-                    disabled: true,
-                  },
-                };
-                fieldGroupData.push(InptData);
-              } else if (inpitFields.keyName === 'totalquantity') {
-                // let InptData = {
-                //   //className: "col-sm-2",
-                //   type: 'input',
-                //   key: inpitFields.keyName,
-                // //  wrappers: ['form-field-horizontal'],
-                //   templateOptions: {
-                //     type: inpitFields.pandmAttribute.dataType,
-                //     label: inpitFields.pandmAttribute.description,
-                //     disabled: true,
-                //   },
-                // };
-                let InputData = {
-                  key: inpitFields.keyName,
-                  //wrappers: ['form-field-horizontal'],
-                  type: 'input',
-                  fieldGroup: [
-                    {
-                      className: 'col-sm-2', // Apply class to the label
-                      key: 'label',
-                      template: `<label for="${inpitFields.keyName}">{{to.label}}</label>`,
-                    },
-                    {
-                      className: 'col-sm-8', // Apply class to the input field
-                      key: 'input',
+              let fieldGroupData = [];
+              //P&M Attributes Loop
+              debugger;
+              this.dataentryGroup.attributes.forEach((inpitFields) => {
+                if (inpitFields.keyName === 'consumedquantity') {
+                  let InptData = {
+                    //className: "col-sm-2",
+                    type: 'input',
+                    key: inpitFields.keyName,
+                    //  wrappers: ['form-field-horizontal'],
+                    templateOptions: {
                       type: inpitFields.pandmAttribute.dataType,
-                      templateOptions: {
-                        label: inpitFields.pandmAttribute.description,
-                        disabled: true,
+                      label: inpitFields.pandmAttribute.description,
+                      // +(inpitFields.keyName === 'consumedquantity'
+                      //   ? '( in ' + element.units.unitName + ')'
+                      //   : '')
+                      change: (field, $event) => {
+                        // console.log(field),
+                        //  console.log($event.target)
+                        //this.parseMarkDownText(field.form.controls.editor.value);
                       },
                     },
-                  ],
-                };
-                
-                fieldGroupData.push(InputData);
-              } else if (inpitFields.keyName === 'remark') {
-                let InptData = {
-                  //className: "col-sm-2",
-                  type: 'textarea',
-                  key: inpitFields.keyName,
-                 // wrappers: ['form-field-horizontal'],
-                  templateOptions: {
-                    label: inpitFields.pandmAttribute.description,
-                    row: 10,
-                  },
-                };
-                fieldGroupData.push(InptData);
-              } else {
-                let InptData = {
-                  //className: "col-sm-2",
-                  type: 'input',
-                  key: inpitFields.keyName,
-                 // wrappers: ['form-field-horizontal'],
-                  templateOptions: {
-                    type: inpitFields.pandmAttribute.dataType,
-                    label:
-                      inpitFields.pandmAttribute.description +
-                      (inpitFields.keyName === 'consumedquantity'
-                        ? '( in ' + element.units.unitName + ')'
-                        : ''),
-                  },
-                  hideExpression: (
-                    model: any,
-                    formState: any,
-                    field: FormlyFieldConfig
-                  ) => {
-                    // access to the main model can be through `this.model` or `formState` or `model
-                    //  if (formState.mainModel && formState.mainModel.city) {
-                    //  return formState.mainModel
-                    // }
-                    return inpitFields.pandmAttribute.isHidden;
-                  },
-                };
-                fieldGroupData.push(InptData);
-              }
+                  };
+                  fieldGroupData.push(InptData);
+                } else if (inpitFields.keyName === 'cumulativequantity') {
+                  let InptData = {
+                    //className: "col-sm-2",
+                    type: 'input',
+                    key: inpitFields.keyName,
+                    //  wrappers: ['form-field-horizontal'],
+                    defaultValue: cval,
+                    templateOptions: {
+                      type: inpitFields.pandmAttribute.dataType,
+                      label: inpitFields.pandmAttribute.description,
+                      disabled: true,
+                    },
+                  };
+                  fieldGroupData.push(InptData);
+                } else if (inpitFields.keyName === 'plannedquantity') {
+                  let InptData = {
+                    //className: "col-sm-2",
+                    type: 'input',
+                    key: inpitFields.keyName,
+                    //  wrappers: ['form-field-horizontal'],
+                    defaultValue: plannedQuantity,
+                    templateOptions: {
+                      type: inpitFields.pandmAttribute.dataType,
+                      label: inpitFields.pandmAttribute.description,
+                      disabled: true,
+                    },
+                  };
+                  fieldGroupData.push(InptData);
+                } else if (inpitFields.keyName === 'totalquantity') {
+                  // let InptData = {
+                  //   //className: "col-sm-2",
+                  //   type: 'input',
+                  //   key: inpitFields.keyName,
+                  // //  wrappers: ['form-field-horizontal'],
+                  //   templateOptions: {
+                  //     type: inpitFields.pandmAttribute.dataType,
+                  //     label: inpitFields.pandmAttribute.description,
+                  //     disabled: true,
+                  //   },
+                  // };
+                  // let InputData = {
+                  //   key: inpitFields.keyName,
+                  //   //wrappers: ['form-field-horizontal'],
+                  //   type: 'input',
+                  //   fieldGroup: [
+                  //     {
+                  //       className: 'col-sm-2', // Apply class to the label
+                  //       key: 'label',
+                  //       template: `<label for="${inpitFields.keyName}">{{to.label}}</label>`,
+                  //     },
+                  //     {
+                  //       className: 'col-sm-8', // Apply class to the input field
+                  //       key: 'input',
+                  //       type: inpitFields.pandmAttribute.dataType,
+                  //       templateOptions: {
+                  //         label: inpitFields.pandmAttribute.description,
+                  //         disabled: true,
+                  //       },
+                  //     },
+                  //   ],
+                  // };
+
+                  let InputData = {
+                    //className: "col-sm-2",
+                    type: 'input',
+                    key: inpitFields.keyName,
+                    //  wrappers: ['form-field-horizontal'],
+                    defaultValue: element.quantity,
+                    templateOptions: {
+                      type: inpitFields.pandmAttribute.dataType,
+                      label: inpitFields.pandmAttribute.description,
+                      disabled: true,
+                    },
+                  };
+
+                  fieldGroupData.push(InputData);
+                } else if (inpitFields.keyName === 'remark') {
+                  let InptData = {
+                    //className: "col-sm-2",
+                    type: 'textarea',
+                    key: inpitFields.keyName,
+                    // wrappers: ['form-field-horizontal'],
+                    templateOptions: {
+                      label: inpitFields.pandmAttribute.description,
+                      row: 10,
+                    },
+                  };
+                  fieldGroupData.push(InptData);
+                } else {
+                  let InptData = {
+                    //className: "col-sm-2",
+                    type: 'input',
+                    key: inpitFields.keyName,
+                    // wrappers: ['form-field-horizontal'],
+                    templateOptions: {
+                      type: inpitFields.pandmAttribute.dataType,
+                      label:
+                        inpitFields.pandmAttribute.description +
+                        (inpitFields.keyName === 'consumedquantity'
+                          ? '( in ' + element.units.unitName + ')'
+                          : ''),
+                    },
+                    hideExpression: (
+                      model: any,
+                      formState: any,
+                      field: FormlyFieldConfig
+                    ) => {
+                      // access to the main model can be through `this.model` or `formState` or `model
+                      //  if (formState.mainModel && formState.mainModel.city) {
+                      //  return formState.mainModel
+                      // }
+                      return inpitFields.pandmAttribute.isHidden;
+                    },
+                  };
+                  fieldGroupData.push(InptData);
+                }
+              });
+              let fieldData = {
+                key: element._id,
+                type: 'repeat',
+                templateOptions: {
+                  addText: element.module.moduleName,
+                },
+                fieldArray: {
+                  fieldGroup: fieldGroupData,
+                },
+              };
+              this.fields.push(fieldData);
+              debugger;
             });
-            let fieldData = {
-              key: element._id,
-              type: 'repeat',
-              templateOptions: {
-                addText: element.module.moduleName,
-              },
-              fieldArray: {
-                fieldGroup: fieldGroupData,
-              },
-            };
-            this.fields.push(fieldData);
-            debugger;
-          });
+          }
+          this.options = {
+            formState: {
+              mainModel: this.model,
+            },
+          };
+          // this.fields= [
+          //   {
+          //     key: 'name',
+          //     type: 'input',
+          //     templateOptions: {
+          //       label: 'Name',
+          //       placeholder: 'Enter your name',
+          //       required: true,
+          //     },
+          //   },
+          //   {
+          //     key: 'email',
+          //     type: 'input',
+          //     templateOptions: {
+          //       type: 'email',
+          //       label: 'Email',
+          //       placeholder: 'Enter your email',
+          //       required: true,
+          //     },
+          //   },
+          //   {
+          //     key: 'age',
+          //     type: 'input',
+          //     templateOptions: {
+          //       type: 'number',
+          //       label: 'Age',
+          //       placeholder: 'Enter your age',
+          //       required: true,
+          //     },
+          //   },
+          // ];
+          // this.model={}
         }
-        this.options = {
-          formState: {
-            mainModel: this.model,
-          },
-        };
-        // this.fields= [
-        //   {
-        //     key: 'name',
-        //     type: 'input',
-        //     templateOptions: {
-        //       label: 'Name',
-        //       placeholder: 'Enter your name',
-        //       required: true,
-        //     },
-        //   },
-        //   {
-        //     key: 'email',
-        //     type: 'input',
-        //     templateOptions: {
-        //       type: 'email',
-        //       label: 'Email',
-        //       placeholder: 'Enter your email',
-        //       required: true,
-        //     },
-        //   },
-        //   {
-        //     key: 'age',
-        //     type: 'input',
-        //     templateOptions: {
-        //       type: 'number',
-        //       label: 'Age',
-        //       placeholder: 'Enter your age',
-        //       required: true,
-        //     },
-        //   },
-        // ];
-        // this.model={}
-     
+        else {
+          Swal.fire({
+            title: 'Seesion Expired',
+            text: 'Login Again to Continue',
+            icon: 'warning',
+            confirmButtonText: 'Ok',
+          }).then((result) => {
+            if (result.value) {
+              debugger;
+              this.logOut();
+            }
+          });
+        }
+       
       });
   }
 
@@ -406,118 +471,43 @@ export class GeneratedataentrypageComponent implements OnInit {
         attributeValues: [
           Object.assign(element.model[0], element.formControl.value[0]),
         ],
-
         locationName: this.locationList[0].locationName,
         moduleName: element.templateOptions['addText'],
         assetnstanceName: null,
-
         ward: this.locationList[0].wardName.wardName,
         zone: this.locationList[0].zoneName,
         workCode: this.locationList[0].workCode,
-
         contractorName: this.locationList[0].contractorName,
         roadStatus: this.locationList[0].contractorName,
         assignedSE: this.userData,
-        createdBy: sessionStorage.getItem('userName'),
+        createdBy: sessionStorage.getItem('FullName'),
         createdOn: new Date(),
         modifiedBy: null,
         modifiedOn: null,
+        modifiedByContractor: null,
       };
       debugger;
 
       this.dataEntryService.saveData(this.objDataEntryModel).subscribe(
         (result) => {
           if (result.status === 201) {
-            // this.notificationService.success(':: ' + result.message);
-            // console.log(result.message)
+            let route = 'location/addmoduledetails/' +
+              String(this.dataEntrySearchParams.location);
+            this.router.navigate([route]).then(() => {
+              // Reload the page after navigation
+              window.location.reload();
+            });
+
+            Swal.fire({
+              text: 'Changes have been saved!',
+              icon: 'success',
+            });
           }
         },
         (err) => {
           // this.notificationService.success(':: ' + err.message);
         }
       );
-
-      // //--------------Module In Location Service--------------------------
-
-      // this.reportService.getDataEntriesModulesInLocation().subscribe(
-      //   (result) => {
-      //     if (result) {
-      //       this.modulesInLocationResponse = result[0]
-      //       this.dataEntryModelResponce = result[1]
-      //       this.moduleInLocationList = this.modulesInLocationResponse.data
-      //       this.dataEntryDataList = this.dataEntryModelResponce.data
-
-      //       const moduleInLoc = this.moduleInLocationList.filter(f => f.location._id === this.dataEntrySearchParams.location._id)
-
-      //       if (moduleInLoc) {
-
-      //         moduleInLoc.forEach(modInLoc => {
-
-      //           const cumulativeQ = modInLoc.cumulativeQuantity
-      //           const consumedQntyFinancial = []
-      //           const task = moduleInLoc.filter(f => f.module._id === aiID)
-
-      //           if (task) {
-      //             task.forEach(t => {
-      //               if (element.id === "consumedquantity") {
-      //                 const cumulativeQuantity = t.cumulativeQuantity + element.formControl.value[0]
-
-      //                 this.moduleInLoc = {
-      //                   location: this.form.value.location,
-      //                   module: null,
-      //                   quantity: this.form.value.quantity,
-      //                   totalCost: (this.form.value.rateofwork) * (this.form.value.quantity),
-      //                   totaldays: this.reportService.getDatesBetweenDates(new Date(this.form.value.startDate), new Date(this.form.value.endDate)).length,
-      //                   startDate: this.form.value.startDate,
-      //                   endDate: this.form.value.endDate,
-      //                   rateofwork: this.form.value.rateofwork,
-      //                   units: this.form.value.units,
-      //                   priority: this.form.value.priority,
-      //                   quantityPerDay: Number(this.form.value.quantity / this.reportService.getDatesBetweenDates(new Date(this.form.value.startDate), new Date(this.form.value.endDate)).length),
-      //                   plannedQuantity: Number((this.form.value.quantity / this.reportService.getDatesBetweenDates(new Date(this.form.value.startDate), new Date(this.form.value.endDate)).length) * this.reportService.getDatesBetweenDates(new Date(this.form.value.startDate), new Date()).length),
-      //                   cumulativeQuantity: null,
-      //                   isActive: Number(this.form.value.isActive),
-      //                   createdBy: sessionStorage.getItem('userName'),
-      //                   createdOn: new Date,
-      //                   modifiedBy: sessionStorage.getItem('userName'),
-      //                   modifiedOn: new Date,
-      //                   _id: "0"
-
-      //                 }
-
-      //                 // this.locationService.addModulesInLocation(t._id, this.moduleInLoc).subscribe(
-      //                 //   (result) => {
-      //                 //     if (result.status === 201) {
-      //                 //       this.notificationService.success(':: ' + result.message);
-      //                 //       this.router.navigate(['assetinstance/list'])
-      //                 //     }
-      //                 //   },
-      //                 //   (err) => {
-      //                 //     this.notificationService.warn(':: ' + err);
-      //                 //   }
-      //                 // )
-
-      //               }
-
-      //             })
-
-      //           }
-
-      //         })
-
-      //       }
-
-      //     }
-      //     else {
-      //       alert("No Data Found")
-      //     }
-      //     // console.log(this.reportDataListFinancial)
-      //   },
-      //   (err) => {
-      //     alert(err);
-      //   }
-
-      // )
     });
 
     this.dialogRef.close();

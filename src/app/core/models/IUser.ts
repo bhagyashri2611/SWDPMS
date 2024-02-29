@@ -17,6 +17,7 @@ export interface User{
     locations: LocationModel[],
     wards:any[],   
     roleName:String,
+    isDataEntry:String;
     createdOn:Date;
     createdBy:String;
     modifiedOn:Date;
@@ -27,6 +28,8 @@ export interface IUserResponce{
     message:String; 
     status :number;
     data : User[];
+    token:String;
+
 }
 
 export interface SearchUser{     

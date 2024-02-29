@@ -13,7 +13,8 @@ import { LoadingService, LoadingOverlayRef } from './loading.service';
   providedIn: 'root',
 })
 export class DbCallingService {
-  apiURL = environment.baseUrl;
+  // apiURL = "https://swm.mcgm.gov.in/mumbaiairapi/service.svc";
+  apiURL = "http://localhost:1027/service.svc"
   loginModel: LoginModel;
 
   constructor(
@@ -48,6 +49,35 @@ export class DbCallingService {
   getTransactSearchParams(DataEntryModel) {
     this.content.next(DataEntryModel);
   }
+
+  GenerateOTP(loginModel) {   
+    return this.httpClient.post<any>(this.apiURL + '/user/generateotp', loginModel, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+    })
+      .pipe(catchError(this.handleError));
+  }
+
+  MobileLogin(loginModel) {  
+    return this.httpClient.post<any>(this.apiURL + '/user/authenticate', loginModel, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+    })
+      .pipe(catchError(this.handleError));
+  }
+
+  loginClick(loginModel) {
+    debugger;
+    return this.httpClient.post<any>(this.apiURL + '/user/webauthenticate', loginModel, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+    })
+      .pipe(catchError(this.handleError));
+  }
+
   buildTableBody(data, columns) {
     var body = [];
     var dataRow = [];
@@ -55,8 +85,6 @@ export class DbCallingService {
       dataRow.push({ text: column, bold: 'true', alignment: 'center' });
     });
     body.push(dataRow);
-
-    // body.push(columns);
     data.forEach((row) => {
       var dataRow = [];
       columns.forEach((column) => {
@@ -67,16 +95,7 @@ export class DbCallingService {
 
     return body;
   }
-  loginClick(loginModel) {
-    debugger;
-    return this.httpClient
-      .post<any>(this.apiURL + '/service.svc/user/authenticate', loginModel, {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json',
-        }),
-      })
-      .pipe(catchError(this.handleError));
-  }
+
   CheckUserZone(loginModel) {
     debugger;
     return this.httpClient
@@ -134,6 +153,7 @@ export class DbCallingService {
       )
       .pipe(catchError(this.handleError));
   }
+
   getHighwayProgressTables() {
     return this.httpClient
       .get<any>(this.apiURL + '/report.svc/internaldashboard/highwayprogress', {
@@ -143,6 +163,7 @@ export class DbCallingService {
       })
       .pipe(catchError(this.handleError));
   }
+
   getProgressTables() {
     return this.httpClient
       .get<any>(
@@ -155,6 +176,7 @@ export class DbCallingService {
       )
       .pipe(catchError(this.handleError));
   }
+
   getDailyProgressTables() {
     return this.httpClient
       .get<any>(
@@ -167,6 +189,7 @@ export class DbCallingService {
       )
       .pipe(catchError(this.handleError));
   }
+
   getProgressData() {
     return this.httpClient
       .get<any>(this.apiURL + '/report.svc/internaldashboard/getprogressdata', {
@@ -186,6 +209,7 @@ export class DbCallingService {
       })
       .pipe(catchError(this.handleError));
   }
+
   getSiltQuantityData(data) {
     return this.httpClient
       .post<any>(
@@ -199,6 +223,7 @@ export class DbCallingService {
       )
       .pipe(catchError(this.handleError));
   }
+
   getMinorSiltQuantityData(data) {
     return this.httpClient
       .post<any>(
@@ -392,4 +417,6 @@ export class DbCallingService {
       )
       .pipe(catchError(this.handleError));
   }
+
+
 }

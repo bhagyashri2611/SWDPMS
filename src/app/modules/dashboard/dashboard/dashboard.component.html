@@ -1,8 +1,123 @@
 <c-col xs="12">
   <c-card class="mb-4">
     <c-card-body>
-      <h5>Dashboard Will Be Updated Soon</h5>
+      <c-row>
+        <c-col md="2" xl="2" xs="6">
+          <!-- Each column takes 2/12 of the row on medium and extra-large screens, and 6/12 on extra-small screens -->
+          <app-number-widget
+            [text]="'Total Roads'"
+            [value]=totalRoads
+            [borderClass]="'dark'"
+          ></app-number-widget>
+        </c-col>
+        <c-col md="2" xl="2" xs="6">
+          <app-number-widget
+            [text]="'Completed'"
+            [value]=completedRoads
+            [borderClass]="'success'"
+          ></app-number-widget>
+        </c-col>
+        <c-col md="2" xl="2" xs="6">
+          <app-number-widget
+            [text]="'In Progress'"
+            [value]=inProgressRoads
+            [borderClass]="'warning'"
+          ></app-number-widget>
+        </c-col>
+        <c-col md="2" xl="2" xs="6">
+          <app-number-widget
+            [text]="'Delayed'"
+            [value]=delayedRoads
+            [borderClass]="'danger'"
+          ></app-number-widget>
+        </c-col>
+        <c-col md="2" xl="2" xs="6">
+          <app-number-widget
+            [text]="'Not Started'"
+            [value]=notStartedRoads
+            [borderClass]="'alert'"
+          ></app-number-widget>
+        </c-col>
+      </c-row>
     </c-card-body>
+
+
+
   </c-card>
 </c-col>
-  
+
+
+<c-row>
+  <c-col xs>
+    <c-card class="mb-4">
+      <c-card-header>Roads List</c-card-header>
+      <c-card-body>
+        <table
+          [hover]="true"
+          [responsive]="true"
+          [striped]="true"
+          align="middle"
+          cTable
+          class="mb-0 border"
+        >
+          <thead cTableColor="light">
+            <tr>
+              <th class="text-center">
+               Sr. No.
+              </th>
+              <th>Roads</th>
+              <th class="text-center">Length</th>
+              <th>Progress</th>
+              <th class="text-center"></th>
+              <!-- <th>Activity</th> -->
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of locationListProgress; index as i">
+              <td class="text-center">
+              {{i+1}}
+              </td>
+              <td>
+                <div>{{ user.name }}</div>
+                <div class="small text-medium-emphasis text-nowrap">
+                  <!-- <span>
+                    {{ user.state }} | Registered: {{ user.registered }}
+                  </span> -->
+                </div>
+              </td>
+              <td class="text-center">
+                {{user.length}}
+              </td>
+              <td>
+                <div class="d-flex justify-content-between">
+                  <div class="float-start">
+                    <strong>{{ user.usage }}%</strong>
+                  </div>
+                  <div class="float-end ms-1 text-nowrap">
+                    <small class="text-medium-emphasis">
+                      {{ user.period }}
+                    </small>
+                  </div>
+                </div>
+                <c-progress thin>
+                  <c-progress-bar
+                    [value]="user.usage"
+                    color="{{ user.color }}"
+                  ></c-progress-bar>
+                </c-progress>
+              </td>
+              <td class="text-center">
+                
+              </td>
+              <!-- <td>
+                <div class="small text-medium-emphasis">Last login</div>
+                <div class="fw-semibold text-nowrap">{{ user.activity }}</div>
+              </td> -->
+            </tr>
+          </tbody>
+        </table>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>
+

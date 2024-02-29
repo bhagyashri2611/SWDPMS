@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
       (click)="btnClickedAttachLocationHandler()"
     >
       <svg cIcon name="cilLocationPin" style="margin-right: 5px;"></svg>
-      Location
+      Roads
     </button>
 
     <button
