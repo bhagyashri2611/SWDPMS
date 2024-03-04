@@ -29,21 +29,14 @@
   </c-card>
 </c-col>
 
-<c-col xs="12">
+<!-- <c-col xs="12">
   <c-card class="mb-4">
     <c-card-body>
       <h4 class="card-title">
         Date Wise Task Overview For : {{ locationName ? locationName : "" }}
       </h4>
       <hr style="margin-top: 10px" />
-      <!-- <button type="button" class="btn btn-social-icon-text btn-facebook" (click)="Click()">
-          <i class="mdi mdi-plus-box"></i>Enter Data</button> -->
-      <!-- <button cButton class="me-1" style="margin-bottom: 20px;" color="success" (click)="Click()" *ngIf="userRole != 'Contractor'">
-        <svg cIcon name="cilPlus" style="margin-right: 5px;"></svg>
-        Enter Data
-      </button>
-      
-     -->
+
       <div class="table-responsive">
         <div class="table-responsive">
           <ag-grid-angular
@@ -52,8 +45,8 @@
             id="myGrid"
             class="ag-theme-balham"
             [gridOptions]="gridOptions"
-            [columnDefs]="columnDefs1"
-            [rowData]="rowData1"
+            [columnDefs]="columnDefs2"
+            [rowData]="newGridData"
             [animateRows]="true"
             [pagination]="true"
             [context]="context"
@@ -81,11 +74,7 @@
                   BACK
                 </button>
               </c-col>
-              <!-- <c-col>
-                <div class="message-container" *ngIf="yourMessage">
-                  <div class="message">{{ yourMessage }}</div>
-                </div>
-              </c-col> -->
+       
             </c-row>
           </c-card-body>
         </c-col>
@@ -93,7 +82,7 @@
     </c-card-body>
   </c-card>
 </c-col>
-
+ -->
 
 <c-col xs="12">
   <c-card class="mb-4">

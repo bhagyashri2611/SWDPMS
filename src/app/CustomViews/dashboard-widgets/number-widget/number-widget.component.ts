@@ -9,5 +9,6 @@ export class NumberWidgetComponent {
   @Input() sm: string;
   @Input() text: string;
   @Input() value: any;
+  @Input() length: any;
   @Input() borderClass: string = "4"; 
 }

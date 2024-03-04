@@ -83,6 +83,7 @@ export class ModuledetailComponent {
   sortedEntryList: any = [];
 
   columnDefs1;
+  columnDefs2;
 
   gridOption;
 
@@ -118,13 +119,13 @@ export class ModuledetailComponent {
       this.rowData1 = this.sortedEntryList.filter(
         (f) => f.location._id === this.locID
       );
-
-      debugger;
+        debugger;
+      if(this.rowData1) {
+        this.getNewGridData();
+      }
     });
 
-    this.userService
-      .getUserById(sessionStorage.getItem('UserId'))
-      .subscribe((result) => {
+    this.userService.getUserById(sessionStorage.getItem('UserId')).subscribe((result) => {
         debugger;
         if (result != null) {
           this.userData = result.data[0];
@@ -137,8 +138,14 @@ export class ModuledetailComponent {
               const match = String(f.assignedSE) === String(this.userData._id);
               return match;
             });
+            debugger
+            if(this.rowData1) {
+              this.getNewGridData();
+            }
+            
           }
-        } else {
+        } 
+        else {
           Swal.fire({
             title: 'Seesion Expired',
             text: 'Login Again to Continue',
@@ -152,6 +159,40 @@ export class ModuledetailComponent {
           });
         }
       });
+  }
+
+  newGridData: any = [];
+  filteredArray: any = [];
+  getNewGridData() {
+    debugger;
+    const uniqueDates = [
+      ...new Set(
+        this.rowData1.map((item) =>
+          this.commonService.DateFormatter(item.dataDate)
+        )
+      ),
+    ];
+    debugger;
+    uniqueDates.forEach((item) => {
+      this.filteredArray = this.rowData1.filter((row) => {
+        let rowDate = this.commonService.DateFormatter(row.dataDate);
+        return rowDate === item;
+      });
+      let obj = {
+        dataDate: item,
+        SWDWork: this.filteredArray .filter((f) => f.moduleName === 'SWD Work')
+        .map((filteredItem) => filteredItem.attributeValues.consumedquantity)[0],
+        PQC: this.filteredArray .filter((f) => f.moduleName === 'Completion of Crust (PQC)')
+        .map((filteredItem) => filteredItem.attributeValues.consumedquantity)[0],
+        Excavation: this.filteredArray .filter((f) => f.moduleName === 'Excavation')
+        .map((filteredItem) => filteredItem.attributeValues.consumedquantity)[0],
+
+        LayingOfDuct: this.filteredArray .filter((f) => f.moduleName === 'Laying of Duct')
+        .map((filteredItem) => filteredItem.attributeValues.consumedquantity)[0],
+      };
+      debugger;
+      this.newGridData.push(obj);
+    });
   }
 
   userRole = sessionStorage.getItem('UserRole');
@@ -658,6 +699,50 @@ export class ModuledetailComponent {
         },
       },
     ];
+
+    this.columnDefs2 = [
+      {
+        headerName: 'Data Date',
+        field: 'dataDate',
+        minWidth: 150,
+        pinned: 'left',
+        sortable: true,
+        flex: 1,
+
+        filter: true,
+        resizable: true,
+        wrapText: true,
+        autoHeight: true,
+      },
+      {
+        headerName: 'Excavation', 
+        field: 'Excavation',
+        minWidth: 150,
+        sortable: true,
+        flex: 1,
+      },
+      {
+        headerName: 'Laying Of Duct',
+        field: 'LayingOfDuct',
+        minWidth: 150,
+        sortable: true,
+        flex: 1,
+      },
+      { 
+        headerName: 'PQC',
+        field: 'PQC',
+        minWidth: 150,
+        sortable: true,
+        flex: 1,
+      },
+      { 
+        headerName: 'SWD Work',
+        field: 'SWDWork',
+        minWidth: 150,
+        sortable: true,
+        flex: 1,
+      },
+    ];
   }
 
   numberValueParser(params: any): number {
@@ -853,11 +938,8 @@ export class ModuledetailComponent {
                 if (this.moduleInLocationList) {
                   debugger;
                   this.rowData = this.moduleInLocationList;
-                  this.locationName =
-                    this.moduleInLocationList[0]?.location.locationName;
-                  this.moduleInLocationList.forEach((element) => {
-                    this.moduleList.push(element.module);
-                  });
+                  this.locationName = this.moduleInLocationList[0]?.location.locationName;
+                  this.moduleInLocationList.forEach((element) => { this.moduleList.push(element.module)});
                 }
               }
             } else {
@@ -923,6 +1005,10 @@ export class ModuledetailComponent {
         );
       }
     });
+  }
+
+  getDateWiseTask(){
+    
   }
 
   OnGridReady(params) {

@@ -7,6 +7,7 @@
           <app-number-widget
             [text]="'Total Roads'"
             [value]=totalRoads
+            [length]=totalRoadsLength
             [borderClass]="'dark'"
           ></app-number-widget>
         </c-col>
@@ -14,6 +15,7 @@
           <app-number-widget
             [text]="'Completed'"
             [value]=completedRoads
+            [length]=completedRoadsLength
             [borderClass]="'success'"
           ></app-number-widget>
         </c-col>
@@ -21,6 +23,7 @@
           <app-number-widget
             [text]="'In Progress'"
             [value]=inProgressRoads
+            [length]=inProgressRoadsLength
             [borderClass]="'warning'"
           ></app-number-widget>
         </c-col>
@@ -28,16 +31,27 @@
           <app-number-widget
             [text]="'Delayed'"
             [value]=delayedRoads
+            [length]=delayedRoadsLength
             [borderClass]="'danger'"
+          ></app-number-widget>
+        </c-col>
+        <c-col md="2" xl="2" xs="6">
+          <app-number-widget
+            [text]="'On Hold'"
+            [value]=onHoldRoads
+            [length]=onHoldRoadsLength
+            [borderClass]="'primary'"
           ></app-number-widget>
         </c-col>
         <c-col md="2" xl="2" xs="6">
           <app-number-widget
             [text]="'Not Started'"
             [value]=notStartedRoads
+            [length]=notStartedRoadsLength
             [borderClass]="'alert'"
           ></app-number-widget>
         </c-col>
+        
       </c-row>
     </c-card-body>
 
@@ -66,43 +80,62 @@
                Sr. No.
               </th>
               <th>Roads</th>
-              <th class="text-center">Length</th>
-              <th>Progress</th>
+              <th>Status</th>
+              <th class="text-center">Length(m)</th>
+              <th class="text-center">Weighted Progress</th>
+              <th class="text-center">Progress</th>
               <th class="text-center"></th>
               <!-- <th>Activity</th> -->
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let user of locationListProgress; index as i">
-              <td class="text-center">
+            <tr *ngFor="let loc of locationListProgress; index as i">
+              <td class="text-center" style="width: 6%;">
               {{i+1}}
               </td>
               <td>
-                <div>{{ user.name }}</div>
+                <div>{{ loc.name }}</div>
                 <div class="small text-medium-emphasis text-nowrap">
                   <!-- <span>
                     {{ user.state }} | Registered: {{ user.registered }}
                   </span> -->
                 </div>
               </td>
-              <td class="text-center">
-                {{user.length}}
+              <td style="width: 10%;">
+                {{ loc.status }}
               </td>
-              <td>
+              <td class="text-center">
+                {{loc.length}}
+              </td>
+            
+              <td style="width: 22%;">
                 <div class="d-flex justify-content-between">
                   <div class="float-start">
-                    <strong>{{ user.usage }}%</strong>
-                  </div>
-                  <div class="float-end ms-1 text-nowrap">
-                    <small class="text-medium-emphasis">
-                      {{ user.period }}
-                    </small>
+                    <strong>{{ loc.weightedProgress }}%</strong>
                   </div>
                 </div>
                 <c-progress thin>
                   <c-progress-bar
-                    [value]="user.usage"
-                    color="{{ user.color }}"
+                    [value]="loc.weightedProgress"
+                    color="{{ loc.color }}"
+                  ></c-progress-bar>
+                </c-progress>
+              </td>
+              <td style="width: 22%;">
+                <div class="d-flex justify-content-between">
+                  <div class="float-start">
+                    <strong>{{ loc.usage }}%</strong>
+                  </div>
+                  <!-- <div class="float-end ms-1 text-nowrap">
+                    <small class="text-medium-emphasis">
+                      {{ loc.period }}
+                    </small>
+                  </div> -->
+                </div>
+                <c-progress thin>
+                  <c-progress-bar
+                    [value]="loc.usage"
+                    color="{{ loc.color }}"
                   ></c-progress-bar>
                 </c-progress>
               </td>

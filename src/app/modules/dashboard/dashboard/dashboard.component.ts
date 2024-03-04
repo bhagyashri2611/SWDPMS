@@ -34,11 +34,7 @@ import { CommonService } from 'src/app/core/services/common.service';
 })
 export class DashboardComponent implements OnInit {
   locationList: LocationModel[];
-  inProgressRoads: any;
-  totalRoads: any;
-  completedRoads: any;
-  notStartedRoads: any;
-  delayedRoads: any;
+  
   userRole: String;
   locationListProgress: any[]=[];
   moduleInLocationList: ModulesInLocationModel[] = [];
@@ -57,6 +53,20 @@ export class DashboardComponent implements OnInit {
   lastMonth: Date;
   monthBforlastMonth: Date;
 
+  totalRoads: any;
+  completedRoads: any;
+  notStartedRoads: any;
+  delayedRoads: any;
+  inProgressRoads: any;
+  onHoldRoads: any;
+
+  totalRoadsLength: any = 0;
+  completedRoadsLength: any= 0;
+  notStartedRoadsLength: any= 0;
+  delayedRoadsLength: any= 0;
+  inProgressRoadsLength: any= 0;
+  onHoldRoadsLength: any= 0;
+
   constructor(
     private router: Router,
     public iconSet: IconSetService,
@@ -64,49 +74,103 @@ export class DashboardComponent implements OnInit {
     private reportService: ReportService,
     private commonService:CommonService
   ) {
+
+   
+    debugger;
     this.userRole = sessionStorage.getItem('UserRole');
 
     if (this.userRole === 'Data Owner') {
-      this.locationService.getLocations().subscribe(
-        (result) => {
-          debugger;
+      this.locationService.getLocations().subscribe((result) => {
+          
           if (result != null) {
             if (result.status === 200) {
+              this.totalRoadsLength = 0;
               this.locationList = result.data;
               this.locationList = this.locationList.sort((a, b) =>
                 String(a.locationName).localeCompare(String(b.locationName))
               );
+              
               this.totalRoads = this.locationList.length;
+
+              this.locationList.forEach((loc) => {
+                this.totalRoadsLength = this.totalRoadsLength + loc.length;
+              });
+
+              this.locationList.forEach((loc) => {
+                this.totalRoadsLength = this.totalRoadsLength + loc.length;
+              });
+
               this.inProgressRoads = this.locationList.filter(
                 (f) => f.status === 'In Progress'
               ).length;
+              this.locationList.forEach((loc) => {
+                if(loc.status === 'In Progress'){
+                  this.inProgressRoadsLength = this.inProgressRoadsLength + loc.length;
+                }
+              });
+
+
               this.completedRoads = this.locationList.filter(
                 (f) => f.status === 'Completed'
               ).length;
+              this.locationList.forEach((loc) => {
+                if(loc.status === 'Completed'){
+                  this.completedRoadsLength = this.completedRoadsLength + loc.length;
+                }
+              });
+
+
               this.notStartedRoads = this.locationList.filter(
                 (f) => f.status === 'Not Started'
               ).length;
+              this.locationList.forEach((loc) => {
+                if(loc.status === 'Not Started'){
+                  this.notStartedRoadsLength = this.notStartedRoadsLength + loc.length;
+                }
+              });
+
+
               this.delayedRoads = this.locationList.filter(
                 (f) => f.status === 'Delayed'
               ).length;
-              this.locationList.forEach((f) => {
-                let obj = {
-                  name: f.locationName,
-                  state: 'New',
-                  registered: 'Jan 1, 2021',
-                  length: f.length,
-                  usage: 50,
-                  period: ''+this.commonService.DateFormatter(f.startDate) +' to '+ this.commonService.DateFormatter(f.endDate)+'',
-                  payment: 'Mastercard',
-                  activity: '10 sec ago',
-                  avatar: './assets/img/avatars/1.jpg',
-                  status: 'success',
-                  color: 'success',
-                };
-                this.locationListProgress.push(obj)
-                debugger;
+              this.locationList.forEach((loc) => {
+                if(loc.status === 'Delayed'){
+                  this.delayedRoadsLength = this.delayedRoadsLength + loc.length;
+                }
               });
-              debugger;
+
+              this.onHoldRoads = this.locationList.filter(
+                (f) => f.status === 'On Hold'
+              ).length;
+              this.locationList.forEach((loc) => {
+                if(loc.status === 'On Hold'){
+                  this.onHoldRoadsLength = this.completedRoadsLength + loc.length;
+                }
+              });
+
+              if(this.locationList.length >0) {
+                this.locationService.getAllModulInLocationForDashboard().subscribe((result) => {
+                  debugger;
+                  if (result != null) { 
+                    if (result) { 
+                      debugger;
+                        this.moduleInLocationList = result.data;   
+                        if(this.moduleInLocationList.length > 0){
+                          this.getLocationTable();
+                        }        
+                    }
+                    else { alert('No Data Found'); }
+            
+                  }
+                  else { }
+                });
+              }
+              
+
+              
+
+
+             
             }
           } else {
             Swal.fire({
@@ -116,7 +180,7 @@ export class DashboardComponent implements OnInit {
               confirmButtonText: 'Ok',
             }).then((result) => {
               if (result.value) {
-                debugger;
+                
                 this.logOut();
               }
             });
@@ -132,45 +196,86 @@ export class DashboardComponent implements OnInit {
     } else {
       this.locationService.getLocationByUser().subscribe(
         (result) => {
-          debugger;
+          this.totalRoadsLength = 0;
+          
           if (result != null) {
             if (result.status === 200) {
               this.locationList = result.data;
               this.locationList = this.locationList.sort((a, b) =>
                 String(a.locationName).localeCompare(String(b.locationName))
               );
+              
               this.totalRoads = this.locationList.length;
+              this.locationList.forEach((loc) => {
+                debugger;
+                this.totalRoadsLength = this.totalRoadsLength + loc.length;
+              });
+
               this.inProgressRoads = this.locationList.filter(
                 (f) => f.status === 'In Progress'
               ).length;
+              this.locationList.forEach((loc) => {
+                if(loc.status === 'In Progress'){
+                  this.inProgressRoadsLength = this.inProgressRoadsLength + loc.length;
+                }
+              });
+
+
               this.completedRoads = this.locationList.filter(
                 (f) => f.status === 'Completed'
               ).length;
+              this.locationList.forEach((loc) => {
+                if(loc.status === 'Completed'){
+                  this.completedRoadsLength = this.completedRoadsLength + loc.length;
+                }
+              });
+
+
               this.notStartedRoads = this.locationList.filter(
                 (f) => f.status === 'Not Started'
               ).length;
+              this.locationList.forEach((loc) => {
+                if(loc.status === 'Not Started'){
+                  this.notStartedRoadsLength = this.notStartedRoadsLength + loc.length;
+                }
+              });
+
+
               this.delayedRoads = this.locationList.filter(
                 (f) => f.status === 'Delayed'
               ).length;
-
-              this.locationList.forEach((f) => {
-                let obj = {
-                  name: f.locationName,
-                  state: 'New',
-                  registered: 'Jan 1, 2021',
-                  length: f.length,
-                  usage: 50,
-                  period: ''+this.commonService.DateFormatter(f.startDate) +' to '+ this.commonService.DateFormatter(f.endDate)+'',
-                  payment: 'Mastercard',
-                  activity: '10 sec ago',
-                  avatar: './assets/img/avatars/1.jpg',
-                  status: 'success',
-                  color: 'success',
-                };
-                this.locationListProgress.push(obj)
-                debugger;
+              this.locationList.forEach((loc) => {
+                if(loc.status === 'Delayed'){
+                  this.delayedRoadsLength = this.delayedRoadsLength + loc.length;
+                }
               });
-              debugger;
+
+              this.onHoldRoads = this.locationList.filter(
+                (f) => f.status === 'On Hold'
+              ).length;
+              this.locationList.forEach((loc) => {
+                if(loc.status === 'On Hold'){
+                  this.onHoldRoadsLength = this.completedRoadsLength + loc.length;
+                }
+              });
+
+              if(this.locationList.length >0) {
+                this.locationService.getAllModulInLocationForDashboard().subscribe((result) => {
+                  debugger;
+                  if (result != null) { 
+                    if (result) { 
+                      debugger;
+                        this.moduleInLocationList = result.data;   
+                        if(this.moduleInLocationList.length > 0){
+                          this.getLocationTable();
+                        }        
+                    }
+                    else { alert('No Data Found'); }
+            
+                  }
+                  else { }
+                });
+              }              
             }
           } else {
             Swal.fire({
@@ -180,7 +285,7 @@ export class DashboardComponent implements OnInit {
               confirmButtonText: 'Ok',
             }).then((result) => {
               if (result.value) {
-                debugger;
+                
                 this.logOut();
               }
             });
@@ -198,9 +303,65 @@ export class DashboardComponent implements OnInit {
     iconSet.icons = { ...freeSet, ...brandSet, ...flagSet };
   }
 
+  mil: any[]= [];
+  getLocationTable(){
+    debugger;
+
+    this.locationList.forEach((f) => {
+      debugger;
+      this.mil  = this.moduleInLocationList.filter(lm=>{
+        if(lm.location!=null)
+        {
+          return String(lm?.location?._id) === String(f._id)
+          debugger;
+        }else
+        return false;
+        debugger;
+      });
+      debugger;
+      let pqc= this.mil.filter(mil=>{
+        return mil.module.moduleName==='Completion of Crust (PQC)'
+      })
+      let exc= this.mil.filter(mil=>{
+        return mil.module.moduleName==='Excavation'
+      })
+      let duct= this.mil.filter(mil=>{
+        return mil.module.moduleName==='Laying of Duct'
+      })
+      let swd= this.mil.filter(mil=>{
+        return mil.module.moduleName==='SWD Work'
+      })
+
+      let weightedProgress =  Number(
+      (((pqc[0].cumulativeQuantity/f.length)*100 ) * 0.3) +
+      (((exc[0].cumulativeQuantity/f.length)*100 ) * 0.2 ) +
+      (((duct[0].cumulativeQuantity/f.length)*100 ) * 0.2 ) +
+      (((swd[0].cumulativeQuantity/f.length)*100 ) * 0.3 )
+      ).toFixed(2);
+
+
+      let obj = {
+        name: f.locationName,
+        state: 'New',
+        registered: 'Jan 1, 2021',
+        length: f.length,
+        usage:Number ( (pqc[0].cumulativeQuantity/f.length)*100 ).toFixed(2),
+        weightedProgress: weightedProgress ? weightedProgress : 0,
+        period: ''+this.commonService.DateFormatter(f.startDate) +' to '+ this.commonService.DateFormatter(f.endDate)+'',
+        payment: 'Mastercard',
+        activity: '10 sec ago',
+        avatar: './assets/img/avatars/1.jpg',
+        status: f.status,
+        color: 'success',
+      };
+      this.locationListProgress.push(obj)
+    });
+  }
+
  
   ngOnInit() {
-    //this.onSubmit();
+    debugger;
+    // this.onSubmit1();
   }
 
   reloadCurrentRoute() {
@@ -216,25 +377,36 @@ export class DashboardComponent implements OnInit {
     return diffDays;
   }
 
+  sampl : any =[];
+  sampl1 : any =[];
   onSubmit() {
     this.reportDataListFinancial = [];
     const chartLabl = [];
     this.dataEntryDataList = [];
     this.reportDataListPhysical = [];
 
-    this.reportService.getDataEntriesModulesInLocation().subscribe(
-      (result) => {
+    this.reportService.getDataEntriesModulesInLocation().subscribe((result) => {
         if (result != null) {
+          
           if (result) {
-            this.modulesInLocationResponse = result[0];
-            this.dataEntryModelResponce = result[1];
-            this.moduleInLocationList = this.modulesInLocationResponse.data;
+     
+            this.moduleInLocationList = result.data;
             this.dataEntryDataList = this.dataEntryModelResponce.data;
-            this.locationList.forEach((loc) => {
-              const moduleInLoc = this.moduleInLocationList.filter(
-                (f) => f.location._id === loc._id
-              );
 
+
+
+            // 1-March-2024 My code
+            this.sampl = this.moduleInLocationList;
+            this.sampl = this.sampl.features;
+            
+            this.sampl.forEach((s) => { 
+              this.sampl1.push(s.properties)
+            });
+            debugger;
+            
+            this.locationList.forEach((loc) => {
+              const moduleInLoc = this.sampl1.filter((f) => f.location._id === loc._id)
+            
               const tc = [];
               const cc = [];
               const moduleObjArr = [];
@@ -361,10 +533,13 @@ export class DashboardComponent implements OnInit {
               };
               this.reportDataListFinancial.push(objArrFinancial);
             });
-          } else {
+            
+          }
+           else {
             alert('No Data Found');
           }
-        } else {
+        } 
+        else {
           Swal.fire({
             title: 'Seesion Expired',
             text: 'Login Again to Continue',
@@ -372,7 +547,7 @@ export class DashboardComponent implements OnInit {
             confirmButtonText: 'Ok',
           }).then((result) => {
             if (result.value) {
-              debugger;
+              
               this.logOut();
             }
           });
@@ -383,10 +558,10 @@ export class DashboardComponent implements OnInit {
       }
     );
 
-    this.reportService.getDataEntriesModulesInLocation().subscribe(
-      (result) => {
+    this.reportService.getDataEntriesModulesInLocation().subscribe((result) => {
         if (result != null) {
           if (result) {
+            
             this.modulesInLocationResponse = result[0];
             this.dataEntryModelResponce = result[1];
             this.moduleInLocationList = this.modulesInLocationResponse.data;
@@ -464,11 +639,12 @@ export class DashboardComponent implements OnInit {
                 };
                 moduleObjArr.push(objArr);
               });
-
+              
               moduleObjArr.sort(compare_qty);
 
               this.reportDataListPhysical.push(moduleObjArr[0]);
             });
+            
           } else {
             alert('No Data Found');
           }
@@ -480,7 +656,7 @@ export class DashboardComponent implements OnInit {
             confirmButtonText: 'Ok',
           }).then((result) => {
             if (result.value) {
-              debugger;
+              
               this.logOut();
             }
           });
@@ -491,6 +667,8 @@ export class DashboardComponent implements OnInit {
       }
     );
   }
+
+
 
   logOut() {
     this.router.navigate(['/login/']);

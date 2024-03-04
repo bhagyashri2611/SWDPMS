@@ -60,6 +60,7 @@ export class ReportService {
     }
     return dates;
   };
+
   // getMonthsBetweenDates = (startDate, endDate, scale) => {
   //   let dates = [];
   //   //to avoid modifying the original date
@@ -90,6 +91,7 @@ export class ReportService {
   // dateFormate1 = (date) => {
   //   return this.datePipe.transform(new Date(date), 'MM-dd-yyyy');
   // };
+  
   getSumOfTime = (timeArr) => {
     const conctTime = timeArr; //.reduce((a, b) => a.concat(b), []);  //durations.concat(durations);
     const totalDurations = conctTime
@@ -101,6 +103,7 @@ export class ReportService {
     //console.log(`Total time is: ${Math.floor(totalDurations.asHours())}:${totalDurations.minutes()}`)
     return totalDurations.asHours();
   };
+
   PDFHeader = {
     table: {
       widths: [100, '*', 100],
@@ -138,6 +141,7 @@ export class ReportService {
       ],
     },
   };
+
   buildTableBody(data, columns) {
     var body = [];
     body.push(columns);
@@ -155,9 +159,9 @@ export class ReportService {
   getDataEntrySearchParams(DataEntryModel) {
     this.content.next(DataEntryModel);
   }
+
   getDataEntries(): Observable<IDataEntryModelResponce> {
-    return this._httpClient
-      .get<IDataEntryModelResponce>(this.baseURL)
+    return this._httpClient.get<IDataEntryModelResponce>(this.baseURL)
       .pipe(catchError(this.handleError));
   }
   getReportData(data: any): Observable<IDataEntryModelResponce> {

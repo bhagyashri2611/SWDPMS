@@ -46,6 +46,21 @@ export class LocationService {
       })
     );
   }
+
+  getAllModulInLocationForDashboard(): Observable<IModulesInLocationResponse> {
+    // return this._httpClient.get<IModulesInLocationResponse>(this.baseURL + 'getlocationmodule')
+    //   .pipe(catchError(this.handleError));
+
+    return this._httpClient.get<IModulesInLocationResponse>(this.baseURL + 'getallmodulesinlocation', this.options).pipe(
+      catchError((error: HttpErrorResponse) => {
+        debugger;
+        if (error.status === 204 && error.error.message === 'jwt expired') {
+          console.log('JWT token expired');
+        }
+        return throwError(error);
+      })
+    );
+  }
   //Get All Locations
   getUrls(): Observable<ILocationResponse> {
     return this._httpClient

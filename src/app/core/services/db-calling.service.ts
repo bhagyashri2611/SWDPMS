@@ -5,7 +5,7 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 import { catchError } from 'rxjs/operators';
 import { LoginModel } from '../models/loginModel';
 import { LoadingService, LoadingOverlayRef } from './loading.service';
@@ -14,7 +14,7 @@ import { LoadingService, LoadingOverlayRef } from './loading.service';
 })
 export class DbCallingService {
   // apiURL = "https://swm.mcgm.gov.in/mumbaiairapi/service.svc";
-  apiURL = "http://localhost:1027/service.svc"
+  apiURL = environment.smsUrl
   loginModel: LoginModel;
 
   constructor(
@@ -390,6 +390,7 @@ export class DbCallingService {
       )
       .pipe(catchError(this.handleError));
   }
+  
   addNallaCleaningData(data) {
     return this.httpClient
       .post<any>(

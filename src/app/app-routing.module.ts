@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { DefaultLayoutComponent } from './containers/default-layout/default-layout.component';
 import { AuthGuard } from './core/auth/auth.guard';
 import { LoginComponent } from './modules/login/login/login.component';
+import { UserloginComponent } from './modules/login/userlogin/userlogin.component';
 
 const routes: Routes = [
   {

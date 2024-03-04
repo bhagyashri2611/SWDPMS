@@ -76,6 +76,10 @@ export class UserlistComponent implements OnInit {
 
       { headerName: 'Email Id', field: 'email' },
       {
+        headerName: 'Is DataEntry',
+        field: 'isDataEntry',       
+      },
+      {
         headerName: 'Is Active',
         field: 'isActive',
         valueFormatter: function (params) {

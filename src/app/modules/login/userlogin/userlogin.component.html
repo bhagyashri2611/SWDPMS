@@ -1,0 +1,25 @@
+<div class="login-page">
+    <div class="form" [formGroup]="loginForm" >
+      <div class="login">
+        <div class="login-header">
+          <h4><b>MUMBAI AIR</b></h4>
+          <hr/>
+          <h4> LOGIN</h4>
+          <hr/>
+          <p>Please enter your credentials to login.</p>
+        </div>
+      </div>
+      <form class="login-form" [formGroup]="loginForm">
+        <input type="text" formControlName="username" id="username" name="username" placeholder="Enter mobile no." minlength="10" maxlength="10"/>
+         <div *ngIf="f['username'].errors && f['username'].errors['minlength']">Mobile no should be 10 digit.</div>
+        <button (click)="loginClick()">Generate OTP</button>
+        <span *ngIf=""></span>
+        <br/>
+        <div *ngIf="otpRes===1">
+        <input type="password" formControlName="password" id="password" name="password" placeholder="Enter OTP"/>
+        <button (click)="ValidateUser()">Validate OTP</button>
+      </div>
+        <h5 class="message">For Admin Login? <a href="/mumbaiair/#/login/">Click Here</a></h5>
+      </form>
+    </div>
+  </div>

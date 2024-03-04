@@ -16,7 +16,6 @@ export class DefaultLayoutComponent implements OnInit {
     this.userRole = sessionStorage.getItem('UserRole');
     this.isDataEntry = sessionStorage.getItem('isDataEntry');
 
-    debugger;
     if (this.userRole != 'Data Owner') {
       if (this.isDataEntry == 'Yes') {
         this.navItems = OtherThanAdminWithDataEntry;
