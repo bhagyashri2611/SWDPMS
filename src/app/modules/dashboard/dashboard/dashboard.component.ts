@@ -1,8 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { DbCallingService } from 'src/app/core/services/db-calling.service';
-import { ProgressModel } from 'src/app/core/models/IProgressModel';
-import { TransactModel } from 'src/app/core/models/ITransactModel';
 import * as moment from 'moment';
 import Swal from 'sweetalert2';
 import { CustomVFS } from 'src/app/core/services/pdfmakefonts';
@@ -27,16 +24,21 @@ import { AssetInstanceListModel } from 'src/app/core/models/IAssetInstance';
 import { LocationService } from 'src/app/core/services/location.service';
 import { ReportService } from '../../../core/services/report.service';
 import { CommonService } from 'src/app/core/services/common.service';
+import { AgGridAngular } from 'ag-grid-angular';
+import { BtnCellRenderer } from './button-cell-renderer.component';
+import { WeightedCellRendererComponent } from './weighted-cell-renderer.component';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
+  @ViewChild('agGrid', { static: false }) agGrid: AgGridAngular;
+
   locationList: LocationModel[];
-  
+
   userRole: String;
-  locationListProgress: any[]=[];
+  locationListProgress: any[] = [];
   moduleInLocationList: ModulesInLocationModel[] = [];
   dataEntryList: DataEntryModel[];
   dataEntryDataList: DataEntryModel[] = [];
@@ -61,27 +63,44 @@ export class DashboardComponent implements OnInit {
   onHoldRoads: any;
 
   totalRoadsLength: any = 0;
-  completedRoadsLength: any= 0;
-  notStartedRoadsLength: any= 0;
-  delayedRoadsLength: any= 0;
-  inProgressRoadsLength: any= 0;
-  onHoldRoadsLength: any= 0;
+  completedRoadsLength: any = 0;
+  notStartedRoadsLength: any = 0;
+  delayedRoadsLength: any = 0;
+  inProgressRoadsLength: any = 0;
+  onHoldRoadsLength: any = 0;
+
+  gridApi;
+  gridColumnApi;
+  sortingOrder;
+  rowSelection;
+  columnDefs;
+  frameworkComponents;
+  context;
+  defaultColDef;
+  selectedRows;
+  selected;
+  rowData: any = [];
+  gridOption;
+
+  Data = {};
+
+  gridOptions = {
+    headerHeight: 45,
+    rowHeight: 40,
+    onRowClicked: this.onRowClicked.bind(this),
+  };
 
   constructor(
     private router: Router,
     public iconSet: IconSetService,
     private locationService: LocationService,
     private reportService: ReportService,
-    private commonService:CommonService
+    private commonService: CommonService
   ) {
-
-   
-    debugger;
     this.userRole = sessionStorage.getItem('UserRole');
-
     if (this.userRole === 'Data Owner') {
-      this.locationService.getLocations().subscribe((result) => {
-          
+      this.locationService.getLocations().subscribe(
+        (result) => {
           if (result != null) {
             if (result.status === 200) {
               this.totalRoadsLength = 0;
@@ -89,88 +108,90 @@ export class DashboardComponent implements OnInit {
               this.locationList = this.locationList.sort((a, b) =>
                 String(a.locationName).localeCompare(String(b.locationName))
               );
-              
               this.totalRoads = this.locationList.length;
-
-              this.locationList.forEach((loc) => {
-                this.totalRoadsLength = this.totalRoadsLength + loc.length;
-              });
-
-              this.locationList.forEach((loc) => {
-                this.totalRoadsLength = this.totalRoadsLength + loc.length;
-              });
-
+              this.totalRoadsLength = this.locationList.reduce(
+                (acc, obj) => acc + obj.length,
+                0
+              );
               this.inProgressRoads = this.locationList.filter(
                 (f) => f.status === 'In Progress'
               ).length;
-              this.locationList.forEach((loc) => {
-                if(loc.status === 'In Progress'){
-                  this.inProgressRoadsLength = this.inProgressRoadsLength + loc.length;
-                }
-              });
 
+              const startedRoads = this.locationList.filter(
+                (f) => f.status === 'In Progress'
+              );
+
+              const labels = startedRoads.map(
+                (location) => location.locationName
+              );
+              const dataSets = startedRoads.map((location) => location.length);
+
+              this.Data = {
+                labels: labels,
+                options: {
+                  title: {
+                    display: true,
+                    text: 'Roads Details Chart',
+                  },
+                },
+
+                datasets: [
+                  {
+                    label: 'Total Roads - ' + this.inProgressRoads,
+                    backgroundColor: '#f87979',
+                    data: dataSets,
+                  },
+                ],
+              };
+
+              this.inProgressRoadsLength = this.locationList
+                .filter((f) => f.status === 'In Progress')
+                .reduce((acc, obj) => acc + obj.length, 0);
 
               this.completedRoads = this.locationList.filter(
                 (f) => f.status === 'Completed'
               ).length;
-              this.locationList.forEach((loc) => {
-                if(loc.status === 'Completed'){
-                  this.completedRoadsLength = this.completedRoadsLength + loc.length;
-                }
-              });
-
+              this.completedRoadsLength = this.locationList
+                .filter((f) => f.status === 'Completed')
+                .reduce((acc, obj) => acc + obj.length, 0);
 
               this.notStartedRoads = this.locationList.filter(
                 (f) => f.status === 'Not Started'
               ).length;
-              this.locationList.forEach((loc) => {
-                if(loc.status === 'Not Started'){
-                  this.notStartedRoadsLength = this.notStartedRoadsLength + loc.length;
-                }
-              });
-
+              this.notStartedRoadsLength = this.locationList
+                .filter((f) => f.status === 'Not Started')
+                .reduce((acc, obj) => acc + obj.length, 0);
 
               this.delayedRoads = this.locationList.filter(
                 (f) => f.status === 'Delayed'
               ).length;
-              this.locationList.forEach((loc) => {
-                if(loc.status === 'Delayed'){
-                  this.delayedRoadsLength = this.delayedRoadsLength + loc.length;
-                }
-              });
+              this.delayedRoadsLength = this.locationList
+                .filter((f) => f.status === 'Delayed')
+                .reduce((acc, obj) => acc + obj.length, 0);
 
               this.onHoldRoads = this.locationList.filter(
                 (f) => f.status === 'On Hold'
               ).length;
-              this.locationList.forEach((loc) => {
-                if(loc.status === 'On Hold'){
-                  this.onHoldRoadsLength = this.completedRoadsLength + loc.length;
-                }
-              });
-
-              if(this.locationList.length >0) {
-                this.locationService.getAllModulInLocationForDashboard().subscribe((result) => {
-                  debugger;
-                  if (result != null) { 
-                    if (result) { 
-                      debugger;
-                        this.moduleInLocationList = result.data;   
-                        if(this.moduleInLocationList.length > 0){
+              this.onHoldRoadsLength = this.locationList
+                .filter((f) => f.status === 'On Hold')
+                .reduce((acc, obj) => acc + obj.length, 0);
+              if (this.locationList.length > 0) {
+                this.locationService
+                  .getAllModulInLocationForDashboard()
+                  .subscribe((result) => {
+                    if (result != null) {
+                      if (result) {
+                        this.moduleInLocationList = result.data;
+                        if (this.moduleInLocationList.length > 0) {
                           this.getLocationTable();
-                        }        
+                        }
+                      } else {
+                        alert('No Data Found');
+                      }
+                    } else {
                     }
-                    else { alert('No Data Found'); }
-            
-                  }
-                  else { }
-                });
+                  });
               }
-              
-
-              
-
-
-             
             }
           } else {
             Swal.fire({
@@ -180,7 +201,6 @@ export class DashboardComponent implements OnInit {
               confirmButtonText: 'Ok',
             }).then((result) => {
               if (result.value) {
-                
                 this.logOut();
               }
             });
@@ -197,85 +217,72 @@ export class DashboardComponent implements OnInit {
       this.locationService.getLocationByUser().subscribe(
         (result) => {
           this.totalRoadsLength = 0;
-          
           if (result != null) {
             if (result.status === 200) {
               this.locationList = result.data;
               this.locationList = this.locationList.sort((a, b) =>
                 String(a.locationName).localeCompare(String(b.locationName))
               );
-              
               this.totalRoads = this.locationList.length;
-              this.locationList.forEach((loc) => {
-                debugger;
-                this.totalRoadsLength = this.totalRoadsLength + loc.length;
-              });
+
+              this.totalRoadsLength = this.locationList.reduce(
+                (acc, obj) => acc + obj.length,
+                0
+              );
 
               this.inProgressRoads = this.locationList.filter(
                 (f) => f.status === 'In Progress'
               ).length;
-              this.locationList.forEach((loc) => {
-                if(loc.status === 'In Progress'){
-                  this.inProgressRoadsLength = this.inProgressRoadsLength + loc.length;
-                }
-              });
 
+              this.inProgressRoadsLength = this.locationList
+                .filter((f) => f.status === 'In Progress')
+                .reduce((acc, obj) => acc + obj.length, 0);
 
               this.completedRoads = this.locationList.filter(
                 (f) => f.status === 'Completed'
               ).length;
-              this.locationList.forEach((loc) => {
-                if(loc.status === 'Completed'){
-                  this.completedRoadsLength = this.completedRoadsLength + loc.length;
-                }
-              });
-
+              this.completedRoadsLength = this.locationList
+                .filter((f) => f.status === 'Completed')
+                .reduce((acc, obj) => acc + obj.length, 0);
 
               this.notStartedRoads = this.locationList.filter(
                 (f) => f.status === 'Not Started'
               ).length;
-              this.locationList.forEach((loc) => {
-                if(loc.status === 'Not Started'){
-                  this.notStartedRoadsLength = this.notStartedRoadsLength + loc.length;
-                }
-              });
-
+              this.notStartedRoadsLength = this.locationList
+                .filter((f) => f.status === 'Not Started')
+                .reduce((acc, obj) => acc + obj.length, 0);
 
               this.delayedRoads = this.locationList.filter(
                 (f) => f.status === 'Delayed'
               ).length;
-              this.locationList.forEach((loc) => {
-                if(loc.status === 'Delayed'){
-                  this.delayedRoadsLength = this.delayedRoadsLength + loc.length;
-                }
-              });
+              this.delayedRoadsLength = this.locationList
+                .filter((f) => f.status === 'Delayed')
+                .reduce((acc, obj) => acc + obj.length, 0);
 
               this.onHoldRoads = this.locationList.filter(
                 (f) => f.status === 'On Hold'
               ).length;
-              this.locationList.forEach((loc) => {
-                if(loc.status === 'On Hold'){
-                  this.onHoldRoadsLength = this.completedRoadsLength + loc.length;
-                }
-              });
+              this.onHoldRoadsLength = this.locationList
+                .filter((f) => f.status === 'On Hold')
+                .reduce((acc, obj) => acc + obj.length, 0);
 
-              if(this.locationList.length >0) {
-                this.locationService.getAllModulInLocationForDashboard().subscribe((result) => {
-                  debugger;
-                  if (result != null) { 
-                    if (result) { 
-                      debugger;
-                        this.moduleInLocationList = result.data;   
-                        if(this.moduleInLocationList.length > 0){
+              if (this.locationList.length > 0) {
+                this.locationService
+                  .getAllModulInLocationForDashboard()
+                  .subscribe((result) => {
+                    if (result != null) {
+                      if (result) {
+                        this.moduleInLocationList = result.data;
+                        if (this.moduleInLocationList.length > 0) {
                           this.getLocationTable();
-                        }        
+                        }
+                      } else {
+                        alert('No Data Found');
+                      }
+                    } else {
                     }
-                    else { alert('No Data Found'); }
-            
-                  }
-                  else { }
-                });
-              }              
+                  });
+              }
             }
           } else {
             Swal.fire({
@@ -285,7 +292,6 @@ export class DashboardComponent implements OnInit {
               confirmButtonText: 'Ok',
             }).then((result) => {
               if (result.value) {
-                
                 this.logOut();
               }
             });
@@ -299,68 +305,179 @@ export class DashboardComponent implements OnInit {
         }
       );
     }
-
     iconSet.icons = { ...freeSet, ...brandSet, ...flagSet };
   }
 
-  mil: any[]= [];
-  getLocationTable(){
-    debugger;
-
-    this.locationList.forEach((f) => {
-      debugger;
-      this.mil  = this.moduleInLocationList.filter(lm=>{
-        if(lm.location!=null)
-        {
-          return String(lm?.location?._id) === String(f._id)
-          debugger;
-        }else
-        return false;
-        debugger;
-      });
-      debugger;
-      let pqc= this.mil.filter(mil=>{
-        return mil.module.moduleName==='Completion of Crust (PQC)'
-      })
-      let exc= this.mil.filter(mil=>{
-        return mil.module.moduleName==='Excavation'
-      })
-      let duct= this.mil.filter(mil=>{
-        return mil.module.moduleName==='Laying of Duct'
-      })
-      let swd= this.mil.filter(mil=>{
-        return mil.module.moduleName==='SWD Work'
-      })
-
-      let weightedProgress =  Number(
-      (((pqc[0].cumulativeQuantity/f.length)*100 ) * 0.3) +
-      (((exc[0].cumulativeQuantity/f.length)*100 ) * 0.2 ) +
-      (((duct[0].cumulativeQuantity/f.length)*100 ) * 0.2 ) +
-      (((swd[0].cumulativeQuantity/f.length)*100 ) * 0.3 )
-      ).toFixed(2);
-
-
-      let obj = {
-        name: f.locationName,
-        state: 'New',
-        registered: 'Jan 1, 2021',
-        length: f.length,
-        usage:Number ( (pqc[0].cumulativeQuantity/f.length)*100 ).toFixed(2),
-        weightedProgress: weightedProgress ? weightedProgress : 0,
-        period: ''+this.commonService.DateFormatter(f.startDate) +' to '+ this.commonService.DateFormatter(f.endDate)+'',
-        payment: 'Mastercard',
-        activity: '10 sec ago',
-        avatar: './assets/img/avatars/1.jpg',
-        status: f.status,
-        color: 'success',
-      };
-      this.locationListProgress.push(obj)
-    });
+  OnGridReady(params) {
+    this.gridApi = params.api;
+    this.gridColumnApi = params.columnApi;
+    this.defaultColDef = params.defaultColDef;
+    this.context = params.context;
   }
 
- 
+  onQuickFilterChanged() {
+    let val = (<HTMLInputElement>document.getElementById('quickFilter')).value;
+    this.agGrid.api.setQuickFilter(val);
+  }
+
+  mil: any[] = [];
+  getLocationTable() {
+    this.locationList.forEach((f) => {
+      this.mil = this.moduleInLocationList.filter((lm) => {
+        if (lm.location != null) {
+          return String(lm?.location?._id) === String(f._id);
+        } else return false;
+      });
+      let pqc = this.mil.filter((mil) => {
+        return mil.module.moduleName === 'Completion of Crust (PQC)';
+      });
+      let exc = this.mil.filter((mil) => {
+        return mil.module.moduleName === 'Excavation';
+      });
+      let duct = this.mil.filter((mil) => {
+        return mil.module.moduleName === 'Laying of Duct';
+      });
+      let swd = this.mil.filter((mil) => {
+        return mil.module.moduleName === 'SWD Work';
+      });
+
+      let weightedProgress = Number(
+        (pqc[0].cumulativeQuantity / f.length) * 100 * 0.3 +
+          (exc[0].cumulativeQuantity / f.length) * 100 * 0.2 +
+          (duct[0].cumulativeQuantity / f.length) * 100 * 0.2 +
+          (swd[0].cumulativeQuantity / f.length) * 100 * 0.3
+      ).toFixed(2);
+      let obj = {
+        name: f.locationName,
+        ward: f.wardName.wardName,
+        zone: f.wardName.Zone,
+        workCode:f.workCode,
+        length: f.length,
+        usage: Number((pqc[0].cumulativeQuantity / f.length) * 100).toFixed(2),
+        weightedProgress: weightedProgress ? weightedProgress : 0,
+        period:
+          '' +
+          this.commonService.DateFormatter(f.startDate) +
+          ' to ' +
+          this.commonService.DateFormatter(f.endDate) +
+          '',
+        // payment: 'Mastercard',
+        // activity: '10 sec ago',
+        // avatar: './assets/img/avatars/1.jpg',
+        status: f.status,
+        color: 'success',
+        _id: f._id,
+      };
+      this.locationListProgress.push(obj);
+    });
+    this.rowData = this.locationListProgress;
+    console.log(this.rowData);
+  }
+
+  onRowClicked(params: any) {
+    // Access the data for the clicked row
+    const rowData = params.data;
+    console.log('Row Clicked - Road Name:', rowData.name);
+
+    this.router.navigate(['location/addmoduledetails/' + params.data._id]);
+    window.scrollTo(0, 0);
+  }
+
+  download() {
+    let fileName =
+      'Location Wise Task Details Report' +
+      moment(new Date()).format('DDMMYYYY') +
+      '.xlsx';
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.locationList);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+    XLSX.writeFile(wb, fileName);
+  }
+
   ngOnInit() {
-    debugger;
+    this.columnDefs = [
+      {
+        headerName: '#',
+        minWidth: 10,
+        valueGetter: 'node.rowIndex + 1',
+        headerClass: 'custom-ag-header',
+      },
+      {
+        headerName: 'Work Code',
+        field: 'workCode',
+        minWidth: 100,
+        headerClass: 'custom-ag-header',
+      },
+      {
+        headerName: 'Roads',
+        field: 'name',
+        minWidth: 200,
+        headerClass: 'custom-ag-header',
+      },
+      {
+        headerName: 'Ward',
+        field: 'ward',
+        minWidth: 60,
+        headerClass: 'custom-ag-header',
+      },
+      {
+        headerName: 'Zone',
+        field: 'zone',
+        minWidth: 110,
+        headerClass: 'custom-ag-header',
+      },
+      {
+        headerName: 'Status',
+        field: 'status',
+        minWidth: 100,
+        headerClass: 'custom-ag-header',
+      },
+      {
+        headerName: 'Length(m)',
+        field: 'length',
+        minWidth: 80,
+        headerClass: 'custom-ag-header',
+      },
+      {
+        headerName: 'Progress',
+        field: 'usage',
+        minWidth: 190,
+        cellRenderer: 'btnCellRenderer',
+        headerClass: 'custom-ag-header',
+      },
+      {
+        headerName: 'Weighted Progress',
+        field: 'weightedProgress',
+        minWidth: 190,
+        cellRenderer: 'weightedCellRenderer',
+        headerClass: 'custom-ag-header',
+      },
+    ];
+    this.rowSelection = 'multiple';
+    this.frameworkComponents = {
+      btnCellRenderer: BtnCellRenderer,
+      weightedCellRenderer: WeightedCellRendererComponent,
+    };
+    this.context = { componentParent: this };
+
+    this.defaultColDef = {
+      sortable: true,
+      flex: 1,
+      minwidth: 15,
+      cellStyle: {
+        fontSize: '14px',
+      },
+
+      filter: true,
+      resizable: true,
+      wrapText: true,
+      autoHeight: true,
+      sortingOrder: ['asc', 'desc'],
+      enableRowSelection: true,
+      enableFullRowSelection: true,
+      enableHighlighting: true,
+      enableCellTextSelection: true,
+    };
     // this.onSubmit1();
   }
 
@@ -377,36 +494,34 @@ export class DashboardComponent implements OnInit {
     return diffDays;
   }
 
-  sampl : any =[];
-  sampl1 : any =[];
+  sampl: any = [];
+  sampl1: any = [];
   onSubmit() {
     this.reportDataListFinancial = [];
     const chartLabl = [];
     this.dataEntryDataList = [];
     this.reportDataListPhysical = [];
 
-    this.reportService.getDataEntriesModulesInLocation().subscribe((result) => {
+    this.reportService.getDataEntriesModulesInLocation().subscribe(
+      (result) => {
         if (result != null) {
-          
           if (result) {
-     
             this.moduleInLocationList = result.data;
             this.dataEntryDataList = this.dataEntryModelResponce.data;
-
-
 
             // 1-March-2024 My code
             this.sampl = this.moduleInLocationList;
             this.sampl = this.sampl.features;
-            
-            this.sampl.forEach((s) => { 
-              this.sampl1.push(s.properties)
+
+            this.sampl.forEach((s) => {
+              this.sampl1.push(s.properties);
             });
-            debugger;
-            
+
             this.locationList.forEach((loc) => {
-              const moduleInLoc = this.sampl1.filter((f) => f.location._id === loc._id)
-            
+              const moduleInLoc = this.sampl1.filter(
+                (f) => f.location._id === loc._id
+              );
+
               const tc = [];
               const cc = [];
               const moduleObjArr = [];
@@ -533,13 +648,10 @@ export class DashboardComponent implements OnInit {
               };
               this.reportDataListFinancial.push(objArrFinancial);
             });
-            
-          }
-           else {
+          } else {
             alert('No Data Found');
           }
-        } 
-        else {
+        } else {
           Swal.fire({
             title: 'Seesion Expired',
             text: 'Login Again to Continue',
@@ -547,7 +659,6 @@ export class DashboardComponent implements OnInit {
             confirmButtonText: 'Ok',
           }).then((result) => {
             if (result.value) {
-              
               this.logOut();
             }
           });
@@ -558,10 +669,10 @@ export class DashboardComponent implements OnInit {
       }
     );
 
-    this.reportService.getDataEntriesModulesInLocation().subscribe((result) => {
+    this.reportService.getDataEntriesModulesInLocation().subscribe(
+      (result) => {
         if (result != null) {
           if (result) {
-            
             this.modulesInLocationResponse = result[0];
             this.dataEntryModelResponce = result[1];
             this.moduleInLocationList = this.modulesInLocationResponse.data;
@@ -639,12 +750,11 @@ export class DashboardComponent implements OnInit {
                 };
                 moduleObjArr.push(objArr);
               });
-              
+
               moduleObjArr.sort(compare_qty);
 
               this.reportDataListPhysical.push(moduleObjArr[0]);
             });
-            
           } else {
             alert('No Data Found');
           }
@@ -656,7 +766,6 @@ export class DashboardComponent implements OnInit {
             confirmButtonText: 'Ok',
           }).then((result) => {
             if (result.value) {
-              
               this.logOut();
             }
           });
@@ -668,7 +777,10 @@ export class DashboardComponent implements OnInit {
     );
   }
 
-
+  roadClick(id: string) {
+    console.log('road clicked', id);
+    this.router.navigate(['/location/addmoduledetails/' + id]);
+  }
 
   logOut() {
     this.router.navigate(['/login/']);

@@ -3,6 +3,7 @@ export interface wardModel{
     wardID:  number,
     wardName: String,
     zoneName:String, 
+    Zone:String,
     createdOn:Date,
     createdBy: String,
     modifiedOn:Date,

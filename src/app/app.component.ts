@@ -10,7 +10,7 @@ import { brandSet, flagSet, freeSet } from '@coreui/icons';
   template: '<router-outlet></router-outlet>',
 })
 export class AppComponent implements OnInit {
-  title = 'Roads Monitoring System';
+  title = 'Road Works Monitoring System';
 
   constructor(
     private router: Router,

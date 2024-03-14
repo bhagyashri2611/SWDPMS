@@ -105,4 +105,13 @@ export class DataentryService {
     this.searchExistingData(data),
     this.getCumulativeData(data)]);
   }
+
+  getDataEntryByUser(data: any): Observable<any> {
+    return this._httpClient.post<IDataEntryModelResponce>(this.baseURL + "searchDataByUser/", JSON.stringify(data), {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    })
+      .pipe(catchError(this.handleError));
+  }
 }

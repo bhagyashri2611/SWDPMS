@@ -1,5 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { IconModule } from '@coreui/icons-angular';
+import { AgGridModule } from 'ag-grid-angular';
+
 import {
   AccordionModule,
   BadgeModule,
@@ -30,9 +33,15 @@ import { FormsModule } from '@angular/forms';
 import { WidgetsModule } from '../../views/widgets/widgets.module';
 import { BaseModule } from '../../views/base/base.module';
 import { NgChartsModule } from 'ng2-charts';
-import {DashboardWidgetsModule} from '../../CustomViews/dashboard-widgets/dashboard-widgets.module'
+import { BtnCellRenderer } from './dashboard/button-cell-renderer.component';
+import { WeightedCellRendererComponent } from './dashboard/weighted-cell-renderer.component';
+import { DashboardWidgetsModule } from '../../CustomViews/dashboard-widgets/dashboard-widgets.module';
 @NgModule({
-  declarations: [DashboardComponent],
+  declarations: [
+    DashboardComponent,
+    BtnCellRenderer,
+    WeightedCellRendererComponent,
+  ],
   imports: [
     CommonModule,
     NgChartsModule,
@@ -65,7 +74,9 @@ import {DashboardWidgetsModule} from '../../CustomViews/dashboard-widgets/dashbo
     TableModule,
     TabsModule,
     TooltipModule,
+    AgGridModule,
     UtilitiesModule,
+    IconModule,
   ],
 })
 export class DashboardModule {}

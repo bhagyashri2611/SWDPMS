@@ -16,7 +16,8 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit{
   public newTasks = new Array(5)
   public newNotifications = new Array(5)
   public FullName=sessionStorage.getItem("FullName");
-  public firstName=sessionStorage.getItem("firstName")
+  public firstName=sessionStorage.getItem("firstName");
+  public userRole=sessionStorage.getItem("UserRole");
   constructor(private classToggler: ClassToggleService,private router:Router) {
     
     super();

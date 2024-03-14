@@ -10,7 +10,8 @@ import { CommonService } from 'src/app/core/services/common.service';
 import { LocationService } from 'src/app/core/services/location.service';
 import { BtnCellRenderer } from './button-cell-renderer.component';
 import Swal from 'sweetalert2';
-
+import * as moment from 'moment';
+import * as XLSX from 'xlsx';
 @Component({
   selector: 'app-locationlist',
   templateUrl: './locationlist.component.html',
@@ -60,13 +61,31 @@ export class LocationlistComponent implements OnInit {
         cellRenderer: 'btnCellRenderer',
         minWidth: 180,
       },
+      {
+        headerName: 'Status',
+        field: 'status',
+        cellEditor: 'agSelectCellEditor',
+        cellEditorParams: {
+          values: ['In Progress', 'Not Started', 'Completed', 'On Hold'],
+        },
+        editable: true,
+        cellStyle: this.getCellStyle.bind(this),
+       
+      },
+      {
+        headerName: 'Remarks',
+        field: 'remarks',
+        minWidth: 200,
+        editable: true,
+        cellStyle: { border: '1px dashed black' },
+        cellEditor: 'agTextCellEditor',
+      },
       { headerName: '_id', field: '_id', hide: true },
-      //  { headerName: 'locationID', field: 'locationID' },
-      { headerName: 'Ward Name', field: 'wardName.wardName'},
+      { headerName: 'Ward Name', field: 'wardName.wardName' },
       { headerName: 'Zone Name', field: 'zoneName' },
       { headerName: 'Work Code', field: 'workCode' },
       {
-        headerName: 'Location Name',
+        headerName: 'Road Name',
         field: 'locationName',
         minWidth: 150,
         // headerCheckboxSelection: true,
@@ -75,61 +94,77 @@ export class LocationlistComponent implements OnInit {
       },
       { headerName: 'Length (m)', field: 'length' },
       { headerName: 'Width (m)', field: 'width' },
-      { headerName: 'Contractor Name', field: 'contractorName', minWidth: 180  },
-      { headerName: 'Status', field: 'status',  cellStyle: this.getCellStyle.bind(this) },      
-      { headerName: 'Start Date', field: 'startDate',valueGetter: (params) => {
-        return this.commonService.DateFormatter(params.data.startDate);
-      }, },
-      { headerName: 'End Date', field: 'endDate',valueGetter: (params) => {
-        return this.commonService.DateFormatter(params.data.endDate);
-      }, },
+      { headerName: 'Contractor Name', field: 'contractorName', minWidth: 180 },
       {
-        headerName: 'Q1 End Date',
-        field: 'quater1EndDate',
+        headerName: 'Start Date',
+        field: 'startDate',
         valueGetter: (params) => {
-          return this.commonService.DateFormatter(params.data.quater1EndDate);
+          return this.commonService.DateFormatter(params.data.startDate);
         },
       },
       {
-        headerName: 'Q2 End Date',
-        field: 'quater2EndDate',
+        headerName: 'End Date',
+        field: 'endDate',
         valueGetter: (params) => {
-          return this.commonService.DateFormatter(params.data.quater2EndDate);
+          return this.commonService.DateFormatter(params.data.endDate);
         },
       },
-      {
-        headerName: 'Q3 End Date',
-        field: 'quater3EndDate',
-        valueGetter: (params) => {
-          return this.commonService.DateFormatter(params.data.quater3EndDate);
-        },
-      },
-      {
-        headerName: 'Q4 End Date',
-        field: 'quater4EndDate',
-        valueGetter: (params) => {
-          return this.commonService.DateFormatter(params.data.quater4EndDate);
-        },
-      },
-      {
-        headerName: 'Q5 End Date',
-        field: 'quater5EndDate',
-        valueGetter: (params) => {
-          return this.commonService.DateFormatter(params.data.quater5EndDate);
-        },
-      },
-      { headerName: 'Remarks', field: 'description',minWidth:200 },
+      // {
+      //   headerName: 'Q1 End Date',
+      //   field: 'quater1EndDate',
+      //   valueGetter: (params) => {
+      //     return this.commonService.DateFormatter(params.data.quater1EndDate);
+      //   },
+      // },
+      // {
+      //   headerName: 'Q2 End Date',
+      //   field: 'quater2EndDate',
+      //   valueGetter: (params) => {
+      //     return this.commonService.DateFormatter(params.data.quater2EndDate);
+      //   },
+      // },
+      // {
+      //   headerName: 'Q3 End Date',
+      //   field: 'quater3EndDate',
+      //   valueGetter: (params) => {
+      //     return this.commonService.DateFormatter(params.data.quater3EndDate);
+      //   },
+      // },
+      // {
+      //   headerName: 'Q4 End Date',
+      //   field: 'quater4EndDate',
+      //   valueGetter: (params) => {
+      //     return this.commonService.DateFormatter(params.data.quater4EndDate);
+      //   },
+      // },
+      // {
+      //   headerName: 'Q5 End Date',
+      //   field: 'quater5EndDate',
+      //   valueGetter: (params) => {
+      //     return this.commonService.DateFormatter(params.data.quater5EndDate);
+      //   },
+      // },
 
       // { headerName: 'Is Automated', field: 'isAutomated', valueGetter: this.commonService.isAutomatedValueGetter },
       // { headerName: 'Is Active', field: 'isActive',valueGetter:  this.commonService.isActiveValueGetter },
       {
         headerName: 'Created On',
         field: 'createdOn',
-        valueGetter: this.commonService.createdOnDateFormatter,
+        valueGetter: (params) => {
+          return this.commonService.DateFormatter(params.data.createdOn);
+        },
       },
       { headerName: 'Created By', field: 'createdBy' },
+      {
+        headerName: 'Modified On',
+        field: 'modifiedOn',
+        valueGetter: (params) => {
+          return this.commonService.DateFormatter(params.data.modifiedOn);
+        },
+      },
+      { headerName: 'Modified By', field: 'modifiedBy' },
     ];
-    debugger
+    debugger;
     this.rowSelection = 'multiple';
     this.frameworkComponents = {
       btnCellRenderer: BtnCellRenderer,
@@ -154,37 +189,36 @@ export class LocationlistComponent implements OnInit {
   ngAfterViewInit() {
     this.selectAllAmerican();
   }
-  userRole=sessionStorage.getItem("UserRole")
+  userRole = sessionStorage.getItem('UserRole');
 
   getLocation() {
+    if (this.userRole === 'Data Owner') {
+      this.locationService.getLocations().subscribe(
+        (result) => {
+          debugger;
+          if (result != null) {
+            if (result.status === 200) {
+              this.locationList = result.data;
+              this.locationList = this.locationList.sort((a, b) =>
+                String(a.locationName).localeCompare(String(b.locationName))
+              );
 
-    if(this.userRole==='Data Owner')
-    {
-      this.locationService.getLocations().subscribe((result) => {
-        debugger;
-        if(result != null) {
-          if (result.status === 200) {
-            this.locationList = result.data;
-            this.locationList=this.locationList.sort((a, b) => (String(a.locationName)).localeCompare(String(b.locationName)));
-
-            debugger;
-            this.rowData = this.locationList;
-          }
-        }
-        else {
-          Swal.fire({
-            title: 'Seesion Expired',
-            text: 'Login Again to Continue',
-            icon: 'warning',
-            confirmButtonText: 'Ok',
-          }).then((result) => {
-            if (result.value) {
               debugger;
-              this.logOut();
+              this.rowData = this.locationList;
             }
-          });
-        }
-          
+          } else {
+            Swal.fire({
+              title: 'Seesion Expired',
+              text: 'Login Again to Continue',
+              icon: 'warning',
+              confirmButtonText: 'Ok',
+            }).then((result) => {
+              if (result.value) {
+                debugger;
+                this.logOut();
+              }
+            });
+          }
         },
         (err) => {
           Swal.fire({
@@ -193,32 +227,33 @@ export class LocationlistComponent implements OnInit {
           });
         }
       );
-    }else {
-      this.locationService.getLocationByUser().subscribe((result) => {
-        debugger;
-        if(result != null) {
-          if (result.status === 200) {
-            this.locationList = result.data;
-            this.locationList=this.locationList.sort((a, b) => (String(a.locationName)).localeCompare(String(b.locationName)));
+    } else {
+      this.locationService.getLocationByUser().subscribe(
+        (result) => {
+          debugger;
+          if (result != null) {
+            if (result.status === 200) {
+              this.locationList = result.data;
+              this.locationList = this.locationList.sort((a, b) =>
+                String(a.locationName).localeCompare(String(b.locationName))
+              );
 
-            debugger;
-            this.rowData = this.locationList;
-          }
-        }
-        else {
-          Swal.fire({
-            title: 'Seesion Expired',
-            text: 'Login Again to Continue',
-            icon: 'warning',
-            confirmButtonText: 'Ok',
-          }).then((result) => {
-            if (result.value) {
               debugger;
-              this.logOut();
+              this.rowData = this.locationList;
             }
-          });
-        }
-         
+          } else {
+            Swal.fire({
+              title: 'Seesion Expired',
+              text: 'Login Again to Continue',
+              icon: 'warning',
+              confirmButtonText: 'Ok',
+            }).then((result) => {
+              if (result.value) {
+                debugger;
+                this.logOut();
+              }
+            });
+          }
         },
         (err) => {
           Swal.fire({
@@ -228,11 +263,10 @@ export class LocationlistComponent implements OnInit {
         }
       );
     }
-   
   }
 
-  logOut(){
-    this.router.navigate(["/login/"]);
+  logOut() {
+    this.router.navigate(['/login/']);
     sessionStorage.clear();
     window.location.reload();
   }
@@ -263,22 +297,17 @@ export class LocationlistComponent implements OnInit {
   }
   getCellStyle(params: any) {
     // Check if a row should have a specific color based on some condition
-    if (params.data.status == "Started") {
-      return { background: '#D5F5E3', color: 'black' };
-    } 
-    else if (params.data.status == "Not Started") {
-      return { background: '#FADBD8', color: 'black' };
-    } 
-    else if (params.data.status == "On Hold") { 
-      return { background: '#F8D6B3', color: 'black' };
-    } 
-    else if (params.data.status == "Delayed") {
-      return { background: '#FCF3CF', color: 'black' };
-    } 
-    else if (params.data.status == "Complted") {
-      return { background: '#D6EAF8', color: 'black' };
-    }
-    else {
+    if (params.data.status == 'In Progress') {
+      return { background: '#D6EAF8', color: 'black', border: '1px dashed black'};
+    } else if (params.data.status == 'Not Started') {
+      return { background: '#FADBD8', color: 'black',border: '1px dashed black' };
+    } else if (params.data.status == 'On Hold') {
+      return { background: '#F8D6B3', color: 'black',border: '1px dashed black' };
+    } else if (params.data.status == 'Delayed') {
+      return { background: '#FCF3CF', color: 'black',border: '1px dashed black' };
+    } else if (params.data.status == 'Completed') {
+      return { background: '#D5F5E3', color: 'black',border: '1px dashed black' };
+    } else {
     }
     return null;
   }
@@ -294,5 +323,18 @@ export class LocationlistComponent implements OnInit {
   }
   Add() {
     this.router.navigate(['location/create']);
+  }
+  statusOptions = ['In Progress', 'Completed', 'On Hold'];
+
+  download() {
+    let fileName =
+      'Location Wise Task Details Report' +
+      moment(new Date()).format('DDMMYYYY') +
+      '.xlsx';
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.rowData);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+    XLSX.writeFile(wb, fileName);
+    debugger;
   }
 }

@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 
 import { DashboardWidgetsRoutingModule } from './dashboard-widgets-routing.module';
 import { NumberWidgetComponent } from './number-widget/number-widget.component';
+import { FilterComponent } from './filter/filter.component';
 
 import { ReactiveFormsModule } from '@angular/forms';
-
 import {
   AvatarModule,
   ButtonGroupModule,
@@ -20,9 +20,21 @@ import {
 } from '@coreui/angular';
 import { IconModule } from '@coreui/icons-angular';
 import { ChartjsModule } from '@coreui/angular-chartjs';
+import { FilterButtonComponent } from './filter-button/filter-button.component';
+import { InfoWidgetComponent } from './info-widget/info-widget.component';
+
+import { ProgressBarComponent } from './progress-bar/progress-bar.component';
+import { BarChartWidgetComponent } from './bar-chart-widget/bar-chart-widget.component';
 
 @NgModule({
-  declarations: [NumberWidgetComponent],
+  declarations: [
+    ProgressBarComponent,
+    BarChartWidgetComponent,
+    NumberWidgetComponent,
+    FilterComponent,
+    FilterButtonComponent,
+    InfoWidgetComponent,
+  ],
   imports: [
     CommonModule,
     DashboardWidgetsRoutingModule,
@@ -38,7 +50,8 @@ import { ChartjsModule } from '@coreui/angular-chartjs';
     TabsModule,
     IconModule,
     ChartjsModule,
+    ReactiveFormsModule,
   ],
-  exports: [NumberWidgetComponent],
+  exports: [NumberWidgetComponent, FilterButtonComponent,InfoWidgetComponent,ProgressBarComponent,BarChartWidgetComponent],
 })
 export class DashboardWidgetsModule {}

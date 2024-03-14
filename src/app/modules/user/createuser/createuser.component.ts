@@ -21,13 +21,13 @@ export class CreateuserComponent implements OnInit {
   form: FormGroup;
   idforEdit: string;
   roleList: roleModel[];
-  userRole:String;
+  userRole: String;
   constructor(
     private _fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private userService: UserService,
-    private roleService: RoleService,
+    private roleService: RoleService
   ) {
     this.roleService.getRoles().subscribe(
       (result) => {
@@ -66,60 +66,58 @@ export class CreateuserComponent implements OnInit {
       ward: ['', Validators.required],
       isDataEntry: [''],
     });
-    this.userRole=sessionStorage.getItem('UserRole')
+    this.userRole = sessionStorage.getItem('UserRole');
     this.route.paramMap.subscribe((params) => {
       let id = params.get('id');
       if (id) {
         this.pageTitle = 'Edit User';
-        
-        debugger;
-        this.userService.getUserById(id).subscribe((result) => {
-          if(result != null) {
-            if (result.status === 200) {
-              this.userModel = result.data[0];
-              console.log(this.userModel);
-              this.idforEdit = id;
 
-              var selectedWardNames: any = [];
-              this.userModel.wards.forEach(w =>{
-                selectedWardNames.push(w[0].wardName)
-              });
-              
-              this.form.patchValue({
-                firstName: this.userModel.firstName,
-                lastName: this.userModel.lastName,
-                userName: this.userModel.userName,
-                email: this.userModel.email,
-                mobileNo: this.userModel.mobileNo,
-                password: this.userModel.password,
-                role: this.userModel.role._id,
-                // ward: this.userModel.wards.map((ward) => ward.wardName),
-                ward: selectedWardNames,
-                roleName: this.userModel.roleName,
-                isActive: this.userModel.isActive === true ? '1' : '0',
-                isDataEntry: this.userModel.isDataEntry,
-                createdBy: sessionStorage.getItem('FullName'),
-                createdOn: new Date(),
-                modifiedBy: sessionStorage.getItem('FullName'),
-                modifiedOn: new Date(),
+        debugger;
+        this.userService.getUserById(id).subscribe(
+          (result) => {
+            if (result != null) {
+              if (result.status === 200) {
+                this.userModel = result.data[0];
+                console.log(this.userModel);
+                this.idforEdit = id;
+
+                var selectedWardNames: any = [];
+                this.userModel.wards.forEach((w) => {
+                  selectedWardNames.push(w[0].wardName);
+                });
+
+                this.form.patchValue({
+                  firstName: this.userModel.firstName,
+                  lastName: this.userModel.lastName,
+                  userName: this.userModel.userName,
+                  email: this.userModel.email,
+                  mobileNo: this.userModel.mobileNo,
+                  password: this.userModel.password,
+                  role: this.userModel.role._id,
+                  // ward: this.userModel.wards.map((ward) => ward.wardName),
+                  ward: selectedWardNames,
+                  roleName: this.userModel.roleName,
+                  isActive: this.userModel.isActive === true ? '1' : '0',
+                  isDataEntry: this.userModel.isDataEntry,
+                  createdBy: sessionStorage.getItem('FullName'),
+                  createdOn: new Date(),
+                  modifiedBy: sessionStorage.getItem('FullName'),
+                  modifiedOn: new Date(),
+                });
+              }
+            } else {
+              Swal.fire({
+                title: 'Seesion Expired',
+                text: 'Login Again to Continue',
+                icon: 'warning',
+                confirmButtonText: 'Ok',
+              }).then((result) => {
+                if (result.value) {
+                  debugger;
+                  this.logOut();
+                }
               });
             }
-          }
-          else {
-            Swal.fire({
-              title: 'Seesion Expired',
-              text: 'Login Again to Continue',
-              icon: 'warning',
-              confirmButtonText: 'Ok',
-            }).then((result) => {
-              if (result.value) {
-                debugger;
-                this.logOut();
-              }
-            });
-  
-          }
-          
           },
           (err) => {
             // this.notificationService.warn(':: ' + err);
@@ -168,39 +166,38 @@ export class CreateuserComponent implements OnInit {
           isActive: Boolean(this.form.value.isActive),
           locations: [],
           wards: resultDatta,
-          roleName: (document.getElementById('role') as HTMLSelectElement).selectedOptions[0].innerText,
+          roleName: (document.getElementById('role') as HTMLSelectElement)
+            .selectedOptions[0].innerText,
           isDataEntry: this.form.value.isDataEntry,
           createdBy: sessionStorage.getItem('FullName'),
           createdOn: new Date(),
           modifiedBy: sessionStorage.getItem('FullName'),
           modifiedOn: new Date(),
         };
-        this.userService.updateUser(this.idforEdit, this.userModel).subscribe((result) => {
-          if(result != null) {
-            if (result.status === 201) {
-              // this.notificationService.success(':: ' + result.message);
+        this.userService.updateUser(this.idforEdit, this.userModel).subscribe(
+          (result) => {
+            if (result != null) {
+              if (result.status === 201) {
+                // this.notificationService.success(':: ' + result.message);
+                Swal.fire({
+                  text: 'User Updated',
+                  icon: 'success',
+                });
+                this.router.navigate(['user/list']);
+              }
+            } else {
               Swal.fire({
-                text: 'User Updated',
-                icon: 'success',
+                title: 'Seesion Expired',
+                text: 'Login Again to Continue',
+                icon: 'warning',
+                confirmButtonText: 'Ok',
+              }).then((result) => {
+                if (result.value) {
+                  debugger;
+                  this.logOut();
+                }
               });
-              this.router.navigate(['user/list']);
             }
-          }
-          else {
-            Swal.fire({
-              title: 'Seesion Expired',
-              text: 'Login Again to Continue',
-              icon: 'warning',
-              confirmButtonText: 'Ok',
-            }).then((result) => {
-              if (result.value) {
-                debugger;
-                this.logOut();
-              }
-            });
-  
-          }
-            
           },
           (err) => {
             // this.notificationService.warn(':: ' + err);
@@ -303,6 +300,7 @@ export class CreateuserComponent implements OnInit {
             password: this.data[i][5],
             role: role[0]._id,
             isActive: this.data[i][8],
+            isDataEntry: this.data[i][9],
             locations: [],
             wards: resultDatta,
             roleName: this.data[i][6],
@@ -314,7 +312,7 @@ export class CreateuserComponent implements OnInit {
 
           console.log('attr1', attr1);
           debugger;
-          
+
           this.addUser(attr1);
 
           debugger;
@@ -325,31 +323,31 @@ export class CreateuserComponent implements OnInit {
 
   addUser(userModel1) {
     debugger;
-    this.userService.AddUser(userModel1).subscribe((result) => {
-      if(result != null){
-        if (result.status === 201) {
-          this.router.navigate(['user/list']);
+    this.userService.AddUser(userModel1).subscribe(
+      (result) => {
+        if (result != null) {
+          if (result.status === 201) {
+            this.router.navigate(['user/list']);
+          }
+        } else {
+          Swal.fire({
+            title: 'Seesion Expired',
+            text: 'Login Again to Continue',
+            icon: 'warning',
+            confirmButtonText: 'Ok',
+          }).then((result) => {
+            if (result.value) {
+              debugger;
+              this.logOut();
+            }
+          });
         }
-      }
-      else {
-        Swal.fire({
-          title: 'Seesion Expired',
-          text: 'Login Again to Continue',
-          icon: 'warning',
-          confirmButtonText: 'Ok',
-        }).then((result) => {
-          if (result.value) {
-            debugger;
-            this.logOut();
-          }
-          });
-      } 
       },
-      (err) => {  }
+      (err) => {}
     );
   }
-  logOut(){
-    this.router.navigate(["/login/"]);
+  logOut() {
+    this.router.navigate(['/login/']);
     sessionStorage.clear();
     window.location.reload();
   }

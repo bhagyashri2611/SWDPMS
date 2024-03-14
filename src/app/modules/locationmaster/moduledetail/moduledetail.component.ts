@@ -212,7 +212,7 @@ export class ModuledetailComponent {
       },
       { headerName: '_id', field: '_id', hide: true },
       {
-        headerName: 'Project Name',
+        headerName: 'Road Name',
         minWidth: 120,
         field: 'location.locationName',
         sortable: true,
@@ -306,91 +306,90 @@ export class ModuledetailComponent {
         },
         valueParser: this.numberValueParser.bind(this),
       },
-      {
-        headerName: 'Quater II Target',
-        minWidth: 150,
-        flex: 1,
+      // {
+      //   headerName: 'Quater II Target',
+      //   minWidth: 150,
+      //   flex: 1,
 
-        filter: true,
-        resizable: true,
-        wrapText: true,
-        autoHeight: true,
-        field: 'quantityQuarter2',
-        cellStyle: (params) => {
-          if (this.userRole === 'Data Owner') {
-            return { border: '1px dashed black' };
-          }
-          return {};
-        },
-        editable: (params) => {
-          return this.userRole === 'Data Owner';
-        },
-        valueParser: this.numberValueParser.bind(this),
-      },
+      //   filter: true,
+      //   resizable: true,
+      //   wrapText: true,
+      //   autoHeight: true,
+      //   field: 'quantityQuarter2',
+      //   cellStyle: (params) => {
+      //     if (this.userRole === 'Data Owner') {
+      //       return { border: '1px dashed black' };
+      //     }
+      //     return {};
+      //   },
+      //   editable: (params) => {
+      //     return this.userRole === 'Data Owner';
+      //   },
+      //   valueParser: this.numberValueParser.bind(this),
+      // },
+      // {
+      //   headerName: 'Quater III Target',
+      //   minWidth: 150,
+      //   flex: 1,
 
-      {
-        headerName: 'Quater III Target',
-        minWidth: 150,
-        flex: 1,
+      //   filter: true,
+      //   resizable: true,
+      //   wrapText: true,
+      //   autoHeight: true,
+      //   field: 'quantityQuarter3',
+      //   cellStyle: (params) => {
+      //     if (this.userRole === 'Data Owner') {
+      //       return { border: '1px dashed black' };
+      //     }
+      //     return {};
+      //   },
+      //   editable: (params) => {
+      //     return this.userRole === 'Data Owner';
+      //   },
+      //   valueParser: this.numberValueParser.bind(this),
+      // },
+      // {
+      //   headerName: 'Quater IV Target',
+      //   minWidth: 150,
+      //   flex: 1,
 
-        filter: true,
-        resizable: true,
-        wrapText: true,
-        autoHeight: true,
-        field: 'quantityQuarter3',
-        cellStyle: (params) => {
-          if (this.userRole === 'Data Owner') {
-            return { border: '1px dashed black' };
-          }
-          return {};
-        },
-        editable: (params) => {
-          return this.userRole === 'Data Owner';
-        },
-        valueParser: this.numberValueParser.bind(this),
-      },
-      {
-        headerName: 'Quater IV Target',
-        minWidth: 150,
-        flex: 1,
+      //   filter: true,
+      //   resizable: true,
+      //   wrapText: true,
+      //   autoHeight: true,
+      //   field: 'quantityQuarter4',
+      //   cellStyle: (params) => {
+      //     if (this.userRole === 'Data Owner') {
+      //       return { border: '1px dashed black' };
+      //     }
+      //     return {};
+      //   },
+      //   editable: (params) => {
+      //     return this.userRole === 'Data Owner';
+      //   },
+      //   valueParser: this.numberValueParser.bind(this),
+      // },
+      // {
+      //   headerName: 'Quater V Target',
+      //   minWidth: 150,
+      //   flex: 1,
 
-        filter: true,
-        resizable: true,
-        wrapText: true,
-        autoHeight: true,
-        field: 'quantityQuarter4',
-        cellStyle: (params) => {
-          if (this.userRole === 'Data Owner') {
-            return { border: '1px dashed black' };
-          }
-          return {};
-        },
-        editable: (params) => {
-          return this.userRole === 'Data Owner';
-        },
-        valueParser: this.numberValueParser.bind(this),
-      },
-      {
-        headerName: 'Quater V Target',
-        minWidth: 150,
-        flex: 1,
-
-        filter: true,
-        resizable: true,
-        wrapText: true,
-        autoHeight: true,
-        field: 'quantityQuarter5',
-        cellStyle: (params) => {
-          if (this.userRole === 'Data Owner') {
-            return { border: '1px dashed black' };
-          }
-          return {};
-        },
-        editable: (params) => {
-          return this.userRole === 'Data Owner';
-        },
-        valueParser: this.numberValueParser.bind(this),
-      },
+      //   filter: true,
+      //   resizable: true,
+      //   wrapText: true,
+      //   autoHeight: true,
+      //   field: 'quantityQuarter5',
+      //   cellStyle: (params) => {
+      //     if (this.userRole === 'Data Owner') {
+      //       return { border: '1px dashed black' };
+      //     }
+      //     return {};
+      //   },
+      //   editable: (params) => {
+      //     return this.userRole === 'Data Owner';
+      //   },
+      //   valueParser: this.numberValueParser.bind(this),
+      // },
       {
         headerName: 'Rate',
         field: 'rateofwork',

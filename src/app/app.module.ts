@@ -71,6 +71,8 @@ import { UnitMasterModule } from '../app/modules/unit-master/unit-master.module'
 import { PandmattributeModule } from './modules/pandmattribute/pandmattribute.module';
 import { DataentryModule } from './modules/dataentry/dataentry.module';
 import { DashboardWidgetsModule } from './CustomViews/dashboard-widgets/dashboard-widgets.module';
+import { RWMSReportsModule } from './modules/rwmsreports/rwmsreports.module';
+
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
 };
@@ -132,6 +134,7 @@ const APP_CONTAINERS = [
     UnitMasterModule,
     PandmattributeModule,
     DashboardWidgetsModule,
+    RWMSReportsModule,
     FormlyModule.forRoot({
       extras: { lazyRender: true },
       wrappers: [

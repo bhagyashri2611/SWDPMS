@@ -7,6 +7,8 @@ import { AgGridAngular } from 'ag-grid-angular';
 import { BtnCellRenderer } from './button-cell-renderer.component';
 import { RoleService } from 'src/app/core/services/role.service';
 import Swal from 'sweetalert2';
+import * as moment from 'moment';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-userlist',
@@ -49,7 +51,6 @@ export class UserlistComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    
     this.columnDefs = [
       {
         headerName: 'Action',
@@ -77,7 +78,7 @@ export class UserlistComponent implements OnInit {
       { headerName: 'Email Id', field: 'email' },
       {
         headerName: 'Is DataEntry',
-        field: 'isDataEntry',       
+        field: 'isDataEntry',
       },
       {
         headerName: 'Is Active',
@@ -101,7 +102,6 @@ export class UserlistComponent implements OnInit {
         field: 'createdBy',
       },
     ];
-    debugger;
     this.rowSelection = 'multiple';
     this.frameworkComponents = {
       btnCellRenderer: BtnCellRenderer,
@@ -118,53 +118,55 @@ export class UserlistComponent implements OnInit {
     };
   }
   roleList: any;
+
+  download() {
+    let fileName =
+      'UserList' + moment(new Date()).format('DDMMYYYY') + '.xlsx';
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.rowData);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+    XLSX.writeFile(wb, fileName);
+    debugger;
+  }
+
   getRoles() {
     this.roleService.getRoles().subscribe((result) => {
       if (result.status === 200) {
-        console.log(result.data[0]);
-        debugger;
-       this.roleList = result.data;
-       this.getUsers();
+        this.roleList = result.data;
+        this.getUsers();
       }
     });
   }
 
   getUsers() {
-    console.log('calling  User List');
-    this.userService.getUsers().subscribe((result) => {
-      debugger;
-      if(result != null ) {
-        if (result.status === 200) {
-          this.userList = result.data;
-          debugger;
-          
-          this.userList.forEach(element => {
-            this.roleList.forEach(e => {
-              if(e._id == element.role) {
-                element.roleName = e.roleName
-              }
-            })
-          });
+    this.userService.getUsers().subscribe(
+      (result) => {
+        if (result != null) {
+          if (result.status === 200) {
+            this.userList = result.data;
 
-          debugger;
-          this.rowData = this.userList;
-        }
-      }
-
-      else {
-        Swal.fire({
-          title: 'Seesion Expired',
-          text: 'Login Again to Continue',
-          icon: 'warning',
-          confirmButtonText: 'Ok',
-        }).then((result) => {
-          if (result.value) {
+            this.userList.forEach((element) => {
+              this.roleList.forEach((e) => {
+                if (e._id == element.role) {
+                  element.roleName = e.roleName;
+                }
+              });
+            });
             debugger;
-            this.logOut();
+            this.rowData = this.userList;
           }
-        });
-      }
-        
+        } else {
+          Swal.fire({
+            title: 'Seesion Expired',
+            text: 'Login Again to Continue',
+            icon: 'warning',
+            confirmButtonText: 'Ok',
+          }).then((result) => {
+            if (result.value) {
+              this.logOut();
+            }
+          });
+        }
       },
       (err) => {
         // this.notificationService.warn(':: ' + err);
@@ -172,11 +174,10 @@ export class UserlistComponent implements OnInit {
     );
   }
 
-  logOut(){
-    this.router.navigate(["/login/"]); 
+  logOut() {
+    this.router.navigate(['/login/']);
     sessionStorage.clear();
     window.location.reload();
-    
   }
 
   OnGridReady(params) {
@@ -193,16 +194,7 @@ export class UserlistComponent implements OnInit {
   methodFromParent(cell) {
     alert('Parent Component Method from ' + cell.id + '!');
   }
-  // setRowData(params) {
-  //   params.api.forEachNode(function (node) {
-  //     if (
-  //       node.data._id === '5f5fb46efe0da740ae7c0e49' ||
-  //       node.data._id === '5f5f62c48d7da32bbc05dca2'
-  //     ) {
-  //       node.setSelected(true);
-  //     }
-  //   });
-  // }
+
   ngAfterViewInit() {
     this.selectAllAmerican();
   }

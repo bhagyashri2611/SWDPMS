@@ -55,7 +55,7 @@ export class CreatelocationComponent {
     private pAndmAttributeService: PandmattributeService,
     private pandmattributegroupService: PandmattributegroupService
   ) {
-    debugger;
+    
     this.locationService.getWards().subscribe(
       (result) => {
         if (result.status === 200) {
@@ -127,7 +127,7 @@ export class CreatelocationComponent {
                 ),
                 endDate: moment(result.data[0].endDate).format('yyyy-MM-DD'),
                 wardName: result.data[0].wardName._id,
-                zoneName: result.data[0].wardName.zoneName,
+                zoneName: result.data[0].wardName.Zone,
                 coordinates: result.data[0].coordinates,
                 status: result.data[0].status,
                 roadType:result.data[0].roadType,
@@ -146,7 +146,7 @@ export class CreatelocationComponent {
               confirmButtonText: 'Ok',
             }).then((result) => {
               if (result.value) {
-                debugger;
+                
                 this.logOut();
               }
             });
@@ -165,7 +165,7 @@ export class CreatelocationComponent {
     const ward = this.wardList.filter(
       (m) => m._id === (event.target as HTMLInputElement).value
     );
-    let zoneName = ward[0].zoneName;
+    let zoneName = ward[0].Zone;
     console.log(zoneName);
     this.form.patchValue({
       zoneName: zoneName,
@@ -289,8 +289,8 @@ export class CreatelocationComponent {
         modifiedOn: new Date(),
         modifiedBy: sessionStorage.getItem('FullName'),
       };
-      console.log(this.objLocation);
-      debugger;
+
+
 
       this.locationService.updateLocation(this.locID, this.objLocation).subscribe((result) => {
         if(result != null){
@@ -410,9 +410,9 @@ export class CreatelocationComponent {
       let j = i + 1;
       
       if (this.data[i].length) {
-        debugger;
+        
         if (this.data[i][0] != '') {
-          debugger;
+          
 
           var startutc_days = Math.floor(this.data[i][11] - 25569);
           var startutc_value = startutc_days * 86400;
@@ -434,7 +434,7 @@ export class CreatelocationComponent {
           var endDate = moment(enddate1).format('YYYY-MM-DD');
           var ward: any = this.wardList.filter(w => w.wardName === this.data[i][2] );
           var unit: any = this.unitList.filter(u  => u.unitName === "meter" );
-            debugger;
+            
           let attr1 = {
             locationID: 0,
             workCode: this.data[i][0],
@@ -467,13 +467,13 @@ export class CreatelocationComponent {
             modifiedOn: new Date(),
             modifiedBy: sessionStorage.getItem('FullName'),
           };
-          debugger;
-          console.log('attr1', attr1);
+       
+     
           
-          debugger;
+        
           this.dataEntryModelUpload = { attributeValues: [attr1]  };
 
-          debugger;
+    
 
           this.addLocation(this.dataEntryModelUpload.attributeValues[0])
           
@@ -483,17 +483,17 @@ export class CreatelocationComponent {
   }
 
   addLocation(objLocation) {
-    debugger;
+    
     this.objLocation = objLocation;
     this.locationService.addLocation(this.objLocation).subscribe((result) => {
-      debugger;
+      
       if(result != null) {
         if (result.status === 201) {
           var loc: any = result.data;
           let locID = loc._id;
           if (locID) {
             if (this.moduleList.length > 0) {
-              debugger;
+              
               const data = {
                 location: locID,
                 module: this.moduleIdList,
@@ -504,17 +504,17 @@ export class CreatelocationComponent {
                 _id: '0',
                 isActive: 1,
               };
-              debugger;
+              
               this.locationService.addModulesInLocation(locID, data).subscribe((result) => {
-                    debugger;
+                    
                     if(result != null){
                       let objDefaulyM = {}
                       this.pandmAttr=[]
                       this.pandmAttrList.forEach((pm) => {
-                        debugger;
+                        
                         const kName = pm.displayLabel.replace(/[^a-zA-Z0-9 ]/g, '').replace(/\s/g, '').toLowerCase();
                         let obj = {   keyName: kName,  pandmAttribute: pm};
-                        debugger;
+                        
                         this.pandmAttr.push(obj);
                         objDefaulyM[kName] = ' ';
                       });
@@ -535,7 +535,7 @@ export class CreatelocationComponent {
                           modifiedOn: null,
                         };
                         this.pandmattributegroupService.addDataEntryGroup(objSaveModel).subscribe((result) => {
-                              debugger;
+                              
                               if (result.status === 201) {
                                 // this.notificationService.success(
                                 //   ':: ' + 'Location Created Successfully!'
@@ -556,7 +556,7 @@ export class CreatelocationComponent {
                         confirmButtonText: 'Ok',
                       }).then((result) => {
                         if (result.value) {
-                          debugger;
+                          
                           this.logOut();
                         }
                       });
@@ -592,7 +592,7 @@ export class CreatelocationComponent {
           confirmButtonText: 'Ok',
         }).then((result) => {
           if (result.value) {
-            debugger;
+            
             this.logOut();
           }
         });

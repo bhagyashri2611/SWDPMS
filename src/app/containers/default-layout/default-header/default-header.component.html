@@ -1,14 +1,22 @@
 <!--<c-header class="mb-4 d-print-none" position="sticky">-->
 <ng-container>
   <c-container [fluid]="true">
-    <button toggle="visible" cHeaderToggler [cSidebarToggle]="sidebarId" class="ps-1">
+    <button
+      toggle="visible"
+      cHeaderToggler
+      [cSidebarToggle]="sidebarId"
+      class="ps-1"
+    >
       <svg cIcon name="cilMenu" size="lg"></svg>
     </button>
 
     <c-header-nav class="d-none d-lg-flex me-auto">
       <c-nav-item>
-        <a cNavLink routerLink="/dashboard" routerLinkActive="active" style=" font-size: 28px!important;font-family: Barlow,sans-serif;">Road Works
-          Monitoring System </a>
+        <h3>
+          <a cNavLink routerLink="/dashboard" routerLinkActive="active"
+            >Road Works Monitoring System
+          </a>
+        </h3>
       </c-nav-item>
     </c-header-nav>
 
@@ -32,7 +40,6 @@
     <c-header-nav class="ms-3">
       <ng-container *ngTemplateOutlet="userDropdown"></ng-container>
     </c-header-nav>
-
   </c-container>
   <!-- <c-header-divider></c-header-divider> -->
   <!-- <c-container [fluid]="true">
@@ -44,10 +51,16 @@
 <ng-template #userDropdown>
   <c-dropdown alignment="end" variant="nav-item">
     <button cButton color="" [caret]="false" cDropdownToggle class="py-0">
-      <c-avatar cTextColor="primary" shape="rounded-1" size="md" src="./assets/img/avatars/1.jpg" status="success">
+      <c-avatar
+        cTextColor="primary"
+        shape="rounded-1"
+        size="md"
+        src="./assets/img/avatars/1.jpg"
+        status="success"
+      >
       </c-avatar>
     </button>
-    {{FullName}}
+    {{ FullName }}
     <ul cDropdownMenu class="pt-0 pr-5 w-auto">
       <li>
         <h6 cDropdownHeader class="bg-light fw-semibold py-2">Account</h6>
@@ -125,7 +138,7 @@
       <li>
         <hr cDropdownDivider/>
       </li> -->
-      <li (click)="changePwd()">
+      <li *ngIf="userRole==='Data Owner'" (click)="changePwd()">
         <button type="button" cDropdownItem>
           <svg cIcon class="me-2" name="cilPen"></svg>
           Change Password

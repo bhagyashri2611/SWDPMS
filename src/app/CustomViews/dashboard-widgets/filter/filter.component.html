@@ -1,0 +1,213 @@
+<c-col xs="12">
+  <c-card class="mb-4">
+    <c-card-body>
+
+      <c-row class="mb-3">
+        <div class="col-md-2">
+          <h6>Filters</h6>
+        </div>
+      
+        <div class="col-md-10 d-flex align-items-center justify-content-end">
+          <!-- Reset Button -->
+          <c-input-group class="mb-3 me-3">
+            <span cInputGroupText>
+              <svg cIcon name="cilReload"></svg>
+            </span>
+            <button
+              type="button"
+              cButton 
+              size="sm"
+              class="me-1"
+              (click)="reset()"
+              color="secondary"
+            >
+              <i class="mdi mdi-plus-box"></i>Reset
+            </button>
+          </c-input-group>
+      
+
+          <c-input-group class="mb-3">
+            <span cInputGroupText>
+              <svg cIcon name="cilListFilter"></svg>
+            </span>
+            <button
+              type="button"
+              cButton
+              size="sm"
+              class="me-1"
+              color="primary"
+              (click)="filter()"
+            >
+              <i class="mdi mdi-plus-box"></i>Filter
+            </button>
+          </c-input-group>
+
+          <c-input-group class="mb-3 me-3">
+            <span cInputGroupText>
+              <svg cIcon name="cilPlus"></svg>
+            </span>
+            <button
+              type="button"
+              cButton
+              size="sm"
+              class="me-1"
+              (click)="submit()"
+              color="success"
+            >
+              <i class="mdi mdi-plus-box"></i>Submit
+            </button>
+          </c-input-group> 
+        </div>
+      </c-row>
+      
+      <hr />
+      <form
+        [formGroup]="form"
+        (ngSubmit)="filter()"
+        cForm
+        class="row g-3 needs-validation"
+      >
+        <!-- Zone -->
+        <div class="mb-3">
+          <label cLabel>Zone</label>
+          <select
+            formControlName="zone"
+            aria-label="select Zone"
+            cSelect
+            multiple
+            sizing="m"
+            
+          >
+            <option disabled>Select Zone</option>
+            <option *ngFor="let option of uniqueZoneNames" [value]="option">
+              {{ option }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Contractor -->
+        <div class="mb-3">
+          <label cLabel>Contractor</label>
+          <select
+            formControlName="contractor"
+            aria-label="Select Contractor"
+            cSelect
+            multiple
+            sizing="m"
+          >
+            <option disabled>Select Contractor</option>
+            <option
+              *ngFor="let option of uniqueContractorNames"
+              [value]="option"
+            >
+              {{ option }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Ward -->
+        <div class="mb-3">
+          <label cLabel>Ward</label>
+          <select
+            formControlName="ward"
+            aria-label="Select Ward"
+            cSelect
+            multiple
+            sizing="m"
+          >
+            <option disabled>Select Ward</option>
+            <option *ngFor="let option of uniqueWardNames" [value]="option">
+              {{ option }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Road Status -->
+        <div class="mb-3">
+          <label cLabel>Road Status</label>
+          <select
+            formControlName="status"
+            aria-label="Select Ward"
+            cSelect
+            multiple
+            sizing="m"
+          >
+            <option disabled>Select Road Status</option>
+            <option *ngFor="let option of uniqueRoadStatus" [value]="option">
+              {{ option }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Road Names -->
+        <div class="mb-3">
+          <label cLabel>Road Names</label>
+          <select
+            formControlName="roadName"
+            aria-label="Select Ward"
+            cSelect
+            multiple
+            sizing="m"
+          >
+            <option disabled>Select Road Names</option>
+            <option *ngFor="let option of uniqueLocationNames" [value]="option">
+              {{ option }}
+            </option>
+          </select>
+        </div>
+      </form>
+
+      <c-row class="mb-3">
+
+        <div class="col-md-12 d-flex align-items-center justify-content-end">
+          <!-- Reset Button -->
+          <c-input-group class="mb-3 me-3">
+            <span cInputGroupText>
+              <svg cIcon name="cilReload"></svg>
+            </span>
+            <button
+              type="button"
+              cButton
+              class="me-1"
+              (click)="reset()"
+              color="secondary"
+            >
+              <i class="mdi mdi-plus-box"></i>Reset
+            </button>
+          </c-input-group>
+      
+
+          <c-input-group class="mb-3">
+            <span cInputGroupText>
+              <svg cIcon name="cilListFilter"></svg>
+            </span>
+            <button
+              type="button"
+              cButton
+              class="me-1"
+              color="primary"
+              (click)="filter()"
+            >
+              <i class="mdi mdi-plus-box"></i>Filter
+            </button>
+          </c-input-group>
+          <c-input-group class="mb-3 me-3">
+            <span cInputGroupText>
+              <svg cIcon name="cilPlus"></svg>
+            </span>
+            <button
+              type="button"
+              cButton
+              class="me-1"
+              (click)="submit()"
+              color="success"
+            >
+              <i class="mdi mdi-plus-box"></i>Submit
+            </button>
+          </c-input-group>          
+        </div>
+      </c-row>
+      
+    </c-card-body>
+  </c-card>
+</c-col>

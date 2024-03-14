@@ -150,6 +150,18 @@ export class UserService {
   }
 
   
+  loginOTP(user: any): Observable<IUserResponce> {
+    return this._httpClient
+      .post<IUserResponce>(this.baseURL1 +"loginOTP" , JSON.stringify(user), {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }),
+      })
+      .pipe(catchError(this.handleError));
+  }
+
+
+  
   getWards(): Observable<IwardResponce> {
     return this._httpClient.get<IwardResponce>(this.API_URL+"ward/")
       .pipe(catchError(this.handleError));

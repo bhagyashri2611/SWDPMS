@@ -13,7 +13,7 @@
                                 class="mdi mdi-plus-box"></i>Add User</button>
                     </c-input-group>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-3">
                     <c-input-group class="mb-3">
                         <input type="text" (input)="onQuickFilterChanged()" id="quickFilter"
                             placeholder="quick filter..." class="form-control" />
@@ -22,6 +22,22 @@
                         </span>
                     </c-input-group>
                 </div>
+                <div class="col-md-3" style="float: right;">
+                    <c-input-group class="float-end" class="mb-3">
+                      <span cInputGroupText>
+                        <svg cIcon name="cilCloudDownload"></svg>
+                      </span>
+                      <button
+                        type="button"
+                        cButton
+                        class="me-1"
+                        color="light"
+                        (click)="download()"
+                      >
+                        <i class="mdi mdi-plus-box"></i>Download
+                      </button>
+                    </c-input-group>
+                  </div>
             </c-row>
         </c-card-body>
 

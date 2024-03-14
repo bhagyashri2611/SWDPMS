@@ -12,6 +12,8 @@ import { DataentrypandattributegroupComponent } from '../pandmattribute/dataentr
 import { CreatedataentryComponent } from '../dataentry/createdataentry/createdataentry.component';
 import { GeneratedataentrypageComponent} from '../dataentry/generatedataentrypage/generatedataentrypage.component';
 import { NumberWidgetComponent} from '../../CustomViews/dashboard-widgets/number-widget/number-widget.component'
+import { TaskDetailsComponent} from '../rwmsreports/task-details/task-details.component'
+import { ContractorRemarksComponent } from '../rwmsreports/contractor-remarks/contractor-remarks.component';
 
 const routes: Routes = [
   { path: 'create', component: CreatelocationComponent },
@@ -29,9 +31,8 @@ const routes: Routes = [
   {path:"createdataentry",component:CreatedataentryComponent},
   {path:"screendataentry",component:GeneratedataentrypageComponent},     
   {path:"numberdWidget",component:NumberWidgetComponent}, 
-
-
-
+  {path:"report/taskdetailsreport",component:TaskDetailsComponent}, 
+  {path:"report/contractorremarksreport",component:ContractorRemarksComponent}, 
 ];
 
 @NgModule({

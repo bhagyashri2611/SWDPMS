@@ -5,7 +5,7 @@
       <hr style="margin-bottom: 20px" />
       <c-row class="mb-3">
         <div class="col-md-6">
-          <c-input-group *ngIf="userRole==='Data Owner'" class="mb-3">
+          <c-input-group *ngIf="userRole === 'Data Owner'" class="mb-3">
             <span cInputGroupText>
               <svg cIcon name="cilPlus"></svg>
             </span>
@@ -20,7 +20,7 @@
             </button>
           </c-input-group>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-3">
           <c-input-group class="mb-3">
             <input
               type="text"
@@ -32,6 +32,22 @@
             <span cInputGroupText>
               <svg cIcon name="cilSearch"></svg>
             </span>
+          </c-input-group>
+        </div>
+        <div class="col-md-3" style="float: right">
+          <c-input-group class="float-end" class="mb-3">
+            <span cInputGroupText>
+              <svg cIcon name="cilCloudDownload"></svg>
+            </span>
+            <button
+              type="button"
+              cButton
+              class="me-1"
+              color="light"
+              (click)="download()"
+            >
+              <i class="mdi mdi-plus-box"></i>Download
+            </button>
           </c-input-group>
         </div>
       </c-row>

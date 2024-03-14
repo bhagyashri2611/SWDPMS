@@ -6,11 +6,9 @@ export const navItems: INavData[] = [
     url: '/dashboard',
     iconComponent: { name: 'cil-speedometer' },
   },
-
   {
     name: 'Master Data',
     iconComponent: { name: 'cil-list-rich' },
-
     children: [
       {
         name: 'Roads',
@@ -34,17 +32,26 @@ export const navItems: INavData[] = [
       },
     ],
   },
-
+  {
+    name: 'Reports',
+    iconComponent: { name: 'cil-chart-pie' },
+    children: [
+      {
+        name: 'Date Wise Task Details',
+        url: '/location/report/taskdetailsreport',
+        iconComponent: { name: 'cil-chart-line' },
+      },
+      {
+        name: 'Contractor Remarks',
+        url: '/location/report/contractorremarksreport',
+        iconComponent: { name: 'cil-chart-line' },
+      },
+    ],
+  },
   {
     name: 'Data Entry Attributes',
     iconComponent: { name: 'cil-notes' },
-
     children: [
-      // {
-      //   name: 'P&M Attributes',
-      //   url: '/location/assetpandmattributelist',
-      //   iconComponent: { name: 'cil-chart-line' },
-      // },
       {
         name: 'Attributes List',
         url: '/location/dataentryassetpandmattributelist',
@@ -55,14 +62,11 @@ export const navItems: INavData[] = [
         url: '/location/dataentrygrouplist',
         iconComponent: { name: 'cil-pin' },
       },
-
     ],
   },
-
   {
     name: 'Data Entry',
     iconComponent: { name: 'cil-plus' },
-
     children: [
       {
         name: 'Data Entry',
@@ -71,7 +75,6 @@ export const navItems: INavData[] = [
       },
     ],
   },
-  
 ];
 
 export const OtherThanAdmin: INavData[] = [
@@ -84,15 +87,23 @@ export const OtherThanAdmin: INavData[] = [
     name: 'Roads',
     iconComponent: { name: 'cil-list-rich' },
     url: '/location/list',
-    // children: [
-    //   {
-    //     name: 'Roads',
-    //     url: '/location/list',
-    //     iconComponent: { name: 'cil-chart-line' },
-    //   },
-    // ],
   },
-  
+  {
+    name: 'Reports',
+    iconComponent: { name: 'cil-chart-pie' },
+    children: [
+      {
+        name: 'Date Wise Task Details',
+        url: '/location/report/taskdetailsreport',
+        iconComponent: { name: 'cil-chart-line' },
+      },
+      {
+        name: 'Contractor Remarks',
+        url: '/location/report/contractorremarksreport',
+        iconComponent: { name: 'cil-chart-line' },
+      },
+    ],
+  },
 ];
 
 export const OtherThanAdminWithDataEntry: INavData[] = [
@@ -105,18 +116,26 @@ export const OtherThanAdminWithDataEntry: INavData[] = [
     name: 'Roads',
     iconComponent: { name: 'cil-list-rich' },
     url: '/location/list',
-    // children: [
-    //   {
-    //     name: 'Roads',
-    //     url: '/location/list',
-    //     iconComponent: { name: 'cil-chart-line' },
-    //   },
-    // ],
+  },
+  {
+    name: 'Reports',
+    iconComponent: { name: 'cil-chart-pie' },
+    children: [
+      {
+        name: 'Date Wise Task Details',
+        url: '/location/report/taskdetailsreport',
+        iconComponent: { name: 'cil-chart-line' },
+      },
+      {
+        name: 'Contractor Remarks Report',
+        url: '/location/report/contractorremarksreport',
+        iconComponent: { name: 'cil-chart-line' },
+      },
+    ],
   },
   {
     name: 'Data Entry',
     iconComponent: { name: 'cil-plus' },
-
     children: [
       {
         name: 'Data Entry',
@@ -124,291 +143,5 @@ export const OtherThanAdminWithDataEntry: INavData[] = [
         iconComponent: { name: 'cil-plus' },
       },
     ],
-  },
-  
-];
-
-
-export const navAEEEMajorItems: INavData[] = [
-  {
-    name: 'Dashboard',
-    url: '/dashboard',
-    iconComponent: { name: 'cil-speedometer' },
-  },
-  {
-    name: 'Silt Quantity',
-    url: '/reports/slitqualitity',
-    iconComponent: { name: 'cil-description' },
-  },
-  {
-    name: 'Cumulative Major Nalla Report',
-    url: '/reports/CumulativeMajorNallahReport',
-    iconComponent: { name: 'cil-chart-line' },
-  },
-  // {
-  //   name: 'Cumulative Minor Nalla Report',
-  //   url: '/reports/CumulativeMinorNallahReport' ,
-  //   iconComponent: { name: 'cil-chart-line' },
-  // },
-
-  {
-    name: 'Workcode wise Report',
-    url: '/reports/WorkcodeWiseReport',
-    iconComponent: { name: 'cil-chart-line' },
-  },
-  {
-    name: 'Major Nalla Progress Report',
-    iconComponent: { name: 'cil-chart-line' },
-
-    children: [
-      {
-        name: 'Pre-Monsoon',
-        url: '/reports/MajorProgressPreMansoonReport',
-      },
-      {
-        name: 'During-Monsoon',
-        url: '/reports/MajorProgressDuringMansoonReport',
-      },
-    ],
-  },
-  // {
-  //   name: 'Minor Nalla Progress Report',
-  //   iconComponent: { name: 'cil-chart-line' },
-  //   children: [
-  //     {
-  //       name: 'Pre-Monsoon',
-  //       url: '/reports/MinorProgressPreMansoonReport'
-  //     },
-  //     {
-  //       name: 'During-Monsoon',
-  //       url: '/reports/MinorProgressDuringMansoonReport'
-  //     }
-  //   ]
-  // },
-  {
-    name: 'Billable Silt Report',
-    url: '/reports/BillableSiltReport',
-    iconComponent: { name: 'cil-description' },
-  },
-  {
-    name: 'Tripwise Silt Report',
-    url: '/reports/TripwiseSiltReport',
-    iconComponent: { name: 'cil-description' },
-  },
-  {
-    name: 'View Site Vehicle Image',
-    url: '/reports/ViewSiteVehicleImage',
-    iconComponent: { name: 'cil-description' },
-  },
-  {
-    name: 'View Nalla Loading Videos',
-    url: '/reports/ViewNallahLoadingVideos',
-    iconComponent: { name: 'cil-description' },
-  },
-
-  {
-    name: 'Loading Trip Search Report',
-    url: '/reports/loadingtrips',
-    iconComponent: { name: 'cil-description' },
-  },
-];
-export const navAEEEHighwayItems: INavData[] = [
-  {
-    name: 'Dashboard',
-    url: '/dashboard',
-    iconComponent: { name: 'cil-speedometer' },
-  },
-  // {
-  //   name: 'Silt Quantity',
-  //   url: '/reports/slitqualitity',
-  //   iconComponent: { name: 'cil-description' },
-  // },
-  {
-    name: 'Cumulative Major Nalla Report',
-    url: '/reports/CumulativeMajorNallahReport',
-    iconComponent: { name: 'cil-chart-line' },
-  },
-  // {
-  //   name: 'Cumulative Minor Nalla Report',
-  //   url: '/reports/CumulativeMinorNallahReport' ,
-  //   iconComponent: { name: 'cil-chart-line' },
-  // },
-
-  {
-    name: 'Workcode wise Report',
-    url: '/reports/WorkcodeWiseReport',
-    iconComponent: { name: 'cil-chart-line' },
-  },
-  {
-    name: 'Major Nalla Progress Report',
-    iconComponent: { name: 'cil-chart-line' },
-
-    children: [
-      {
-        name: 'Pre-Monsoon',
-        url: '/reports/MajorProgressPreMansoonReport',
-      },
-      {
-        name: 'During-Monsoon',
-        url: '/reports/MajorProgressDuringMansoonReport',
-      },
-    ],
-  },
-  // {
-  //   name: 'Minor Nalla Progress Report',
-  //   iconComponent: { name: 'cil-chart-line' },
-  //   children: [
-  //     {
-  //       name: 'Pre-Monsoon',
-  //       url: '/reports/MinorProgressPreMansoonReport'
-  //     },
-  //     {
-  //       name: 'During-Monsoon',
-  //       url: '/reports/MinorProgressDuringMansoonReport'
-  //     }
-  //   ]
-  // },
-  {
-    name: 'Billable Silt Report',
-    url: '/reports/BillableSiltReport',
-    iconComponent: { name: 'cil-description' },
-  },
-  {
-    name: 'Tripwise Silt Report',
-    url: '/reports/TripwiseSiltReport',
-    iconComponent: { name: 'cil-description' },
-  },
-  {
-    name: 'View Site Vehicle Image',
-    url: '/reports/ViewSiteVehicleImage',
-    iconComponent: { name: 'cil-description' },
-  },
-  {
-    name: 'View Nalla Loading Videos',
-    url: '/reports/ViewNallahLoadingVideos',
-    iconComponent: { name: 'cil-description' },
-  },
-
-  {
-    name: 'Loading Trip Search Report',
-    url: '/reports/loadingtrips',
-    iconComponent: { name: 'cil-description' },
-  },
-];
-export const navAEEEMinorItems: INavData[] = [
-  {
-    name: 'Dashboard',
-    url: '/dashboard',
-    iconComponent: { name: 'cil-speedometer' },
-  },
-  // {
-  //   name: 'Silt Quantity',
-  //   url: '/reports/slitqualitity',
-  //   iconComponent: { name: 'cil-description' },
-  // },
-  // {
-  //   name: 'Cumulative Major Nalla Report',
-  //   url: '/reports/CumulativeMajorNallahReport',
-  //   iconComponent: { name: 'cil-chart-line' },
-  // },
-  {
-    name: 'Cumulative Minor Nalla Report',
-    url: '/reports/CumulativeMinorNallahReport',
-    iconComponent: { name: 'cil-chart-line' },
-  },
-
-  // {
-  //   name: 'Workcode wise Report',
-  //   url: '/reports/WorkcodeWiseReport',
-  //   iconComponent: { name: 'cil-chart-line' },
-  // },
-  // {
-  //   name: 'Major Nalla Progress Report',
-  //   iconComponent: { name: 'cil-chart-line' },
-
-  //   children: [
-  //     {
-  //       name: 'Pre-Monsoon',
-  //       url: '/reports/MajorProgressPreMansoonReport'
-  //     },
-  //     {
-  //       name: 'During-Monsoon',
-  //       url: '/reports/MajorProgressDuringMansoonReport'
-  //     }
-  //   ]
-  // },
-  {
-    name: 'Minor Nalla Progress Report',
-    iconComponent: { name: 'cil-chart-line' },
-    children: [
-      {
-        name: 'Pre-Monsoon',
-        url: '/reports/MinorProgressPreMansoonReport',
-      },
-      {
-        name: 'During-Monsoon',
-        url: '/reports/MinorProgressDuringMansoonReport',
-      },
-    ],
-  },
-  {
-    name: 'Billable Silt Report',
-    url: '/reports/BillableSiltReport',
-    iconComponent: { name: 'cil-description' },
-  },
-  {
-    name: 'Tripwise Silt Report',
-    url: '/reports/TripwiseSiltReport',
-    iconComponent: { name: 'cil-description' },
-  },
-  {
-    name: 'View Site Vehicle Image',
-    url: '/reports/ViewSiteVehicleImage',
-    iconComponent: { name: 'cil-description' },
-  },
-  {
-    name: 'View Nalla Loading Videos',
-    url: '/reports/ViewNallahLoadingVideos',
-    iconComponent: { name: 'cil-description' },
-  },
-
-  {
-    name: 'Loading Trip Search Report',
-    url: '/reports/loadingtrips',
-    iconComponent: { name: 'cil-description' },
-  },
-];
-
-export const navItemsUser: INavData[] = [
-  {
-    name: 'Dashboard',
-    url: '/dashboard',
-    iconComponent: { name: 'cil-speedometer' },
-  },
-  {
-    name: 'Billable Silt Report',
-    url: '/reports/BillableSiltReport',
-    iconComponent: { name: 'cil-description' },
-  },
-  {
-    name: 'Tripwise Silt Report',
-    url: '/reports/TripwiseSiltReport',
-    iconComponent: { name: 'cil-description' },
-  },
-  {
-    name: 'View Site Vehicle Image',
-    url: '/reports/ViewSiteVehicleImage',
-    iconComponent: { name: 'cil-description' },
-  },
-  {
-    name: 'View Nalla Loading Videos',
-    url: '/reports/ViewNallahLoadingVideos',
-    iconComponent: { name: 'cil-description' },
-  },
-
-  {
-    name: 'Loading Trip Search Report',
-    url: '/reports/loadingtrips',
-    iconComponent: { name: 'cil-description' },
   },
 ];
