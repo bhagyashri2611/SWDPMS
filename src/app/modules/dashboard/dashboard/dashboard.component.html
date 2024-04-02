@@ -2,7 +2,7 @@
   <c-card class="mb-4">
     <c-card-body>
       <c-row>
-        <c-col md="2" xl="2" xs="6">
+        <c-col >
           <!-- Each column takes 2/12 of the row on medium and extra-large screens, and 6/12 on extra-small screens -->
           <app-number-widget
             [text]="'Total Roads'"
@@ -11,7 +11,7 @@
             [borderClass]="'dark'"
           ></app-number-widget>
         </c-col>
-        <c-col md="2" xl="2" xs="6">
+        <c-col >
           <app-number-widget
             [text]="'Completed'"
             [value]="completedRoads"
@@ -19,7 +19,7 @@
             [borderClass]="'success'"
           ></app-number-widget>
         </c-col>
-        <c-col md="2" xl="2" xs="6">
+        <c-col >
           <app-number-widget
             [text]="'In Progress'"
             [value]="inProgressRoads"
@@ -27,15 +27,15 @@
             [borderClass]="'warning'"
           ></app-number-widget>
         </c-col>
-        <c-col md="2" xl="2" xs="6">
+        <!-- <c-col md="2" xl="2" xs="6">
           <app-number-widget
             [text]="'Delayed'"
             [value]="delayedRoads"
             [length]="delayedRoadsLength"
             [borderClass]="'danger'"
           ></app-number-widget>
-        </c-col>
-        <c-col md="2" xl="2" xs="6">
+        </c-col> -->
+        <c-col >
           <app-number-widget
             [text]="'On Hold'"
             [value]="onHoldRoads"
@@ -43,19 +43,19 @@
             [borderClass]="'primary'"
           ></app-number-widget>
         </c-col>
-        <c-col md="2" xl="2" xs="6">
+        <c-col >
           <app-number-widget
             [text]="'Not Started'"
             [value]="notStartedRoads"
             [length]="notStartedRoadsLength"
-            [borderClass]="'alert'"
+            [borderClass]="'danger'"
           ></app-number-widget>
         </c-col>
       </c-row>
     </c-card-body>
   </c-card>
 </c-col>
-
+<app-display-ol-map></app-display-ol-map>
 <!-- <c-col xs="12">
   <c-card class="mb-4">
     <c-card-body>
@@ -197,7 +197,7 @@
         <c-row class="mb-3">
           <div class="col-md-6">
             <div class="col-md-9">
-              <app-filter-button></app-filter-button>
+              <!-- <app-filter-button></app-filter-button> -->
             </div>
           </div>
           <div class="col-md-3">

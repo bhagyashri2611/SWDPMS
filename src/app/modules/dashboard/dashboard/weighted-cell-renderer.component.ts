@@ -41,7 +41,7 @@ export class WeightedCellRendererComponent implements ICellRendererAngularComp {
     agInit(params: any): void {
       this.params = params;
       this.params.data.weightedProgress = Number(this.params.data.weightedProgress)
-      console.log("Prams", this.params)
+     // console.log("Prams", this.params)
     }
   
   

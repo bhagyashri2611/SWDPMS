@@ -72,6 +72,7 @@ import { PandmattributeModule } from './modules/pandmattribute/pandmattribute.mo
 import { DataentryModule } from './modules/dataentry/dataentry.module';
 import { DashboardWidgetsModule } from './CustomViews/dashboard-widgets/dashboard-widgets.module';
 import { RWMSReportsModule } from './modules/rwmsreports/rwmsreports.module';
+import { OpenLayersModule } from './modules/open-layers/open-layers.module';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -135,6 +136,7 @@ const APP_CONTAINERS = [
     PandmattributeModule,
     DashboardWidgetsModule,
     RWMSReportsModule,
+    OpenLayersModule,
     FormlyModule.forRoot({
       extras: { lazyRender: true },
       wrappers: [

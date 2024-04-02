@@ -113,6 +113,11 @@ export class ContractorRemarksComponent {
         minWidth: 100,
       },
       {
+        headerName: 'Target',
+        field: 'attributeValues.totalquantity',
+        minWidth: 100,
+      },
+      {
         headerName: 'Achieved',
         field: 'attributeValues.consumedquantity',
         minWidth: 100,
@@ -215,6 +220,7 @@ export class ContractorRemarksComponent {
         ContractorName: el.contractorName,
         RoadLength: el.location.length,
         TaskName: el.moduleName,
+        Target: el.attributeValues.totalquantity,
         Achieved: el.attributeValues.consumedquantity,
         ContractorAchieved: el.attributeValues.contractorquantity,
         ContractorRemark: el.attributeValues.contractorremark,

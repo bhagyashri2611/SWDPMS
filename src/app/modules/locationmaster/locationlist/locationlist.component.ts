@@ -81,7 +81,7 @@ export class LocationlistComponent implements OnInit {
         cellEditor: 'agTextCellEditor',
       },
       { headerName: '_id', field: '_id', hide: true },
-      { headerName: 'Ward Name', field: 'wardName.wardName' },
+      { headerName: 'Ward Name', field: 'wardName' },
       { headerName: 'Zone Name', field: 'zoneName' },
       { headerName: 'Work Code', field: 'workCode' },
       {
@@ -205,6 +205,8 @@ export class LocationlistComponent implements OnInit {
 
               debugger;
               this.rowData = this.locationList;
+              this.rowData.map(m=>m['wardName']=m.wardName.wardName)
+              
             }
           } else {
             Swal.fire({

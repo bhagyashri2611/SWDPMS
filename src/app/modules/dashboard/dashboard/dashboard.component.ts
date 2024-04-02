@@ -351,7 +351,7 @@ export class DashboardComponent implements OnInit {
         name: f.locationName,
         ward: f.wardName.wardName,
         zone: f.wardName.Zone,
-        workCode:f.workCode,
+        workCode: f.workCode,
         length: f.length,
         usage: Number((pqc[0].cumulativeQuantity / f.length) * 100).toFixed(2),
         weightedProgress: weightedProgress ? weightedProgress : 0,
@@ -371,13 +371,13 @@ export class DashboardComponent implements OnInit {
       this.locationListProgress.push(obj);
     });
     this.rowData = this.locationListProgress;
-    console.log(this.rowData);
+    // console.log(this.rowData);
   }
 
   onRowClicked(params: any) {
     // Access the data for the clicked row
     const rowData = params.data;
-    console.log('Row Clicked - Road Name:', rowData.name);
+    // console.log('Row Clicked - Road Name:', rowData.name);
 
     this.router.navigate(['location/addmoduledetails/' + params.data._id]);
     window.scrollTo(0, 0);
@@ -778,7 +778,7 @@ export class DashboardComponent implements OnInit {
   }
 
   roadClick(id: string) {
-    console.log('road clicked', id);
+    // console.log('road clicked', id);
     this.router.navigate(['/location/addmoduledetails/' + id]);
   }
 

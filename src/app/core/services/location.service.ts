@@ -51,7 +51,6 @@ export class LocationService {
     this.content.next(obj);
   }
 
-
   //Get All getAllModulInLocation added jwt
   getAllModulInLocation(): Observable<IModulesInLocationResponse> {
     // return this._httpClient.get<IModulesInLocationResponse>(this.baseURL + 'getlocationmodule')

@@ -1,0 +1,29 @@
+<c-col xs="12">
+    <c-card class="mb-4">
+        <c-card-body>
+            <h5>Digitize Road :{{locationName}}</h5>
+            <hr style="margin-bottom: 50px;">
+            <c-row class="mb-3">
+                <label cLabel class="col-sm-2" for="workCode"><b>Road Name : </b></label>
+                <c-col [sm]="8">
+                    <label cLabel class="col-sm-8" for="workCode">{{locationName}}</label>
+                </c-col>
+            </c-row>
+            <c-row class="mb-3">
+                <label cLabel class="col-sm-2" for="workCode"><b>Road Length : </b></label>
+                <c-col [sm]="8">
+                    <label cLabel class="col-sm-8" for="workCode">{{locationModel.length}} m </label>
+                </c-col>
+            </c-row>
+            <c-row class="mb-3">
+                <label cLabel class="col-sm-2" for="workCode"><b>Ward Name : </b></label>
+                <c-col [sm]="8">
+                    <label cLabel class="col-sm-8" for="workCode">{{locationModel.wardName.wardName}}</label>
+                </c-col>
+            </c-row>
+            <div #map style="width: 100%; height: 500px;"></div>
+        </c-card-body>
+    </c-card>
+</c-col>
+
+<!-- <button id="undo" (click)="undoLastDrawnFeature()">Undo</button> -->

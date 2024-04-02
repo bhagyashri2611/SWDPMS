@@ -31,6 +31,16 @@ import Swal from 'sweetalert2';
       class="me-1"
       color="light"
       cButton
+      (click)="btnClickedDigitizeHandler()"
+      *ngIf="userRole != 'Contractor'"
+    >
+      <svg cIcon name="cilPenAlt"></svg>
+      Digitize
+    </button>
+    <button
+      class="me-1"
+      color="light"
+      cButton
       (click)="btnClickedEditHandler()"
       *ngIf="userRole === 'Data Owner'"
     >
@@ -106,6 +116,12 @@ export class BtnCellRenderer implements ICellRendererAngularComp {
   btnClickedAddModuleDetailHandler() {
     this.router.navigate(['location/addmoduledetails/' + this.params.data._id]);
   }
+
+  
+  btnClickedDigitizeHandler() {
+    this.router.navigate(['ol/digitize/' + this.params.data._id]);
+  }
+
   btnClickedEditHandler() {
     this.router.navigate(['location/create/' + this.params.data._id]);
   }

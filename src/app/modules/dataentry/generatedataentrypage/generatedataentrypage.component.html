@@ -22,7 +22,9 @@
        
 
         <c-row class="mb-3">
-          <h5>{{pageTitle}}</h5>
+          <h5>{{pageTitle}} : {{locationName}}</h5>
+       
+          <p>Road Length : {{locationLength}} (m)</p>
           <!-- <c-col [sm]="8">
             <button (click)="Back()" style="float: right;" cButton class="me-1" color="secondary" style="float: right;">
               <svg cIcon name="cilArrowCircleLeft" style="margin-right: 5px;"></svg>
@@ -30,8 +32,8 @@
             </button>           
           </c-col> -->
       </c-row>
-        <hr style="margin-bottom: 50px;">
-
+      
+      <hr style="margin-bottom: 30px;">
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
           <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
         

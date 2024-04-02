@@ -5,14 +5,10 @@ import { FilterComponent } from '../filter/filter.component';
 @Component({
   selector: 'app-filter-button',
   templateUrl: './filter-button.component.html',
-  styleUrls: ['./filter-button.component.scss']
+  styleUrls: ['./filter-button.component.scss'],
 })
 export class FilterButtonComponent {
-
-  constructor(
-    public matDialog: MatDialog
-  ) {  }
-
+  constructor(public matDialog: MatDialog) {}
 
   filter() {
     debugger;
@@ -29,7 +25,5 @@ export class FilterButtonComponent {
     this.matDialog.open(FilterComponent, dialogConfig);
 
     debugger;
-
   }
-
 }

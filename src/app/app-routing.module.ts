@@ -114,6 +114,14 @@ const routes: Routes = [
         canActivate: [AuthGuard],
       },
       {
+        path: 'ol',
+        loadChildren: () =>
+          import('./modules/open-layers/open-layers.module').then(
+            (m) => m.OpenLayersModule
+          ),
+        canActivate: [AuthGuard],
+      },
+      {
         path: 'location',
         loadChildren: () =>
           import('./modules/locationmaster/locationmaster.module').then(

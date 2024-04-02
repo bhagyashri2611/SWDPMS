@@ -1,0 +1,22 @@
+<c-col xs="12">
+  <c-card class="mb-4">
+    <c-card-body>
+      <div class="road-info">
+        <h5>{{ roadName }}</h5>
+        <h6>{{ roadWard }}</h6>
+        <c-row style="margin-top:10px;margin-bottom: 20px; ">
+            <c-col [sm]="12">
+                <p>PQC Progress <b>{{pqcProgress}} %</b></p>
+                <c-progress thin>
+                    <c-progress-bar [value]="pqcProgress" color="success"></c-progress-bar>
+                  </c-progress>
+            </c-col>
+        </c-row>
+          <h6><b>Contractor : </b> {{ contractorName }}</h6>
+          <h6><b>Zone : </b> {{ roadZone }}</h6>
+          <h6><b>Length : </b>{{ length }} (m)</h6>
+          <h6><b>Status :</b> {{ status }}</h6>
+      </div>
+    </c-card-body>
+  </c-card>
+</c-col>

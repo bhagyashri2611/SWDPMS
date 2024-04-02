@@ -60,6 +60,8 @@ export class GeneratedataentrypageComponent implements OnInit {
   dataEntryGroupModelResponce: IDataEntryGroupModelResponce;
   dataEntryModelResponce: IDataEntryModelResponce;
   locationList: LocationModel[];
+  locationName:any;
+  locationLength:any;
   moduleInLocationList: ModulesInLocationModel[] = [];
   moduleList: ModuleModel[] = [];
   assetList: AssetModel[] = [];
@@ -110,6 +112,8 @@ export class GeneratedataentrypageComponent implements OnInit {
             if (result != null) {
               if (result.status === 200) {
                 this.locationList = result.data;
+                this.locationName=this.locationList[0].locationName
+                this.locationLength=this.locationList[0].length
                 debugger;
               }
             } else {

@@ -43,7 +43,7 @@ export class BtnCellRenderer implements ICellRendererAngularComp {
   agInit(params: any): void {
     this.params = params;
     this.params.data.usage = Number(this.params.data.usage)
-    console.log("Prams", this.params)
+    //console.log("Prams", this.params)
   }
 
 

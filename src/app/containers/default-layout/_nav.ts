@@ -33,6 +33,12 @@ export const navItems: INavData[] = [
     ],
   },
   {
+    name: 'Roads Map',
+    url: '/ol/display',
+    iconComponent: { name: 'cil-map' },
+
+  },
+  {
     name: 'Reports',
     iconComponent: { name: 'cil-chart-pie' },
     children: [
@@ -48,6 +54,7 @@ export const navItems: INavData[] = [
       },
     ],
   },
+
   {
     name: 'Data Entry Attributes',
     iconComponent: { name: 'cil-notes' },
@@ -87,6 +94,11 @@ export const OtherThanAdmin: INavData[] = [
     name: 'Roads',
     iconComponent: { name: 'cil-list-rich' },
     url: '/location/list',
+  },  {
+    name: 'Roads Map',
+    url: '/ol/display',
+    iconComponent: { name: 'cil-map' },
+
   },
   {
     name: 'Reports',
@@ -116,6 +128,12 @@ export const OtherThanAdminWithDataEntry: INavData[] = [
     name: 'Roads',
     iconComponent: { name: 'cil-list-rich' },
     url: '/location/list',
+  },
+  {
+    name: 'Roads Map',
+    url: '/ol/display',
+    iconComponent: { name: 'cil-map' },
+
   },
   {
     name: 'Reports',

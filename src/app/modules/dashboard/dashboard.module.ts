@@ -34,6 +34,7 @@ import { WidgetsModule } from '../../views/widgets/widgets.module';
 import { BaseModule } from '../../views/base/base.module';
 import { NgChartsModule } from 'ng2-charts';
 import { BtnCellRenderer } from './dashboard/button-cell-renderer.component';
+import {OpenLayersModule} from './../open-layers/open-layers.module'
 import { WeightedCellRendererComponent } from './dashboard/weighted-cell-renderer.component';
 import { DashboardWidgetsModule } from '../../CustomViews/dashboard-widgets/dashboard-widgets.module';
 @NgModule({
@@ -44,6 +45,7 @@ import { DashboardWidgetsModule } from '../../CustomViews/dashboard-widgets/dash
   ],
   imports: [
     CommonModule,
+    OpenLayersModule,
     NgChartsModule,
     NavModule,
     TabsModule,
