@@ -64,15 +64,41 @@ export class ContractorRemarksComponent {
     private locationService: LocationService,
     public matDialog: MatDialog
   ) {}
+  
+  currentRoute: any = '';
+  object: any;
 
   async ngOnInit(): Promise<void> {
+    debugger;
+    this.currentRoute = '';
+    this.object = {};
+
     this.locationService.dataEntrySearchParams.subscribe((result) => {
       console.log(result);
+      this.objLocation = result;
+
+      let objLocation = {
+        roadName: result.roadName,
+        ward: result.ward,
+        zone: result.zone,
+        contractor: result.contractor,
+        status: result.status,
+      };
+
+      debugger;
+    });
+    debugger;
+    this.route.queryParams.subscribe((params) => {
+      debugger;
+      this.currentRoute = params['param1'];
+      this.object = JSON.parse(params['param2']);
+      debugger;
     });
 
     await this.getLocation();
 
     console.log('ng init report', this.objLocation);
+
     this.columnDefs = [
       {
         headerName: 'Data Date',
@@ -169,25 +195,46 @@ export class ContractorRemarksComponent {
     this.defaultColDef = params.defaultColDef;
     this.context = params.context;
   }
+
   async getLocation(): Promise<void> {
+    debugger;
     const result = await (this.userRole === 'Data Owner'
       ? this.locationService.getLocations()
       : this.locationService.getLocationByUser()
     ).toPromise();
-
+    debugger;
     if (result != null) {
       if (result.status === 200) {
         this.locationList = result.data;
         this.userLocations = this.locationList.map((m) => m._id);
-        this.dataEntryService
-          .getDataEntryByUser({ location: this.userLocations })
-          .subscribe(async (result) => {
+
+        this.dataEntryService.getDataEntryByUser({ location: this.userLocations }).subscribe(async (result) => {
             this.dataEntryDataList = result.data;
             this.rowData = this.dataEntryDataList;
-            this.rowData.sort((a,b)=> (a.locationName.localeCompare(b.locationName) || a.dataDate - b.dataDate));  
-           
+            this.rowData.sort(
+              (a, b) =>
+                a.locationName.localeCompare(b.locationName) ||
+                a.dataDate - b.dataDate
+            );
+            debugger;
+            if (this.currentRoute != '' && this.object != '') {
+              let filteredList = this.rowData.filter(
+                (item) =>
+                  (this.object.zone === '' ||
+                    this.object.zone.includes(item.zone)) &&
+                  (this.object.ward === '' ||
+                    this.object.ward.includes(item.ward)) &&
+                  (this.object.contractor === '' ||
+                    this.object.contractor.includes(item.contractorName)) &&
+                  (this.object.status === '' ||
+                    this.object.status.includes(item.location.status)) &&
+                  (this.object.roadName === '' ||
+                    this.object.roadName.includes(item.locationName))
+              );
+              debugger;
+              this.rowData = filteredList;
+            }
           });
-
       } else {
         Swal.fire({
           text: String(result.message),
@@ -224,8 +271,8 @@ export class ContractorRemarksComponent {
         Achieved: el.attributeValues.consumedquantity,
         ContractorAchieved: el.attributeValues.contractorquantity,
         ContractorRemark: el.attributeValues.contractorremark,
-        CreatedBy:el.createdBy,
-        createdOn:el.createdOn
+        CreatedBy: el.createdBy,
+        createdOn: el.createdOn,
       };
     });
 

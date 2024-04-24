@@ -74,6 +74,7 @@ export class DataentryService {
         })
       );
   }
+  
   searchExistingData(data: DataEntryModel): Observable<IDataEntryModelResponce> {
     return this._httpClient.post<IDataEntryModelResponce>(this.baseURL + "searchdata/", JSON.stringify(data), {
       headers: new HttpHeaders({

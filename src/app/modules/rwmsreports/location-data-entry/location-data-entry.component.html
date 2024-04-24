@@ -1,0 +1,131 @@
+<!-- <c-col xs="12">
+    <c-card class="mb-4">
+      <c-card-body>
+        <h5>Location Data Entry</h5>
+        <hr style="margin-bottom: 20px" />
+
+       
+  
+        <div class="container">
+            <div class="row mb-3">
+              <div class="col-md-4">
+                <form [formGroup]="Form" class="row g-3">
+                  <div class="col-md-5">
+                    <input type="date" name="fromdate" id="fromdate" formControlName="fromdate" class="form-control" />
+                  </div>
+                  <div class="col-md-5">
+                    <input type="date" name="todate" id="todate" formControlName="todate" class="form-control" />
+                  </div>
+                  <div class="col-md-2">
+                    <button type="button" cButton class="btn btn-light" (click)="search()">Search</button>
+                  </div>
+                </form>
+              </div>
+
+              <div class="col-md-2">
+                <button type="button" cButton class="btn btn-light" (click)="clearFilters()">Clear</button>
+              </div>
+
+              <div class="col-md-3">
+                <div class="input-group mb-2">
+                  <input type="text" (input)="onQuickFilterChanged()" id="quickFilter" placeholder="quick filter..." class="form-control" />
+                  <span class="input-group-text">
+                    <svg cIcon name="cilSearch"></svg>
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="input-group mb-2">
+                  <span class="input-group-text">
+                    <svg cIcon name="cilCloudDownload"></svg>
+                  </span>
+                  <button type="button" cButton class="btn btn-light" (click)="download()">
+                    <i class="mdi mdi-plus-box"></i>Download
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+
+        
+        
+      </c-card-body>
+    </c-card>
+  </c-col> -->
+  
+  <c-col xs="12">
+    <c-card class="mb-4">
+      <c-card-body>
+        <h5> Defaulter List</h5>
+        <hr style="margin-bottom: 20px" />
+  
+        <div class="container">
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <form [formGroup]="Form" class="row g-3">
+                <div class="col-md-5">
+                  <input type="date" name="fromdate" id="fromdate" formControlName="fromdate" class="form-control" />
+                </div>
+                <div class="col-md-5">
+                  <input type="date" name="todate" id="todate" formControlName="todate" class="form-control" />
+                </div>
+                <div class="col-md-2">
+                  <button type="button" cButton class="btn btn-light" (click)="search()">Search</button>
+                </div>
+              </form>
+            </div>
+  
+            <div class="col-md-2">
+              <button type="button" cButton class="btn btn-light" (click)="clearFilters()">Clear</button>
+            </div>
+  
+            <div class="col-md-3">
+              <div class="input-group mb-2">
+                <input type="text" (input)="onQuickFilterChanged()" id="quickFilter" placeholder="quick filter..." class="form-control" />
+                <span class="input-group-text">
+                  <svg cIcon name="cilSearch"></svg>
+                </span>
+              </div>
+            </div>
+  
+            <div class="col-md-3">
+              <div class="input-group mb-2">
+                <span class="input-group-text">
+                  <svg cIcon name="cilCloudDownload"></svg>
+                </span>
+                <button type="button" cButton class="btn btn-light" (click)="download()">
+                  <i class="mdi mdi-plus-box"></i>Download
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </c-card-body>
+    </c-card>
+  </c-col>
+
+  
+  <c-col xs="12">
+      <c-card class="mb-4">
+        <c-card-body *ngIf="rowData.length>0">           
+          <ag-grid-angular
+            #agGrid
+            style="width: 100%; height: 450px"
+            id="myGrid"
+            class="ag-theme-balham"
+            [gridOptions]="gridOptions"
+            [columnDefs]="columnDefs"
+            [rowData]="rowData"
+            [animateRows]="true"
+            [pagination]="true"
+            [context]="context"
+            [suppressRowClickSelection]="true"
+            [rowSelection]="rowSelection"
+            [frameworkComponents]="frameworkComponents"
+            [defaultColDef]="defaultColDef"
+            (gridRedy)="OnGridReady($event)">
+          </ag-grid-angular>
+        </c-card-body>
+      </c-card>
+  </c-col>

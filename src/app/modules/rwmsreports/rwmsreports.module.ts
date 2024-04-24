@@ -19,11 +19,21 @@ import {
 import { IconModule } from '@coreui/icons-angular';
 import { ChartjsModule } from '@coreui/angular-chartjs';
 import { ContractorRemarksComponent } from './contractor-remarks/contractor-remarks.component';
-import {DashboardWidgetsModule} from '../../CustomViews/dashboard-widgets/dashboard-widgets.module'
+import {DashboardWidgetsModule} from '../../CustomViews/dashboard-widgets/dashboard-widgets.module';
+import { ZoneWiseReportComponent } from './zone-wise-report/zone-wise-report.component';
+import { WardWiseReportComponent } from './ward-wise-report/ward-wise-report.component';
+import { ConWiseReportComponent } from './con-wise-report/con-wise-report.component';
+import { RoadWiseReportComponent } from './road-wise-report/road-wise-report.component';
+import { LocationDataEntryComponent } from './location-data-entry/location-data-entry.component'
 @NgModule({
   declarations: [
     TaskDetailsComponent,
-    ContractorRemarksComponent
+    ContractorRemarksComponent,
+    ZoneWiseReportComponent,
+    WardWiseReportComponent,
+    ConWiseReportComponent,
+    RoadWiseReportComponent,
+    LocationDataEntryComponent
   ],
   imports: [
     DashboardWidgetsModule,

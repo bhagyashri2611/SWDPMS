@@ -42,14 +42,40 @@ export const navItems: INavData[] = [
     name: 'Reports',
     iconComponent: { name: 'cil-chart-pie' },
     children: [
+      // {
+      //   name: 'Date Wise Task Details',
+      //   url: '/location/report/taskdetailsreport',
+      //   iconComponent: { name: 'cil-chart-line' },
+      // },
+   
       {
-        name: 'Date Wise Task Details',
-        url: '/location/report/taskdetailsreport',
+        name: 'Zone Wise Report',
+        url: '/location/report/zonewisereport',
+        iconComponent: { name: 'cil-chart-line' },
+      },
+      {
+        name: 'Ward Wise Report',
+        url: '/location/report/wardwisereport',
+        iconComponent: { name: 'cil-chart-line' },
+      },
+      {
+        name: 'Contractor Wise Report',
+        url: '/location/report/contractorwisereport',
+        iconComponent: { name: 'cil-chart-line' },
+      },
+      {
+        name: 'Road Wise Report',
+        url: '/location/report/roadwisereport',
         iconComponent: { name: 'cil-chart-line' },
       },
       {
         name: 'Contractor Remarks',
         url: '/location/report/contractorremarksreport',
+        iconComponent: { name: 'cil-chart-line' },
+      },
+      {
+        name: 'Defaulter List',
+        url: '/location/report/locationdataentry',
         iconComponent: { name: 'cil-chart-line' },
       },
     ],
@@ -104,18 +130,39 @@ export const OtherThanAdmin: INavData[] = [
     name: 'Reports',
     iconComponent: { name: 'cil-chart-pie' },
     children: [
+      // {
+      //   name: 'Date Wise Task Details',
+      //   url: '/location/report/taskdetailsreport',
+      //   iconComponent: { name: 'cil-chart-line' },
+      // },   
       {
-        name: 'Date Wise Task Details',
-        url: '/location/report/taskdetailsreport',
+        name: 'Zone Wise Report',
+        url: '/location/report/zonewisereport',
         iconComponent: { name: 'cil-chart-line' },
       },
       {
-        name: 'Contractor Remarks',
+        name: 'Ward Wise Report',
+        url: '/location/report/wardwisereport',
+        iconComponent: { name: 'cil-chart-line' },
+      },
+      {
+        name: 'Contractor Wise Report',
+        url: '/location/report/contractorwisereport',
+        iconComponent: { name: 'cil-chart-line' },
+      },
+      {
+        name: 'Road Wise Report',
+        url: '/location/report/roadwisereport',
+        iconComponent: { name: 'cil-chart-line' },
+      },
+      {
+        name: 'Task Detail Report',
         url: '/location/report/contractorremarksreport',
         iconComponent: { name: 'cil-chart-line' },
       },
     ],
   },
+
 ];
 
 export const OtherThanAdminWithDataEntry: INavData[] = [
@@ -139,13 +186,33 @@ export const OtherThanAdminWithDataEntry: INavData[] = [
     name: 'Reports',
     iconComponent: { name: 'cil-chart-pie' },
     children: [
+      // {
+      //   name: 'Date Wise Task Details',
+      //   url: '/location/report/taskdetailsreport',
+      //   iconComponent: { name: 'cil-chart-line' },
+      // },
       {
-        name: 'Date Wise Task Details',
-        url: '/location/report/taskdetailsreport',
+        name: 'Zone Wise Report',
+        url: '/location/report/zonewisereport',
         iconComponent: { name: 'cil-chart-line' },
       },
       {
-        name: 'Contractor Remarks Report',
+        name: 'Ward Wise Report',
+        url: '/location/report/wardwisereport',
+        iconComponent: { name: 'cil-chart-line' },
+      },
+      {
+        name: 'Contractor Wise Report',
+        url: '/location/report/contractorwisereport',
+        iconComponent: { name: 'cil-chart-line' },
+      },
+      {
+        name: 'Road Wise Report',
+        url: '/location/report/roadwisereport',
+        iconComponent: { name: 'cil-chart-line' },
+      },
+      {
+        name: 'Task Detail Report',
         url: '/location/report/contractorremarksreport',
         iconComponent: { name: 'cil-chart-line' },
       },

@@ -14,6 +14,11 @@ import { GeneratedataentrypageComponent} from '../dataentry/generatedataentrypag
 import { NumberWidgetComponent} from '../../CustomViews/dashboard-widgets/number-widget/number-widget.component'
 import { TaskDetailsComponent} from '../rwmsreports/task-details/task-details.component'
 import { ContractorRemarksComponent } from '../rwmsreports/contractor-remarks/contractor-remarks.component';
+import { ZoneWiseReportComponent } from '../rwmsreports/zone-wise-report/zone-wise-report.component';
+import { WardWiseReportComponent } from '../rwmsreports/ward-wise-report/ward-wise-report.component';
+import { ConWiseReportComponent } from '../rwmsreports/con-wise-report/con-wise-report.component';
+import { RoadWiseReportComponent } from '../rwmsreports/road-wise-report/road-wise-report.component';
+import { LocationDataEntryComponent } from '../rwmsreports/location-data-entry/location-data-entry.component';
 
 const routes: Routes = [
   { path: 'create', component: CreatelocationComponent },
@@ -33,6 +38,12 @@ const routes: Routes = [
   {path:"numberdWidget",component:NumberWidgetComponent}, 
   {path:"report/taskdetailsreport",component:TaskDetailsComponent}, 
   {path:"report/contractorremarksreport",component:ContractorRemarksComponent}, 
+
+  {path:"report/zonewisereport",component: ZoneWiseReportComponent}, 
+  {path:"report/wardwisereport",component: WardWiseReportComponent}, 
+  {path:"report/contractorwisereport",component: ConWiseReportComponent}, 
+  {path:"report/roadwisereport",component: RoadWiseReportComponent},
+  {path:"report/locationdataentry",component: LocationDataEntryComponent},
 ];
 
 @NgModule({

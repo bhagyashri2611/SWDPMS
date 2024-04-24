@@ -19,6 +19,17 @@ export class CommonService {
     }
   }
 
+  DateFormatterNew(date) {
+    var dateAsString = date;
+    if (dateAsString) {
+      dateAsString = dateAsString.substring(0, 10);
+      var dateParts = dateAsString.split("-");
+      return `${dateParts[0]}-${dateParts[1]}-${dateParts[2]}`;
+    } else{
+      return `-`;
+    }
+  }
+
   createdOnDateFormatter(params) {
     var dateAsString = params.data.createdOn;
     if (dateAsString) {

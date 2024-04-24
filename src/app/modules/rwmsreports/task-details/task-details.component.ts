@@ -71,7 +71,18 @@ export class TaskDetailsComponent implements OnInit {
     public matDialog: MatDialog
   ) {}
 
+  currentRoute: any = '';
+  object: any;
+
   async ngOnInit(): Promise<void> {
+
+    this.route.queryParams.subscribe((params) => {
+      debugger;
+      this.currentRoute = params['param1'] !== undefined ? params['param1'] : '';
+      this.object = (JSON.parse(params['param2'])) !== undefined ? (JSON.parse(params['param2'])) : ''; 
+      debugger;
+    });
+
     this.getLocation();
     this.columnDefs = [
       {
@@ -257,14 +268,30 @@ export class TaskDetailsComponent implements OnInit {
          createdOn:dataEntryFilter[0].createdOn
         };
         this.rowData.push(obj);
+
+        
       });
       
       //console.log(this.rowData);
-      
-      //console.log('dataEntryLocation', dataEntryLocation);
-      //console.log('dates', dates);
     });
     console.log(this.rowData);
+    if (this.currentRoute != '' && this.object != '') {
+      let filteredList = this.rowData.filter(
+        (item) =>
+          (this.object.zone === '' ||
+            this.object.zone.includes(item.zoneName)) &&
+          (this.object.ward === '' ||
+            this.object.ward.includes(item.wardName)) &&
+          (this.object.contractor === '' ||
+            this.object.contractor.includes(item.contractorName)) &&
+          (this.object.status === '' ||
+            this.object.status.includes(item.status)) &&
+          (this.object.roadName === '' ||
+            this.object.roadName.includes(item.locationName))
+      );
+      debugger;
+      this.rowData = filteredList;
+}
       
     debugger;
   }

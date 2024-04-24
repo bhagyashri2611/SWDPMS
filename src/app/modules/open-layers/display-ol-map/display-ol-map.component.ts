@@ -182,6 +182,7 @@ export class DisplayOlMapComponent {
   }
   showTooltip() {
     // Assuming you have a tooltip element reference
+    debugger;
     const tooltipElement = document.getElementById('tooltipContent');
 
     // Display the tooltip programmatically
@@ -189,6 +190,7 @@ export class DisplayOlMapComponent {
   }
   
   openNewComponent(feature) {
+    debugger;
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false;
     dialogConfig.id = 'modal-component';

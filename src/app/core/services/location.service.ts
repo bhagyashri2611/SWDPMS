@@ -4,7 +4,7 @@ import {
   HttpErrorResponse,
   HttpHeaders,
 } from '@angular/common/http';
-import { Observable, throwError ,BehaviorSubject} from 'rxjs';
+import { Observable, throwError, BehaviorSubject } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import {
@@ -45,7 +45,6 @@ export class LocationService {
     .set('Content-Type', 'application/json')
     .set('Authorization', `Bearer ${this.jwtToken}`);
   options = { headers: this.headers };
-
 
   getDataEntrySearchParams(obj) {
     this.content.next(obj);
@@ -97,6 +96,7 @@ export class LocationService {
       .get<ILocationResponse>(this.baseURL)
       .pipe(catchError(this.handleError));
   }
+
   //Get All Locations added jwt
   getLocations(): Observable<ILocationResponse> {
     // return this._httpClient.get<ILocationResponse>(this.baseURL)
@@ -222,6 +222,7 @@ export class LocationService {
         })
       );
   }
+
   // addModulesInLocation added jwt
   addModulesInLocation(
     locationid: any,
@@ -288,7 +289,6 @@ export class LocationService {
   }
 
   //Get Location by user id added jwt
-
   getGroupLocationByUser(): Observable<IGroupLocationResponse> {
     const uid = sessionStorage.getItem('userid');
     console.log(uid);
@@ -311,9 +311,13 @@ export class LocationService {
       );
   }
 
-  saveRoadStatus(data:any): Observable<ILocationResponse> {
+  saveRoadStatus(data: any): Observable<ILocationResponse> {
     return this._httpClient
-      .post<ILocationResponse>(this.baseURL+'saveroadstatus', JSON.stringify(data), this.options)
+      .post<ILocationResponse>(
+        this.baseURL + 'saveroadstatus',
+        JSON.stringify(data),
+        this.options
+      )
       .pipe(
         catchError((error: HttpErrorResponse) => {
           if (error.status === 204 && error.error.message === 'jwt expired') {
@@ -322,6 +326,174 @@ export class LocationService {
           return throwError(error);
         })
       );
+  }
+
+  filteredList: any = [];
+  finalList: any = [];
+  reportType: any = '';
+  // get Ward Wise Report
+  getReport(data, type) {
+    this.filteredList = data;
+    this.reportType = type;
+
+    this.finalList = [];
+
+    if (this.reportType == 'WardWise') {
+      const report = {};
+      // Group by wardId
+      const groupedByWard = data.reduce((acc, obj) => {
+        acc[obj.ward] = acc[obj.ward] || [];
+        acc[obj.ward].push(obj);
+        return acc;
+      }, {});
+
+      // Process each ward group
+      for (const wardId in groupedByWard) {
+        const wardData = groupedByWard[wardId];
+        report[wardId] = {};
+
+        // Group by module name within the ward group
+        const groupedByModule = wardData.reduce((acc, obj) => {
+          const moduleName = obj.taskName;
+          acc[moduleName] = acc[moduleName] || [];
+          acc[moduleName].push(obj);
+          return acc;
+        }, {});
+
+        // Calculate totals for each module within the ward group
+        for (const moduleName in groupedByModule) {
+          const moduleData = groupedByModule[moduleName];
+
+          const totalQuantity = moduleData.reduce(
+            (sum, obj) => sum + obj.Quantity,
+            0
+          );
+          const totalCumulativeQuantity = moduleData.reduce(
+            (sum, obj) => sum + obj.cumulativeQuantity,
+            0
+          );
+
+          const percentageProgress = ( ( totalCumulativeQuantity / totalQuantity) *100 ).toFixed(2);
+
+          // report[wardId].wardName  = wardId,
+          // report[wardId].taskName = moduleName,
+          // report[wardId].totalQuantity = totalQuantity,
+          // report[wardId].totalCumulativeQuantity = totalCumulativeQuantity
+          // debugger;
+          // let obj = Object.values(report);
+          // this.finalList.push(obj);
+          const moduleObj = {
+            wardName: wardId,
+            taskName: moduleName,
+            totalQuantity: totalQuantity,
+            totalCumulativeQuantity: totalCumulativeQuantity,
+            percentageProgress: percentageProgress
+          };
+          this.finalList.push(moduleObj);
+        }
+      }
+    }
+
+    else if(this.reportType == 'ZoneWise'){
+      debugger;
+      const report = {};
+      // Group by zoneId
+      const groupedByZone = data.reduce((acc, obj) => {
+        acc[obj.zone] = acc[obj.zone] || [];
+        acc[obj.zone].push(obj);
+        return acc;
+      }, {});
+      debugger;
+      // Process each zone group
+      for (const zoneId in groupedByZone) {
+        const zoneData = groupedByZone[zoneId];
+        report[zoneId] = {};
+        debugger;
+        // Group by module name within the zone group
+        const groupedByModule = zoneData.reduce((acc, obj) => {
+          const moduleName = obj.taskName;
+          acc[moduleName] = acc[moduleName] || [];
+          acc[moduleName].push(obj);
+          return acc;
+        }, {});
+        debugger;
+        // Calculate totals for each module within the zone group
+        for (const moduleName in groupedByModule) {
+          const moduleData = groupedByModule[moduleName];
+    
+          const totalQuantity = moduleData.reduce(
+            (sum, obj) => sum + obj.Quantity,
+            0
+          );
+          const totalCumulativeQuantity = moduleData.reduce(
+            (sum, obj) => sum + obj.cumulativeQuantity,
+            0
+          );
+    
+          const percentageProgress = ((totalCumulativeQuantity / totalQuantity) * 100).toFixed(2);
+    
+          const moduleObj = {
+            zoneName: zoneId,
+            taskName: moduleName,
+            totalQuantity: totalQuantity,
+            totalCumulativeQuantity: totalCumulativeQuantity,
+            percentageProgress: percentageProgress
+          };
+          this.finalList.push(moduleObj);
+        }
+      }
+    }
+    else {
+      debugger;
+      const report = {};
+  // Group by contractorName
+  const groupedByContractor = data.reduce((acc, obj) => {
+    acc[obj.contractorName] = acc[obj.contractorName] || [];
+    acc[obj.contractorName].push(obj);
+    return acc;
+  }, {});
+
+  // Process each contractor group
+  for (const contractorName in groupedByContractor) {
+    const contractorData = groupedByContractor[contractorName];
+    report[contractorName] = {};
+
+    // Group by module name within the contractor group
+    const groupedByModule = contractorData.reduce((acc, obj) => {
+      const moduleName = obj.taskName;
+      acc[moduleName] = acc[moduleName] || [];
+      acc[moduleName].push(obj);
+      return acc;
+    }, {});
+
+    // Calculate totals for each module within the contractor group
+    for (const moduleName in groupedByModule) {
+      const moduleData = groupedByModule[moduleName];
+
+      const totalQuantity = moduleData.reduce(
+        (sum, obj) => sum + obj.Quantity,
+        0
+      );
+      const totalCumulativeQuantity = moduleData.reduce(
+        (sum, obj) => sum + obj.cumulativeQuantity,
+        0
+      );
+
+      const percentageProgress = ((totalCumulativeQuantity / totalQuantity) * 100).toFixed(2);
+
+      const moduleObj = {
+        contractorName: contractorName,
+        taskName: moduleName,
+        totalQuantity: totalQuantity,
+        totalCumulativeQuantity: totalCumulativeQuantity,
+        percentageProgress: percentageProgress
+      };
+      this.finalList.push(moduleObj);
+    }
+  }
+    }
+
+    return this.finalList;
   }
 
 }

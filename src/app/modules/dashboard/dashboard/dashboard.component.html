@@ -2,30 +2,18 @@
   <c-card class="mb-4">
     <c-card-body>
       <c-row>
-        <c-col >
+        <c-col>
           <!-- Each column takes 2/12 of the row on medium and extra-large screens, and 6/12 on extra-small screens -->
-          <app-number-widget
-            [text]="'Total Roads'"
-            [value]="totalRoads"
-            [length]="totalRoadsLength"
-            [borderClass]="'dark'"
-          ></app-number-widget>
+          <app-number-widget [text]="'Total Roads'" [value]="totalRoads" [length]="totalRoadsLength"
+            [borderClass]="'dark'"></app-number-widget>
         </c-col>
-        <c-col >
-          <app-number-widget
-            [text]="'Completed'"
-            [value]="completedRoads"
-            [length]="completedRoadsLength"
-            [borderClass]="'success'"
-          ></app-number-widget>
+        <c-col>
+          <app-number-widget [text]="'Completed'" [value]="completedRoads" [length]="completedRoadsLength"
+            [borderClass]="'success'"></app-number-widget>
         </c-col>
-        <c-col >
-          <app-number-widget
-            [text]="'In Progress'"
-            [value]="inProgressRoads"
-            [length]="inProgressRoadsLength"
-            [borderClass]="'warning'"
-          ></app-number-widget>
+        <c-col>
+          <app-number-widget [text]="'In Progress'" [value]="inProgressRoads" [length]="inProgressRoadsLength"
+            [borderClass]="'warning'"></app-number-widget>
         </c-col>
         <!-- <c-col md="2" xl="2" xs="6">
           <app-number-widget
@@ -35,27 +23,20 @@
             [borderClass]="'danger'"
           ></app-number-widget>
         </c-col> -->
-        <c-col >
-          <app-number-widget
-            [text]="'On Hold'"
-            [value]="onHoldRoads"
-            [length]="onHoldRoadsLength"
-            [borderClass]="'primary'"
-          ></app-number-widget>
+        <c-col>
+          <app-number-widget [text]="'On Hold'" [value]="onHoldRoads" [length]="onHoldRoadsLength"
+            [borderClass]="'danger'"></app-number-widget>
         </c-col>
-        <c-col >
-          <app-number-widget
-            [text]="'Not Started'"
-            [value]="notStartedRoads"
-            [length]="notStartedRoadsLength"
-            [borderClass]="'danger'"
-          ></app-number-widget>
+        <c-col>
+          <app-number-widget [text]="'Not Started'" [value]="notStartedRoads" [length]="notStartedRoadsLength"
+            [borderClass]="'primary'"></app-number-widget>
         </c-col>
       </c-row>
     </c-card-body>
   </c-card>
 </c-col>
 <app-display-ol-map></app-display-ol-map>
+
 <!-- <c-col xs="12">
   <c-card class="mb-4">
     <c-card-body>
@@ -186,29 +167,21 @@
 
 
 <c-row *ngIf="rowData.length>0">
-    <c-col xs>
-      <c-card class="mb-4">
-        <c-card-header>Roads List</c-card-header>
-      
-  
-
+  <c-col xs>
+    <c-card class="mb-4">
+      <c-card-header>Roads List</c-card-header>
       <c-card-body>
-  
+
         <c-row class="mb-3">
           <div class="col-md-6">
-            <div class="col-md-9">
-              <!-- <app-filter-button></app-filter-button> -->
-            </div>
+            <!-- <div class="col-md-9">
+              <app-filter-button></app-filter-button>
+            </div> -->
           </div>
           <div class="col-md-3">
             <c-input-group class="mb-3">
-              <input
-                type="text"
-                (input)="onQuickFilterChanged()"
-                id="quickFilter"
-                placeholder="quick filter..."
-                class="form-control"
-              />
+              <input type="text" (input)="onQuickFilterChanged()" id="quickFilter" placeholder="quick filter..."
+                class="form-control" />
               <span cInputGroupText>
                 <svg cIcon name="cilSearch"></svg>
               </span>
@@ -219,33 +192,17 @@
               <span cInputGroupText>
                 <svg cIcon name="cilCloudDownload"></svg>
               </span>
-              <button
-                type="button"
-                cButton
-                class="me-1"
-                color="light"
-                (click)="download()"
-              >
+              <button type="button" cButton class="me-1" color="light" (click)="download()">
                 <i class="mdi mdi-plus-box"></i>Download
               </button>
             </c-input-group>
           </div>
         </c-row>
 
-        <ag-grid-angular
-          #agGrid
-          style="width: 100%; height: 500px"
-          id="myGrid"
-          class="ag-theme-balham"
-          [columnDefs]="columnDefs"
-          [rowData]="locationListProgress"
-          [gridOptions]="gridOptions"
-          [pagination]="true"
-          [rowSelection]="rowSelection"
-          [defaultColDef]="defaultColDef"
-          [frameworkComponents]="frameworkComponents"
-          (gridRedy)="OnGridReady($event)"
-        >
+        <ag-grid-angular #agGrid style="width: 100%; height: 500px" id="myGrid" class="ag-theme-balham"
+          [columnDefs]="columnDefs" [rowData]="locationListProgress" [gridOptions]="gridOptions" [pagination]="true"
+          [rowSelection]="rowSelection" [defaultColDef]="defaultColDef" [frameworkComponents]="frameworkComponents"
+          (gridRedy)="OnGridReady($event)">
         </ag-grid-angular>
       </c-card-body>
     </c-card>

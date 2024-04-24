@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { FilterComponent } from '../filter/filter.component';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-filter-button',
@@ -8,10 +9,18 @@ import { FilterComponent } from '../filter/filter.component';
   styleUrls: ['./filter-button.component.scss'],
 })
 export class FilterButtonComponent {
-  constructor(public matDialog: MatDialog) {}
+  constructor(
+    public matDialog: MatDialog,
+    private router: Router,
+    private route: ActivatedRoute
+    ) {}
 
+  currentRoute = '';
   filter() {
     debugger;
+    const cRoute = this.router.url;
+    this.currentRoute = cRoute.split('?')[0];
+
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false;
     dialogConfig.id = 'modal-component';
@@ -25,5 +34,14 @@ export class FilterButtonComponent {
     this.matDialog.open(FilterComponent, dialogConfig);
 
     debugger;
+  }
+
+  reset() {
+    const cRoute = this.router.url;
+    this.currentRoute = cRoute.split('?')[0];
+    debugger;
+    this.router.navigate([this.currentRoute]).then(() => {
+      window.location.reload();
+    });
   }
 }

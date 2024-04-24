@@ -85,8 +85,10 @@ export class FilterComponent implements OnInit {
       a.locationName.localeCompare(String(b.locationName))
     );
   }
+  currentRoute = '';
 
   submit() {
+    
     let objLocation = {
       roadName: this.form.value.roadName,
       ward: this.form.value.ward,
@@ -96,13 +98,27 @@ export class FilterComponent implements OnInit {
     };
 
     this.locationService.getDataEntrySearchParams(objLocation);
+    
+
+    const cRoute = this.router.url;
+    this.currentRoute = cRoute.split('?')[0];
 
     //this.router.navigate(['/location/report/taskdetailsreport']);
-    let route = 'location/report/taskdetailsreport';
-    this.router.navigate([route]).then(() => {
-      window.location.reload();
+    // let route = 'location/report/contractorremarksreport';
+    // this.router.navigate([route]).then(() => {
+    //   // window.location.reload();
+    // });
+    
+    this.router.navigate([this.currentRoute], { 
+      queryParams: {
+        param1: this.currentRoute,
+        param2:  JSON.stringify(objLocation)
+      }
+    }).then(() => {
+       window.location.reload();
     });
-    debugger;
+
+    
     this.dialogRef.close();
   }
 
@@ -114,7 +130,7 @@ export class FilterComponent implements OnInit {
       contractor: this.form.value.contractor,
       status: this.form.value.status,
     };
-    debugger;
+    
 
     let filteredList = this.locationList.filter(
       (item) =>
@@ -130,7 +146,7 @@ export class FilterComponent implements OnInit {
     );
 
     this.extractUniqueValues(filteredList);
-    debugger;
+    
   }
 
   logOut() {
@@ -166,17 +182,17 @@ export class FilterComponent implements OnInit {
       contractor: this.form.value.contractor,
       status: this.form.value.status,
     };
-    debugger;
+    
 
     let filteredList = this.locationList.filter(
       (f) => f.zoneName === objLocation.zone[0]
     );
     this.extractUniqueValues(filteredList);
-    debugger;
+    
   }
 
   extractUniqueValues(locationList: LocationModel[]): void {
-    debugger;
+    
     this.uniqueLocationNames = [
       ...new Set(locationList.map((m) => String(m.locationName))),
     ];
