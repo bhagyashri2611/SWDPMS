@@ -114,6 +114,14 @@ const routes: Routes = [
         canActivate: [AuthGuard],
       },
       {
+        path: 'masticwork',
+        loadChildren: () =>
+          import('./modules/mastic-work/mastic-work.module').then(
+            (m) => m.MasticWorkModule
+          ),
+        canActivate: [AuthGuard],
+      },
+      {
         path: 'ol',
         loadChildren: () =>
           import('./modules/open-layers/open-layers.module').then(
