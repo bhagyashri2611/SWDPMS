@@ -33,6 +33,29 @@ export const navItems: INavData[] = [
     ],
   },
   {
+    name: 'Mastic Work',
+    iconComponent: { name: 'cil-list-rich' },
+    children: [
+      {
+        name: 'Mastic Work List',
+        url: '/location/masticworklist',
+        iconComponent: { name: 'cil-chart-line' },
+      },
+   
+    ]
+  },
+  {
+    name: 'Mastic Roads',
+    iconComponent: { name: 'cil-list-rich' },
+    children: [
+      {
+        name: 'Mastic Road List',
+        url: '/location/masticroadlist',
+        iconComponent: { name: 'cil-chart-line' },
+      }
+    ]
+  },
+  {
     name: 'Roads Map',
     url: '/ol/display',
     iconComponent: { name: 'cil-map' },
@@ -120,7 +143,31 @@ export const OtherThanAdmin: INavData[] = [
     name: 'Roads',
     iconComponent: { name: 'cil-list-rich' },
     url: '/location/list',
-  },  {
+  },  
+  {
+    name: 'Mastic Work',
+    iconComponent: { name: 'cil-list-rich' },
+    children: [
+      {
+        name: 'Mastic Work List',
+        url: '/location/masticworklist',
+        iconComponent: { name: 'cil-chart-line' },
+      },
+   
+    ]
+  },
+  {
+    name: 'Mastic Roads',
+    iconComponent: { name: 'cil-list-rich' },
+    children: [
+      {
+        name: 'Mastic Road List',
+        url: '/location/masticroadlist',
+        iconComponent: { name: 'cil-chart-line' },
+      }
+    ]
+  },
+  {
     name: 'Roads Map',
     url: '/ol/display',
     iconComponent: { name: 'cil-map' },
@@ -177,6 +224,29 @@ export const OtherThanAdminWithDataEntry: INavData[] = [
     url: '/location/list',
   },
   {
+    name: 'Mastic Work',
+    iconComponent: { name: 'cil-list-rich' },
+    children: [
+      {
+        name: 'Mastic Work List',
+        url: '/location/masticworklist',
+        iconComponent: { name: 'cil-chart-line' },
+      },
+   
+    ]
+  },
+  {
+    name: 'Mastic Roads',
+    iconComponent: { name: 'cil-list-rich' },
+    children: [
+      {
+        name: 'Mastic Road List',
+        url: '/location/masticroadlist',
+        iconComponent: { name: 'cil-chart-line' },
+      }
+    ]
+  },
+  {
     name: 'Roads Map',
     url: '/ol/display',
     iconComponent: { name: 'cil-map' },
@@ -230,3 +300,21 @@ export const OtherThanAdminWithDataEntry: INavData[] = [
     ],
   },
 ];
+
+
+export const masticWork: INavData[] = [
+  {
+    name: 'Mastic Work',
+    iconComponent: { name: 'cil-list-rich' },
+    children: [
+      {
+        name: 'List',
+        url: '/location/masticworklist',
+        iconComponent: { name: 'cil-chart-line' },
+      },
+   
+    ]
+  },
+
+];
+

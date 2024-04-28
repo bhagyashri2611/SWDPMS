@@ -36,6 +36,8 @@ import { ModulesInLocationComponent } from './modules-in-location/modules-in-loc
 import { ModuledetailComponent } from './moduledetail/moduledetail.component';
 import { BtnSaveCellRenderer } from './moduledetail/button-save-renderer.component';
 import { BtnConSaveCellRenderer } from './moduledetail/button-con-save-renderer.component';
+import { MasticRoadListComponent } from './mastic-road-list/mastic-road-list.component';
+import { MasticRoadDataEntryComponent } from './mastic-road-data-entry/mastic-road-data-entry.component';
 @NgModule({
   declarations: [
     CreatelocationComponent,
@@ -45,6 +47,8 @@ import { BtnConSaveCellRenderer } from './moduledetail/button-con-save-renderer.
     ModuledetailComponent,
     BtnSaveCellRenderer,
     BtnConSaveCellRenderer,
+    MasticRoadListComponent,
+    MasticRoadDataEntryComponent,
   ],
   imports: [
     CommonModule,

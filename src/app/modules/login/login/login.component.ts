@@ -49,8 +49,17 @@ export class LoginComponent implements OnInit {
         sessionStorage.setItem('UserRole', String(result.data[0].roleName));
         sessionStorage.setItem('UserName', String(result.data[0].userName));
         sessionStorage.setItem('jwttoken', String(result.token));
+        sessionStorage.setItem('UserWard', String(result.data[0].wards[0][0].wardName));
+        
         sessionStorage.setItem('isDataEntry', String(result.data[0].isDataEntry));
-        this.router.navigateByUrl('dashboard');
+        debugger;
+        if(String(result.data[0].roleName)===String("Mastic Work")){
+          this.router.navigateByUrl('location/masticworklist');
+        }
+        else{
+          this.router.navigateByUrl('dashboard');
+        }
+       
       } 
       if (result.status === 201) {
         Swal.fire({

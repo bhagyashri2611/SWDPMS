@@ -19,6 +19,9 @@ import { WardWiseReportComponent } from '../rwmsreports/ward-wise-report/ward-wi
 import { ConWiseReportComponent } from '../rwmsreports/con-wise-report/con-wise-report.component';
 import { RoadWiseReportComponent } from '../rwmsreports/road-wise-report/road-wise-report.component';
 import { LocationDataEntryComponent } from '../rwmsreports/location-data-entry/location-data-entry.component';
+import { MasticWorkListComponent } from '../mastic-work/mastic-work-list/mastic-work-list.component';
+import { MasticRoadListComponent } from './mastic-road-list/mastic-road-list.component';
+import { MasticRoadDataEntryComponent } from './mastic-road-data-entry/mastic-road-data-entry.component';
 
 const routes: Routes = [
   { path: 'create', component: CreatelocationComponent },
@@ -38,12 +41,15 @@ const routes: Routes = [
   {path:"numberdWidget",component:NumberWidgetComponent}, 
   {path:"report/taskdetailsreport",component:TaskDetailsComponent}, 
   {path:"report/contractorremarksreport",component:ContractorRemarksComponent}, 
+  {path:"masticroadlist",component: MasticRoadListComponent},
 
   {path:"report/zonewisereport",component: ZoneWiseReportComponent}, 
   {path:"report/wardwisereport",component: WardWiseReportComponent}, 
   {path:"report/contractorwisereport",component: ConWiseReportComponent}, 
   {path:"report/roadwisereport",component: RoadWiseReportComponent},
   {path:"report/locationdataentry",component: LocationDataEntryComponent},
+  {path:"masticworklist",component: MasticWorkListComponent},
+  {path:"createMasticRoad",component: MasticRoadDataEntryComponent}, // added for routing by rucha
 ];
 
 @NgModule({

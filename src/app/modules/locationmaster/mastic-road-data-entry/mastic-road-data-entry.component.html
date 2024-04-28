@@ -1,0 +1,27 @@
+
+<c-col>
+    <c-card>
+<c-card-body>
+<div  style="margin-top: 50px;">
+    <hr class="my-3">
+    <form>              
+      <h6 class="card-title">Browse Excel file for Upload</h6>   
+      <c-row class="mb-3">
+        <c-col [sm]="3">
+            <input cFormControl type="file" #csvReader name="Upload File" id="txtFileUpload" (change)="uploadListener($event)"
+                   accept=".xlsx" />
+          </c-col>    
+          <c-col [sm]="4">
+            <button cButton class="me-1" color="warning" type="reset" [disabled]="upload == false"
+                    (click)="UploadClick()">
+                    <svg cIcon name="cilFile" style="margin-right: 5px;"></svg>
+                <!-- <svg cIcon name="cilUpload" style="margin-right: 5px;"></svg> -->
+                UPLOAD
+            </button>
+          </c-col>
+      </c-row>
+    </form>
+</div>
+</c-card-body>
+</c-card>
+</c-col>
