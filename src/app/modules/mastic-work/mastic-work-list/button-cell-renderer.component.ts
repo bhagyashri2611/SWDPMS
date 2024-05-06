@@ -21,18 +21,18 @@ import Swal from 'sweetalert2';
 })
 export class BtnCellRenderer implements ICellRendererAngularComp {
   private params: any;
-  edit: boolean = false;
+  edit: boolean = true;
   userRole = sessionStorage.getItem('UserRole');
   constructor(
     private router: Router,
     private locationService: LocationService
   ) {}
   agInit(params: any): void {
+    this.params = params;
+
     if (this.userRole === 'Data Owner') {
       this.edit = true;
     } else {
-      this.params = params;
-      debugger;
 
       const today: Date = new Date();
       const current: Date = new Date();
@@ -58,11 +58,11 @@ export class BtnCellRenderer implements ICellRendererAngularComp {
       createdOn.setMinutes(createdOn.getMinutes() - 30);
 
       // Format the date as required by datetime-local input (YYYY-MM-DDTHH:mm)
-      console.log('cretedOn', createdOn);
-      console.log('Current', this.formatDate(current));
-      console.log('today', this.formatDate(today));
-      console.log('Yesterday', this.formatDate(yesterday));
-      console.log('tommorrow', this.formatDate(tommorrow));
+      // console.log('cretedOn', createdOn);
+      // console.log('Current', this.formatDate(current));
+      // console.log('today', this.formatDate(today));
+      // console.log('Yesterday', this.formatDate(yesterday));
+      // console.log('tommorrow', this.formatDate(tommorrow));
 
       if (current < today) {
         console.log('current<today');

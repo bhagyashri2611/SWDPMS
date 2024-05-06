@@ -55,12 +55,12 @@ export class DashboardComponent implements OnInit {
   lastMonth: Date;
   monthBforlastMonth: Date;
 
-  totalRoads: any;
-  completedRoads: any;
-  notStartedRoads: any;
-  delayedRoads: any;
-  inProgressRoads: any;
-  onHoldRoads: any;
+  totalRoads: any=0;
+  completedRoads: any=0;
+  notStartedRoads: any=0;
+  delayedRoads: any=0;
+  inProgressRoads: any=0;
+  onHoldRoads: any=0;
 
   totalRoadsLength: any = 0;
   completedRoadsLength: any = 0;
@@ -98,9 +98,7 @@ export class DashboardComponent implements OnInit {
     private locationService: LocationService,
     private reportService: ReportService,
     private commonService: CommonService
-  ) {
-   
-  }
+  ) {}
 
   OnGridReady(params) {
     this.gridApi = params.api;
@@ -120,10 +118,9 @@ export class DashboardComponent implements OnInit {
       this.mil = this.moduleInLocationList.filter((lm) => {
         if (lm.location != null) {
           return String(lm?.location?._id) === String(f._id);
-        } 
-        else return false;
+        } else return false;
       });
-      
+
       let pqc = this.mil.filter((mil) => {
         return mil.module.moduleName === 'Completion of Crust (PQC)';
       });
@@ -138,13 +135,25 @@ export class DashboardComponent implements OnInit {
       });
 
       let weightedProgress = Number(
-        (pqc[0].cumulativeQuantity /( pqc[0].quantity == 0 ? 1 : pqc[0].quantity)) * 100 *  0.3 +
-        (exc[0].cumulativeQuantity /( exc[0].quantity == 0 ? 1 : exc[0].quantity) )* 100 *  0.2 +
-        (duct[0].cumulativeQuantity/(duct[0].quantity == 0 ? 1 : duct[0].quantity))* 100 * 0.2 +
-        (swd[0].cumulativeQuantity /( swd[0].quantity == 0 ? 1 : swd[0].quantity)) * 100 * 0.3 
+        (pqc[0].cumulativeQuantity /
+          (pqc[0].quantity == 0 ? 1 : pqc[0].quantity)) *
+          100 *
+          0.3 +
+          (exc[0].cumulativeQuantity /
+            (exc[0].quantity == 0 ? 1 : exc[0].quantity)) *
+            100 *
+            0.2 +
+          (duct[0].cumulativeQuantity /
+            (duct[0].quantity == 0 ? 1 : duct[0].quantity)) *
+            100 *
+            0.2 +
+          (swd[0].cumulativeQuantity /
+            (swd[0].quantity == 0 ? 1 : swd[0].quantity)) *
+            100 *
+            0.3
       ).toFixed(2);
-      
-        // debugger;
+
+      // debugger;
 
       let obj = {
         name: f.locationName,
@@ -168,37 +177,31 @@ export class DashboardComponent implements OnInit {
         color: 'success',
         _id: f._id,
       };
-      
+
       this.locationListProgress.push(obj);
     });
     debugger;
     this.rowData = this.locationListProgress;
 
-
-      if (this.currentRoute != '' && this.object != '') {
-        if(this.rowData.length > 0 ) {
-          let filteredList = this.rowData.filter(
-            (item) =>
-              (this.object.zone === '' ||
-                this.object.zone.includes(item.zone)) &&
-              (this.object.ward === '' ||
-                this.object.ward.includes(item.ward)) &&
-              (this.object.contractor === '' ||
-                this.object.contractor.includes(item.contractorName)) &&
-              (this.object.status === '' ||
-                this.object.status.includes(item.status)) &&
-              (this.object.roadName === '' ||
-                this.object.roadName.includes(item.name))
-          );
-          this.rowData = filteredList;
-          // this.gridApi.refreshClientSideRowModel('everything'); // You can specify the refresh type ('aggregate', 'everything', 'pagination', etc.)
-        }
-       
-      
-        
+    if (this.currentRoute != '' && this.object != '') {
+      if (this.rowData.length > 0) {
+        let filteredList = this.rowData.filter(
+          (item) =>
+            (this.object.zone === '' || this.object.zone.includes(item.zone)) &&
+            (this.object.ward === '' || this.object.ward.includes(item.ward)) &&
+            (this.object.contractor === '' ||
+              this.object.contractor.includes(item.contractorName)) &&
+            (this.object.status === '' ||
+              this.object.status.includes(item.status)) &&
+            (this.object.roadName === '' ||
+              this.object.roadName.includes(item.name))
+        );
+        this.rowData = filteredList;
+        // this.gridApi.refreshClientSideRowModel('everything'); // You can specify the refresh type ('aggregate', 'everything', 'pagination', etc.)
       }
-      debugger;
-    
+    }
+    debugger;
+
     // console.log(this.rowData);
   }
 
@@ -345,9 +348,135 @@ export class DashboardComponent implements OnInit {
           });
         }
       );
-    } 
-    
-    else {
+    } else if (this.userRole === 'Data Viewer') {
+      this.locationService.getLocations().subscribe(
+        (result) => {
+          if (result != null) {
+            if (result.status === 200) {
+              this.totalRoadsLength = 0;
+              this.locationList = result.data;
+
+              const userWardString = sessionStorage.getItem('UserWard');
+
+              // Split the UserWard string into an array of ward names
+              const userWards = userWardString.split(',');
+
+              // Filter the locationList based on the ward names
+              const filteredLocations = this.locationList.filter((location) =>
+                userWards.includes(String(location.wardName.wardName))
+              );
+              debugger
+
+              this.locationList = filteredLocations.sort((a, b) =>
+                String(a.locationName).localeCompare(String(b.locationName))
+              );
+              this.totalRoads = this.locationList.length;
+              this.totalRoadsLength = this.locationList.reduce(
+                (acc, obj) => acc + obj.length,
+                0
+              );
+              this.inProgressRoads = this.locationList.filter(
+                (f) => f.status === 'In Progress'
+              ).length;
+
+              const startedRoads = this.locationList.filter(
+                (f) => f.status === 'In Progress'
+              );
+
+              const labels = startedRoads.map(
+                (location) => location.locationName
+              );
+              const dataSets = startedRoads.map((location) => location.length);
+
+              this.Data = {
+                labels: labels,
+                options: {
+                  title: {
+                    display: true,
+                    text: 'Roads Details Chart',
+                  },
+                },
+
+                datasets: [
+                  {
+                    label: 'Total Roads - ' + this.inProgressRoads,
+                    backgroundColor: '#f87979',
+                    data: dataSets,
+                  },
+                ],
+              };
+
+              this.inProgressRoadsLength = this.locationList
+                .filter((f) => f.status === 'In Progress')
+                .reduce((acc, obj) => acc + obj.length, 0);
+
+              this.completedRoads = this.locationList.filter(
+                (f) => f.status === 'Completed'
+              ).length;
+              this.completedRoadsLength = this.locationList
+                .filter((f) => f.status === 'Completed')
+                .reduce((acc, obj) => acc + obj.length, 0);
+
+              this.notStartedRoads = this.locationList.filter(
+                (f) => f.status === 'Not Started'
+              ).length;
+              this.notStartedRoadsLength = this.locationList
+                .filter((f) => f.status === 'Not Started')
+                .reduce((acc, obj) => acc + obj.length, 0);
+
+              this.delayedRoads = this.locationList.filter(
+                (f) => f.status === 'Delayed'
+              ).length;
+              this.delayedRoadsLength = this.locationList
+                .filter((f) => f.status === 'Delayed')
+                .reduce((acc, obj) => acc + obj.length, 0);
+
+              this.onHoldRoads = this.locationList.filter(
+                (f) => f.status === 'On Hold'
+              ).length;
+              this.onHoldRoadsLength = this.locationList
+                .filter((f) => f.status === 'On Hold')
+                .reduce((acc, obj) => acc + obj.length, 0);
+              if (this.locationList.length > 0) {
+                this.locationService
+                  .getAllModulInLocationForDashboard()
+                  .subscribe((result) => {
+                    if (result != null) {
+                      if (result) {
+                        debugger;
+                        this.moduleInLocationList = result.data;
+                        if (this.moduleInLocationList.length > 0) {
+                          this.getLocationTable();
+                        }
+                      } else {
+                        alert('No Data Found');
+                      }
+                    } else {
+                    }
+                  });
+              }
+            }
+          } else {
+            Swal.fire({
+              title: 'Seesion Expired',
+              text: 'Login Again to Continue',
+              icon: 'warning',
+              confirmButtonText: 'Ok',
+            }).then((result) => {
+              if (result.value) {
+                this.logOut();
+              }
+            });
+          }
+        },
+        (err) => {
+          Swal.fire({
+            text: err,
+            icon: 'error',
+          });
+        }
+      );
+    } else {
       this.locationService.getLocationByUser().subscribe(
         (result) => {
           this.totalRoadsLength = 0;
@@ -445,7 +574,6 @@ export class DashboardComponent implements OnInit {
       this.currentRoute = params['param1'];
       this.object = JSON.parse(params['param2']);
     });
-
 
     this.columnDefs = [
       {

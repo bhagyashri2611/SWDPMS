@@ -83,7 +83,7 @@
                 </c-row>
 
                 <c-row class="mb-3">
-                    <label cLabel class="col-sm-2" for="description">Description</label>
+                    <label cLabel class="col-sm-2" for="description">Location</label>
                     <c-col [sm]="8">
                         <input cFormControl id="description" formControlName="description" s type="text" />
                         <c-form-feedback [valid]="false">Please provide a Description</c-form-feedback>
@@ -106,7 +106,7 @@
                 </c-row>
 
                 <c-row class="mb-3">
-                    <label cLabel class="col-sm-2" for="dataDate">Mastic Work Date</label>
+                    <label cLabel class="col-sm-2" for="dataDate">Mastic Work Date & Time</label>
                     <c-col [sm]="8">
                         <input cFormControl id="dataDate"  [min]="minDate()" [max]="maxDate()" formControlName="dataDate" required type="datetime-local" />
                         <c-form-feedback [valid]="false">Please provide the Date of Mastic Work</c-form-feedback>
@@ -222,7 +222,7 @@
                             </c-row>
                         </c-card-body>
                     </c-col>
-                </c-row>U
+                </c-row>
 
             </form>
             <!-- <div *ngIf="userRole === 'Data Owner'" style="margin-top: 50px;">

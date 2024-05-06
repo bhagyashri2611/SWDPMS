@@ -145,6 +145,7 @@ export class MasticWorkListComponent implements OnInit {
     }
 }
   userRole = sessionStorage.getItem('UserRole');
+  userID = sessionStorage.getItem('UserId');
 
   getLocation() {
     // if (this.userRole === 'Data Owner') {
@@ -154,15 +155,36 @@ export class MasticWorkListComponent implements OnInit {
           if (result.status === 200) {
             if (this.userRole === 'Data Owner') {
               this.masticWorkList = result.data;
+              console.log(this.masticWorkList);
+              
+              this.rowData = this.masticWorkList;
+            } else  if (this.userRole === 'Data Viewer') {
+              this.masticWorkList = result.data;
+              console.log(this.masticWorkList);
+
+              const userWardString = sessionStorage.getItem('UserWard');
+
+              // Split the UserWard string into an array of ward names
+              const userWards = userWardString.split(',');
+
+              // Filter the locationList based on the ward names
+              const filteredLocations = this.masticWorkList.filter((location) =>
+                userWards.includes(String(location.wardName.wardName))
+              );
+              debugger
+              this.masticWorkList=filteredLocations
               this.rowData = this.masticWorkList;
             } else {
+              debugger
               let ward = sessionStorage.getItem('UserWard');
+
               this.masticWorkList = result.data.filter(
                 (f) => f.wardName.wardName === ward
               );
+              console.log(this.masticWorkList);             
+              this.masticWorkList=this.masticWorkList.filter(f=>f.subEngineerName._id===this.userID)
               this.rowData = this.masticWorkList;
             }
-            console.log(this.masticWorkList);
           }
         } else {
           Swal.fire({
@@ -184,48 +206,14 @@ export class MasticWorkListComponent implements OnInit {
         });
       }
     );
-    // } else {
-
-    // this.masticService.getMasticWorkByUser(obj).subscribe(
-    //   (result) => {
-    //     if (result != null) {
-    //       if (result.status === 200) {
-    //         this.masticWorkList = result.data;
-    //         console.log(this.masticWorkList);
-
-    //         this.rowData = this.masticWorkList;
-    //         debugger;
-    //       }
-    //     } else {
-    //       Swal.fire({
-    //         title: 'Seesion Expired',
-    //         text: 'Login Again to Continue',
-    //         icon: 'warning',
-    //         confirmButtonText: 'Ok',
-    //       }).then((result) => {
-    //         if (result.value) {
-    //           debugger;
-    //           this.logOut();
-    //         }
-    //       });
-    //     }
-    //   },
-    //   (err) => {
-    //     Swal.fire({
-    //       text: err,
-    //       icon: 'error',
-    //     });
-    //   }
-    // );
-    // }
+    
   }
 
   
   formatDateForInput(date: Date): string {
     if(date){
       const isoString = date.toString();
-      console.log('isoString', isoString);
-      console.log('Slice', isoString.slice(0, 16));
+
       return isoString.slice(0, 16); // Truncate milliseconds and timezone
     }else{
       return null
@@ -239,7 +227,6 @@ export class MasticWorkListComponent implements OnInit {
   }
 
   download() {
-    console.log(this.masticWorkList);
     let downloadData = this.masticWorkList.map((m) => {
       return {
         workCode: m.workCode,
@@ -264,7 +251,6 @@ export class MasticWorkListComponent implements OnInit {
         modifiedBy: m.modifiedBy,
       };
     });
-    console.log(downloadData);
 
     let fileName =
       'Mastic Work List ' +

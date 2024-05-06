@@ -7,13 +7,12 @@ export const environment = {
   ///  baseUrl: 'http://localhost:8090/api'
   //  baseUrl: 'https://swm.mcgm.gov.in:8081/api'
   //  Client_ID_FB = 1118445942135621,
-   baseUrl: 'http://localhost:3000/api/',
-  imageUrl: 'http://localhost:3000/',
-
-  //smsUrl: 'http://localhost:1027/service.svc',
-  // baseUrl: 'https://roads.mcgm.gov.in:3000/api/',
-  // imageUrl: 'https://roads.mcgm.gov.in:3000/',
-
+  //  baseUrl: 'http://localhost:3000/api/',
+  // imageUrl: 'http://localhost:3000/',
+  // smsUrl: 'http://localhost:1027/service.svc',
+  
+  baseUrl: 'https://roads.mcgm.gov.in:3000/api/',
+  imageUrl: 'https://roads.mcgm.gov.in:3000/',
   smsUrl: 'https://roads.mcgm.gov.in/rwmssms/service.svc',
   // baseUrl: 'https://swd.mcgm.gov.in/internaldashapi',
   // baseUrl: 'http://localhost:13984',

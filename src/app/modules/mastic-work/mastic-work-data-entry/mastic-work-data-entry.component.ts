@@ -479,10 +479,13 @@ export class MasticWorkDataEntryComponent {
       today.setMinutes(0);
       const current: Date = new Date();
       if (current > today) {
-        return this.formatDate(new Date());
+        // return this.formatDate(new Date());
+        const yesterday: Date = new Date(today);
+        yesterday.setDate(today.getDate() - 8);
+        return this.formatDate(yesterday);
       } else if (current < today) {
         const yesterday: Date = new Date(today);
-        yesterday.setDate(today.getDate() - 1);
+        yesterday.setDate(today.getDate() - 8);
         return this.formatDate(yesterday);
       }}
   }

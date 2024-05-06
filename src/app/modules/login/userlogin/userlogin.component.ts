@@ -100,7 +100,7 @@ export class UserloginComponent {
       sessionStorage.setItem('UserName', String(this.userModel.userName));
       sessionStorage.setItem('jwttoken', String(this.token));
       sessionStorage.setItem('isDataEntry', String(this.userModel.isDataEntry));
-
+      sessionStorage.setItem('UserWard', String(this.userModel.wards[0][0].wardName));
       this.router.navigateByUrl('dashboard');
    
     } else {

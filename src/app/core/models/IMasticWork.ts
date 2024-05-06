@@ -1,3 +1,4 @@
+import { User } from './IUser';
 import { wardModel } from './IWard';
 
 export interface MasticWorkModel {
@@ -18,7 +19,7 @@ export interface MasticWorkModel {
   dbmQuantity:Number,  
   wmmQuantity:Number,   
   cost:Number,
-  subEngineerName:String,
+  subEngineerName:User,
   beforeImagePath:String,
   afterImagePath:String,
   createdOn: Date;

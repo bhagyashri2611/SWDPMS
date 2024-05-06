@@ -11,7 +11,7 @@ export const navItems: INavData[] = [
     iconComponent: { name: 'cil-list-rich' },
     children: [
       {
-        name: 'Roads',
+        name: 'Mega CC Roads',
         url: '/location/list',
         iconComponent: { name: 'cil-chart-line' },
       },
@@ -41,13 +41,6 @@ export const navItems: INavData[] = [
         url: '/location/masticworklist',
         iconComponent: { name: 'cil-chart-line' },
       },
-   
-    ]
-  },
-  {
-    name: 'Mastic Roads',
-    iconComponent: { name: 'cil-list-rich' },
-    children: [
       {
         name: 'Mastic Road List',
         url: '/location/masticroadlist',
@@ -56,13 +49,13 @@ export const navItems: INavData[] = [
     ]
   },
   {
-    name: 'Roads Map',
+    name: 'Mega CC Roads Map',
     url: '/ol/display',
     iconComponent: { name: 'cil-map' },
 
   },
   {
-    name: 'Reports',
+    name: 'Mega CC Reports',
     iconComponent: { name: 'cil-chart-pie' },
     children: [
       // {
@@ -140,7 +133,7 @@ export const OtherThanAdmin: INavData[] = [
     iconComponent: { name: 'cil-speedometer' },
   },
   {
-    name: 'Roads',
+    name: 'Mega CC Roads',
     iconComponent: { name: 'cil-list-rich' },
     url: '/location/list',
   },  
@@ -153,13 +146,6 @@ export const OtherThanAdmin: INavData[] = [
         url: '/location/masticworklist',
         iconComponent: { name: 'cil-chart-line' },
       },
-   
-    ]
-  },
-  {
-    name: 'Mastic Roads',
-    iconComponent: { name: 'cil-list-rich' },
-    children: [
       {
         name: 'Mastic Road List',
         url: '/location/masticroadlist',
@@ -167,14 +153,15 @@ export const OtherThanAdmin: INavData[] = [
       }
     ]
   },
+
   {
-    name: 'Roads Map',
+    name: 'Mega CC Roads Map',
     url: '/ol/display',
     iconComponent: { name: 'cil-map' },
 
   },
   {
-    name: 'Reports',
+    name: 'Mega CC Reports',
     iconComponent: { name: 'cil-chart-pie' },
     children: [
       // {
@@ -219,7 +206,7 @@ export const OtherThanAdminWithDataEntry: INavData[] = [
     iconComponent: { name: 'cil-speedometer' },
   },
   {
-    name: 'Roads',
+    name: 'Mega CC Roads',
     iconComponent: { name: 'cil-list-rich' },
     url: '/location/list',
   },
@@ -232,13 +219,6 @@ export const OtherThanAdminWithDataEntry: INavData[] = [
         url: '/location/masticworklist',
         iconComponent: { name: 'cil-chart-line' },
       },
-   
-    ]
-  },
-  {
-    name: 'Mastic Roads',
-    iconComponent: { name: 'cil-list-rich' },
-    children: [
       {
         name: 'Mastic Road List',
         url: '/location/masticroadlist',
@@ -246,14 +226,15 @@ export const OtherThanAdminWithDataEntry: INavData[] = [
       }
     ]
   },
+
   {
-    name: 'Roads Map',
+    name: 'Mega CC Roads Map',
     url: '/ol/display',
     iconComponent: { name: 'cil-map' },
 
   },
   {
-    name: 'Reports',
+    name: 'Mega CC Reports',
     iconComponent: { name: 'cil-chart-pie' },
     children: [
       // {

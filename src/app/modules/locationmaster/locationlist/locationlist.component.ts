@@ -229,7 +229,53 @@ export class LocationlistComponent implements OnInit {
           });
         }
       );
-    } else {
+    }if (this.userRole === 'Data Viewer') {
+      this.locationService.getLocations().subscribe(
+        (result) => {
+          debugger;
+          if (result != null) {
+            if (result.status === 200) {
+              this.locationList = result.data;
+              const userWardString = sessionStorage.getItem('UserWard');
+
+              // Split the UserWard string into an array of ward names
+              const userWards = userWardString.split(',');
+
+              // Filter the locationList based on the ward names
+              const filteredLocations = this.locationList.filter((location) =>
+                userWards.includes(String(location.wardName.wardName))
+              );
+              this.locationList=filteredLocations
+              this.locationList = this.locationList.sort((a, b) =>
+                String(a.locationName).localeCompare(String(b.locationName))
+              );
+
+              this.rowData = this.locationList;
+              this.rowData.map(m=>m['wardName']=m.wardName.wardName)
+              
+            }
+          } else {
+            Swal.fire({
+              title: 'Seesion Expired',
+              text: 'Login Again to Continue',
+              icon: 'warning',
+              confirmButtonText: 'Ok',
+            }).then((result) => {
+              if (result.value) {
+                debugger;
+                this.logOut();
+              }
+            });
+          }
+        },
+        (err) => {
+          Swal.fire({
+            text: err,
+            icon: 'error',
+          });
+        }
+      );
+    }  else {
       this.locationService.getLocationByUser().subscribe(
         (result) => {
           debugger;

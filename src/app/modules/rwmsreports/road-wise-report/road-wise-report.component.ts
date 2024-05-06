@@ -157,6 +157,64 @@ export class RoadWiseReportComponent implements OnInit{
           });
         }
       );
+    }  else if (this.userRole === 'Data Viewer') {
+      this.locationService.getLocations().subscribe(
+        (result) => {
+          if (result != null) {
+            if (result.status === 200) {
+              this.locationList = result.data;
+              const userWardString = sessionStorage.getItem('UserWard');
+
+              // Split the UserWard string into an array of ward names
+              const userWards = userWardString.split(',');
+
+              // Filter the locationList based on the ward names
+              const filteredLocations = this.locationList.filter((location) =>
+                userWards.includes(String(location.wardName.wardName))
+              );
+              this.locationList=filteredLocations
+              this.locationList = this.locationList.sort((a, b) =>
+                String(a.locationName).localeCompare(String(b.locationName))
+              );
+
+              if (this.locationList.length > 0) {
+                this.locationService
+                  .getAllModulInLocationForDashboard()
+                  .subscribe((result) => {
+                    if (result != null) {
+                      if (result) {
+                        this.moduleInLocationList = result.data;
+                        if (this.moduleInLocationList.length > 0) {
+                          this.getLocationTable();
+                        }
+                      } else {
+                        alert('No Data Found');
+                      }
+                    } else {
+                    }
+                  });
+              }
+            }
+          } else {
+            Swal.fire({
+              title: 'Seesion Expired',
+              text: 'Login Again to Continue',
+              icon: 'warning',
+              confirmButtonText: 'Ok',
+            }).then((result) => {
+              if (result.value) {
+                this.logOut();
+              }
+            });
+          }
+        },
+        (err) => {
+          Swal.fire({
+            text: err,
+            icon: 'error',
+          });
+        }
+      );
     } else {
       this.locationService.getLocationByUser().subscribe(
         (result) => {
