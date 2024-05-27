@@ -7,7 +7,7 @@ export const environment = {
   ///  baseUrl: 'http://localhost:8090/api'
   //  baseUrl: 'https://swm.mcgm.gov.in:8081/api'
   //  Client_ID_FB = 1118445942135621,
-  //  baseUrl: 'http://localhost:3000/api/',
+    // baseUrl: 'http://localhost:3000/api/',
   // imageUrl: 'http://localhost:3000/',
   // smsUrl: 'http://localhost:1027/service.svc',
   

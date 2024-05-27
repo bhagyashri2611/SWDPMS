@@ -7,6 +7,9 @@ import { LocationmasterRoutingModule } from './locationmaster-routing.module';
 import { CreatelocationComponent } from './createlocation/createlocation.component';
 import { LocationlistComponent } from './locationlist/locationlist.component';
 import { BtnCellRenderer } from './locationlist/button-cell-renderer.component';
+import { MegaCCBtnCellRenderer } from './mega-cc-roads/button-cell-renderer.component';
+import { NonMegaCCBtnCellRenderer } from './non-mega-cc-roads/button-cell-renderer.component';
+
 import {
   AccordionModule,
   BadgeModule,
@@ -38,6 +41,11 @@ import { BtnSaveCellRenderer } from './moduledetail/button-save-renderer.compone
 import { BtnConSaveCellRenderer } from './moduledetail/button-con-save-renderer.component';
 import { MasticRoadListComponent } from './mastic-road-list/mastic-road-list.component';
 import { MasticRoadDataEntryComponent } from './mastic-road-data-entry/mastic-road-data-entry.component';
+import { MegaCcRoadsComponent } from './mega-cc-roads/mega-cc-roads.component';
+import { NonMegaCcRoadsComponent } from './non-mega-cc-roads/non-mega-cc-roads.component';
+import { PaymentComponent } from './payment/payment.component';
+import { HttpClientModule } from '@angular/common/http';
+
 @NgModule({
   declarations: [
     CreatelocationComponent,
@@ -49,6 +57,11 @@ import { MasticRoadDataEntryComponent } from './mastic-road-data-entry/mastic-ro
     BtnConSaveCellRenderer,
     MasticRoadListComponent,
     MasticRoadDataEntryComponent,
+    MegaCcRoadsComponent,
+    MegaCCBtnCellRenderer,
+    NonMegaCcRoadsComponent,
+    NonMegaCCBtnCellRenderer,
+    PaymentComponent,
   ],
   imports: [
     CommonModule,
@@ -80,6 +93,7 @@ import { MasticRoadDataEntryComponent } from './mastic-road-data-entry/mastic-ro
     TooltipModule,
     UtilitiesModule,
     LocationmasterRoutingModule,
+    HttpClientModule
   ],
 })
 export class LocationmasterModule {}

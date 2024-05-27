@@ -114,7 +114,7 @@ export class ModuledetailComponent {
           this.sortedEntryList.push(item);
         }
       });
-      console.log('Final Data Entry List', this.sortedEntryList);
+      // console.log('Final Data Entry List', this.sortedEntryList);
       debugger;
       this.rowData1 = this.sortedEntryList.filter(
         (f) => f.location._id === this.locID
@@ -132,8 +132,8 @@ export class ModuledetailComponent {
 
           if (this.userRole === 'Sub Engineer') {
             debugger;
-            console.log('UserRole:', this.userRole);
-            console.log('UserData ID:', this.userData._id);
+            // console.log('UserRole:', this.userRole);
+            // console.log('UserData ID:', this.userData._id);
             this.rowData1 = this.rowData1.filter((f) => {
               const match = String(f.assignedSE) === String(this.userData._id);
               return match;
@@ -749,8 +749,8 @@ export class ModuledetailComponent {
     // Validate if the input is a valid number
     const parsedValue = parseFloat(userInput);
     // If the parsed value is a valid number, return it; otherwise, return undefined to indicate validation failure
-    console.log('Parsed Value ', parsedValue);
-    console.log('Parsed Value- isNan(parsed Value) ', isNaN(parsedValue));
+    // console.log('Parsed Value ', parsedValue);
+    // console.log('Parsed Value- isNan(parsed Value) ', isNaN(parsedValue));
     return isNaN(parsedValue) ? undefined : parsedValue;
   }
 
@@ -761,14 +761,14 @@ export class ModuledetailComponent {
   onCellValueChanged(event: any) {
     debugger;
     this.selectedCell = event;
-    console.log('Cell value changed:', event.data);
+    // console.log('Cell value changed:', event.data);
     if (this.selectedCell) {
       this.field = this.selectedCell.colDef.field;
       const updatedValue =
         this.selectedCell.data[this.selectedCell.colDef.field];
       // You can save the updatedValue here, for example, send it to the server or update a local variable.
-      console.log('Updated Value:', updatedValue);
-      console.log('Updated Value for the field:', this.field);
+      // console.log('Updated Value:', updatedValue);
+      // console.log('Updated Value for the field:', this.field);
 
       this.saveupdatedValues(event.data);
       // Reset selectedCell after saving the value
@@ -972,7 +972,7 @@ export class ModuledetailComponent {
                 // this.onLocationChange(this.assetInstanceModel.location);
                 // this.onModuleChange(this.assetInstanceModel.module)
                 //edit data in controls
-                console.log(this.model);
+                // console.log(this.model);
                 // this.form.patchValue({
                 //   qauntity:this.moduleInLoc.quantity,
                 //   rateofwork:this.moduleInLoc.rateofwork,
@@ -1022,7 +1022,7 @@ export class ModuledetailComponent {
     const modlInLoc = this.moduleInLocationList.filter(
       (m) => m._id === moduleid
     );
-    console.log(modlInLoc);
+    // console.log(modlInLoc);
 
     this.moduleService
       .getModuleByID(modlInLoc[0].module._id)

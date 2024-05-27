@@ -304,6 +304,7 @@ export class MasticWorkDataEntryComponent {
         afterImageFileName: this.afterImageFileName,
         modifiedBy: sessionStorage.getItem('FullName'),
       };
+      debugger;
       this.masticworkService
         .updateLocation(this.locId, objMasticWork)
         .subscribe(
@@ -470,22 +471,23 @@ export class MasticWorkDataEntryComponent {
     };
     return result;
   }
+  isDataEntry = sessionStorage.getItem('isDataEntry');
 
   minDate(): string {
-    if(this.userRole==='Data Owner'){
+    if(this.userRole==='Data Owner' || this.isDataEntry == 'Yes' ){
       return ""
     }else{ const today: Date = new Date();
       today.setHours(12); 
       today.setMinutes(0);
       const current: Date = new Date();
       if (current > today) {
-        // return this.formatDate(new Date());
-        const yesterday: Date = new Date(today);
-        yesterday.setDate(today.getDate() - 8);
-        return this.formatDate(yesterday);
+        return this.formatDate(new Date());
+        // const yesterday: Date = new Date(today);
+        // yesterday.setDate(today.getDate() - 1);
+        // return this.formatDate(yesterday);
       } else if (current < today) {
         const yesterday: Date = new Date(today);
-        yesterday.setDate(today.getDate() - 8);
+        yesterday.setDate(today.getDate() - 1);
         return this.formatDate(yesterday);
       }}
   }

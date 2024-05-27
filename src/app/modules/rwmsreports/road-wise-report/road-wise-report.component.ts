@@ -115,6 +115,8 @@ export class RoadWiseReportComponent implements OnInit{
           if (result != null) {
             if (result.status === 200) {
               this.locationList = result.data;
+              this.locationList=this.locationList.filter(f=>String(f.roadType)===String("Mega CC Road"))
+
               this.locationList = this.locationList.sort((a, b) =>
                 String(a.locationName).localeCompare(String(b.locationName))
               );
@@ -127,6 +129,8 @@ export class RoadWiseReportComponent implements OnInit{
                       if (result) {
                         this.moduleInLocationList = result.data;
                         if (this.moduleInLocationList.length > 0) {
+                          this.moduleInLocationList=this.moduleInLocationList.filter(f=>String(f.location.roadType)===String("Mega CC Road"))
+
                           this.getLocationTable();
                         }
                       } else {
@@ -163,6 +167,8 @@ export class RoadWiseReportComponent implements OnInit{
           if (result != null) {
             if (result.status === 200) {
               this.locationList = result.data;
+              this.locationList=this.locationList.filter(f=>String(f.roadType)===String("Mega CC Road"))
+
               const userWardString = sessionStorage.getItem('UserWard');
 
               // Split the UserWard string into an array of ward names
@@ -185,6 +191,8 @@ export class RoadWiseReportComponent implements OnInit{
                       if (result) {
                         this.moduleInLocationList = result.data;
                         if (this.moduleInLocationList.length > 0) {
+                          this.moduleInLocationList=this.moduleInLocationList.filter(f=>String(f.location.roadType)===String("Mega CC Road"))
+
                           this.getLocationTable();
                         }
                       } else {
@@ -221,6 +229,8 @@ export class RoadWiseReportComponent implements OnInit{
           if (result != null) {
             if (result.status === 200) {
               this.locationList = result.data;
+              this.locationList=this.locationList.filter(f=>String(f.roadType)===String("Mega CC Road"))
+
               this.locationList = this.locationList.sort((a, b) =>
                 String(a.locationName).localeCompare(String(b.locationName))
               );
@@ -233,6 +243,8 @@ export class RoadWiseReportComponent implements OnInit{
                       if (result) {
                         this.moduleInLocationList = result.data;
                         if (this.moduleInLocationList.length > 0) {
+                          this.moduleInLocationList=this.moduleInLocationList.filter(f=>String(f.location.roadType)===String("Mega CC Road"))
+
                           this.getLocationTable();
                         }
                       } else {

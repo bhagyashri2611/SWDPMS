@@ -43,6 +43,7 @@
     "ag-grid-community": "^29.1.0",
     "bootstrap": "^5.2.3",
     "chart.js": "^3.9.1",
+    "crypto-js": "^4.2.0",
     "moment": "^2.29.4",
     "ng2-charts": "^4.1.1",
     "ngx-perfect-scrollbar": "^10.1.1",

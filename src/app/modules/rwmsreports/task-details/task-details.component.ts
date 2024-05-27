@@ -179,6 +179,7 @@ export class TaskDetailsComponent implements OnInit {
     if (result != null) {
       if (result.status === 200) {
         this.locationList = result.data;
+        this.locationList=this.locationList.filter(f=>String(f.roadType)===String("Mega CC Road"))
         this.userLocations = this.locationList.map((m) => m._id);
         this.dataEntryService
           .getDataEntryByUser({ location: this.userLocations })

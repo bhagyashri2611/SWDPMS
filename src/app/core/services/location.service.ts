@@ -50,6 +50,30 @@ export class LocationService {
     this.content.next(obj);
   }
 
+  // call(callUrl: string, formData: any): Observable<any> {
+  //   debugger;
+  //   return this._httpClient.post(callUrl, formData);
+  // }
+
+  call(callUrl: string, formData: any): Observable<any> {
+    return this._httpClient.post<any>('https://testpay.easebuzz.in/payment/initiateLink', this.convertToFormData(formData), {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/x-www-form-urlencoded'
+      })
+    })
+      .pipe(catchError(this.handleError));
+  }
+
+  convertToFormData(data: any): string {
+    let formData = '';
+    for (const key in data) {
+      if (data.hasOwnProperty(key)) {
+        formData += encodeURIComponent(key) + '=' + encodeURIComponent(data[key]) + '&';
+      }
+    }
+    return formData.slice(0, -1); // Remove the trailing '&'
+  }
+
   //Get All getAllModulInLocation added jwt
   getAllModulInLocation(): Observable<IModulesInLocationResponse> {
     // return this._httpClient.get<IModulesInLocationResponse>(this.baseURL + 'getlocationmodule')

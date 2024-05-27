@@ -11,7 +11,7 @@ export const navItems: INavData[] = [
     iconComponent: { name: 'cil-list-rich' },
     children: [
       {
-        name: 'Mega CC Roads',
+        name: 'Roads Master Data',
         url: '/location/list',
         iconComponent: { name: 'cil-chart-line' },
       },
@@ -33,71 +33,6 @@ export const navItems: INavData[] = [
     ],
   },
   {
-    name: 'Mastic Work',
-    iconComponent: { name: 'cil-list-rich' },
-    children: [
-      {
-        name: 'Mastic Work List',
-        url: '/location/masticworklist',
-        iconComponent: { name: 'cil-chart-line' },
-      },
-      {
-        name: 'Mastic Road List',
-        url: '/location/masticroadlist',
-        iconComponent: { name: 'cil-chart-line' },
-      }
-    ]
-  },
-  {
-    name: 'Mega CC Roads Map',
-    url: '/ol/display',
-    iconComponent: { name: 'cil-map' },
-
-  },
-  {
-    name: 'Mega CC Reports',
-    iconComponent: { name: 'cil-chart-pie' },
-    children: [
-      // {
-      //   name: 'Date Wise Task Details',
-      //   url: '/location/report/taskdetailsreport',
-      //   iconComponent: { name: 'cil-chart-line' },
-      // },
-   
-      {
-        name: 'Zone Wise Report',
-        url: '/location/report/zonewisereport',
-        iconComponent: { name: 'cil-chart-line' },
-      },
-      {
-        name: 'Ward Wise Report',
-        url: '/location/report/wardwisereport',
-        iconComponent: { name: 'cil-chart-line' },
-      },
-      {
-        name: 'Contractor Wise Report',
-        url: '/location/report/contractorwisereport',
-        iconComponent: { name: 'cil-chart-line' },
-      },
-      {
-        name: 'Road Wise Report',
-        url: '/location/report/roadwisereport',
-        iconComponent: { name: 'cil-chart-line' },
-      },
-      {
-        name: 'Contractor Remarks',
-        url: '/location/report/contractorremarksreport',
-        iconComponent: { name: 'cil-chart-line' },
-      },
-      {
-        name: 'Defaulter List',
-        url: '/location/report/locationdataentry',
-        iconComponent: { name: 'cil-chart-line' },
-      },
-    ],
-  },
-
-  {
     name: 'Data Entry Attributes',
     iconComponent: { name: 'cil-notes' },
     children: [
@@ -112,6 +47,142 @@ export const navItems: INavData[] = [
         iconComponent: { name: 'cil-pin' },
       },
     ],
+  },
+  {
+    name: 'Mega CC Project',
+    iconComponent: { name: 'cil-list-rich' },
+    children: [
+      {
+        name: 'Mega CC Roads',
+        url: '/location/megacclist',
+        iconComponent: { name: 'cil-chart-line' },
+      },
+      {
+        name: 'Mega CC Roads Map',
+        url: '/ol/display',
+        iconComponent: { name: 'cil-map' },
+    
+      },
+      {
+        name: 'Mega CC Reports',
+        iconComponent: { name: 'cil-chart-pie' },
+        children: [
+          // {
+          //   name: 'Date Wise Task Details',
+          //   url: '/location/report/taskdetailsreport',
+          //   iconComponent: { name: 'cil-chart-line' },
+          // },
+       
+          {
+            name: 'Zone Wise Report',
+            url: '/location/report/zonewisereport',
+            iconComponent: { name: 'cil-chart-line' },
+          },
+          {
+            name: 'Ward Wise Report',
+            url: '/location/report/wardwisereport',
+            iconComponent: { name: 'cil-chart-line' },
+          },
+          {
+            name: 'Contractor Wise Report',
+            url: '/location/report/contractorwisereport',
+            iconComponent: { name: 'cil-chart-line' },
+          },
+          {
+            name: 'Road Wise Report',
+            url: '/location/report/roadwisereport',
+            iconComponent: { name: 'cil-chart-line' },
+          },
+          {
+            name: 'Contractor Remarks',
+            url: '/location/report/contractorremarksreport',
+            iconComponent: { name: 'cil-chart-line' },
+          },
+          {
+            name: 'Defaulter List',
+            url: '/location/report/locationdataentry',
+            iconComponent: { name: 'cil-chart-line' },
+          },
+        ],
+      },
+    
+    ]
+  },
+  {
+    name: 'Non Mega CC Roads',
+    iconComponent: { name: 'cil-list-rich' },
+    children: [
+      {
+        name: 'Non Mega CC Roads',
+        url: '/location/nonmegacclist',
+        iconComponent: { name: 'cil-chart-line' },
+      },
+      // {
+      //   name: 'Mega CC Roads Map',
+      //   url: '/ol/display',
+      //   iconComponent: { name: 'cil-map' },
+    
+      // },
+      // {
+      //   name: 'Mega CC Reports',
+      //   iconComponent: { name: 'cil-chart-pie' },
+      //   children: [
+      //     // {
+      //     //   name: 'Date Wise Task Details',
+      //     //   url: '/location/report/taskdetailsreport',
+      //     //   iconComponent: { name: 'cil-chart-line' },
+      //     // },
+       
+      //     {
+      //       name: 'Zone Wise Report',
+      //       url: '/location/report/zonewisereport',
+      //       iconComponent: { name: 'cil-chart-line' },
+      //     },
+      //     {
+      //       name: 'Ward Wise Report',
+      //       url: '/location/report/wardwisereport',
+      //       iconComponent: { name: 'cil-chart-line' },
+      //     },
+      //     {
+      //       name: 'Contractor Wise Report',
+      //       url: '/location/report/contractorwisereport',
+      //       iconComponent: { name: 'cil-chart-line' },
+      //     },
+      //     {
+      //       name: 'Road Wise Report',
+      //       url: '/location/report/roadwisereport',
+      //       iconComponent: { name: 'cil-chart-line' },
+      //     },
+      //     {
+      //       name: 'Contractor Remarks',
+      //       url: '/location/report/contractorremarksreport',
+      //       iconComponent: { name: 'cil-chart-line' },
+      //     },
+      //     {
+      //       name: 'Defaulter List',
+      //       url: '/location/report/locationdataentry',
+      //       iconComponent: { name: 'cil-chart-line' },
+      //     },
+      //   ],
+      // },
+    
+    ]
+  },
+  {
+    name: 'Mastic Work',
+    iconComponent: { name: 'cil-list-rich' },
+    children: [
+      {
+        name: 'Mastic Work List',
+        url: '/location/masticworklist',
+        iconComponent: { name: 'cil-chart-line' },
+      },
+      {
+        name: 'Mastic Road List',
+        url: '/location/masticroadlist',
+        iconComponent: { name: 'cil-chart-line' },
+      }
+    ]
   },
   {
     name: 'Data Entry',
@@ -133,10 +204,125 @@ export const OtherThanAdmin: INavData[] = [
     iconComponent: { name: 'cil-speedometer' },
   },
   {
-    name: 'Mega CC Roads',
+    name: 'Mega CC Project',
     iconComponent: { name: 'cil-list-rich' },
-    url: '/location/list',
-  },  
+    children: [
+      {
+        name: 'Mega CC Roads',
+        url: '/location/megacclist',
+        iconComponent: { name: 'cil-chart-line' },
+      },
+      {
+        name: 'Mega CC Roads Map',
+        url: '/ol/display',
+        iconComponent: { name: 'cil-map' },
+    
+      },
+      {
+        name: 'Mega CC Reports',
+        iconComponent: { name: 'cil-chart-pie' },
+        children: [
+          // {
+          //   name: 'Date Wise Task Details',
+          //   url: '/location/report/taskdetailsreport',
+          //   iconComponent: { name: 'cil-chart-line' },
+          // },
+       
+          {
+            name: 'Zone Wise Report',
+            url: '/location/report/zonewisereport',
+            iconComponent: { name: 'cil-chart-line' },
+          },
+          {
+            name: 'Ward Wise Report',
+            url: '/location/report/wardwisereport',
+            iconComponent: { name: 'cil-chart-line' },
+          },
+          {
+            name: 'Contractor Wise Report',
+            url: '/location/report/contractorwisereport',
+            iconComponent: { name: 'cil-chart-line' },
+          },
+          {
+            name: 'Road Wise Report',
+            url: '/location/report/roadwisereport',
+            iconComponent: { name: 'cil-chart-line' },
+          },
+          {
+            name: 'Contractor Remarks',
+            url: '/location/report/contractorremarksreport',
+            iconComponent: { name: 'cil-chart-line' },
+          },
+          {
+            name: 'Defaulter List',
+            url: '/location/report/locationdataentry',
+            iconComponent: { name: 'cil-chart-line' },
+          },
+        ],
+      },
+    
+    ]
+  },
+  {
+    name: 'Non Mega CC Roads',
+    iconComponent: { name: 'cil-list-rich' },
+    children: [
+      {
+        name: 'Non Mega CC Roads',
+        url: '/location/nonmegacclist',
+        iconComponent: { name: 'cil-chart-line' },
+      },
+      // {
+      //   name: 'Mega CC Roads Map',
+      //   url: '/ol/display',
+      //   iconComponent: { name: 'cil-map' },
+    
+      // },
+      // {
+      //   name: 'Mega CC Reports',
+      //   iconComponent: { name: 'cil-chart-pie' },
+      //   children: [
+      //     // {
+      //     //   name: 'Date Wise Task Details',
+      //     //   url: '/location/report/taskdetailsreport',
+      //     //   iconComponent: { name: 'cil-chart-line' },
+      //     // },
+       
+      //     {
+      //       name: 'Zone Wise Report',
+      //       url: '/location/report/zonewisereport',
+      //       iconComponent: { name: 'cil-chart-line' },
+      //     },
+      //     {
+      //       name: 'Ward Wise Report',
+      //       url: '/location/report/wardwisereport',
+      //       iconComponent: { name: 'cil-chart-line' },
+      //     },
+      //     {
+      //       name: 'Contractor Wise Report',
+      //       url: '/location/report/contractorwisereport',
+      //       iconComponent: { name: 'cil-chart-line' },
+      //     },
+      //     {
+      //       name: 'Road Wise Report',
+      //       url: '/location/report/roadwisereport',
+      //       iconComponent: { name: 'cil-chart-line' },
+      //     },
+      //     {
+      //       name: 'Contractor Remarks',
+      //       url: '/location/report/contractorremarksreport',
+      //       iconComponent: { name: 'cil-chart-line' },
+      //     },
+      //     {
+      //       name: 'Defaulter List',
+      //       url: '/location/report/locationdataentry',
+      //       iconComponent: { name: 'cil-chart-line' },
+      //     },
+      //   ],
+      // },
+    
+    ]
+  },
   {
     name: 'Mastic Work',
     iconComponent: { name: 'cil-list-rich' },
@@ -153,50 +339,6 @@ export const OtherThanAdmin: INavData[] = [
       }
     ]
   },
-
-  {
-    name: 'Mega CC Roads Map',
-    url: '/ol/display',
-    iconComponent: { name: 'cil-map' },
-
-  },
-  {
-    name: 'Mega CC Reports',
-    iconComponent: { name: 'cil-chart-pie' },
-    children: [
-      // {
-      //   name: 'Date Wise Task Details',
-      //   url: '/location/report/taskdetailsreport',
-      //   iconComponent: { name: 'cil-chart-line' },
-      // },   
-      {
-        name: 'Zone Wise Report',
-        url: '/location/report/zonewisereport',
-        iconComponent: { name: 'cil-chart-line' },
-      },
-      {
-        name: 'Ward Wise Report',
-        url: '/location/report/wardwisereport',
-        iconComponent: { name: 'cil-chart-line' },
-      },
-      {
-        name: 'Contractor Wise Report',
-        url: '/location/report/contractorwisereport',
-        iconComponent: { name: 'cil-chart-line' },
-      },
-      {
-        name: 'Road Wise Report',
-        url: '/location/report/roadwisereport',
-        iconComponent: { name: 'cil-chart-line' },
-      },
-      {
-        name: 'Task Detail Report',
-        url: '/location/report/contractorremarksreport',
-        iconComponent: { name: 'cil-chart-line' },
-      },
-    ],
-  },
-
 ];
 
 export const OtherThanAdminWithDataEntry: INavData[] = [
@@ -206,9 +348,124 @@ export const OtherThanAdminWithDataEntry: INavData[] = [
     iconComponent: { name: 'cil-speedometer' },
   },
   {
-    name: 'Mega CC Roads',
+    name: 'Mega CC Project',
     iconComponent: { name: 'cil-list-rich' },
-    url: '/location/list',
+    children: [
+      {
+        name: 'Mega CC Roads',
+        url: '/location/megacclist',
+        iconComponent: { name: 'cil-chart-line' },
+      },
+      {
+        name: 'Mega CC Roads Map',
+        url: '/ol/display',
+        iconComponent: { name: 'cil-map' },
+    
+      },
+      {
+        name: 'Mega CC Reports',
+        iconComponent: { name: 'cil-chart-pie' },
+        children: [
+          // {
+          //   name: 'Date Wise Task Details',
+          //   url: '/location/report/taskdetailsreport',
+          //   iconComponent: { name: 'cil-chart-line' },
+          // },
+       
+          {
+            name: 'Zone Wise Report',
+            url: '/location/report/zonewisereport',
+            iconComponent: { name: 'cil-chart-line' },
+          },
+          {
+            name: 'Ward Wise Report',
+            url: '/location/report/wardwisereport',
+            iconComponent: { name: 'cil-chart-line' },
+          },
+          {
+            name: 'Contractor Wise Report',
+            url: '/location/report/contractorwisereport',
+            iconComponent: { name: 'cil-chart-line' },
+          },
+          {
+            name: 'Road Wise Report',
+            url: '/location/report/roadwisereport',
+            iconComponent: { name: 'cil-chart-line' },
+          },
+          {
+            name: 'Contractor Remarks',
+            url: '/location/report/contractorremarksreport',
+            iconComponent: { name: 'cil-chart-line' },
+          },
+          {
+            name: 'Defaulter List',
+            url: '/location/report/locationdataentry',
+            iconComponent: { name: 'cil-chart-line' },
+          },
+        ],
+      },
+    
+    ]
+  },
+  {
+    name: 'Non Mega CC Roads',
+    iconComponent: { name: 'cil-list-rich' },
+    children: [
+      {
+        name: 'Non Mega CC Roads',
+        url: '/location/nonmegacclist',
+        iconComponent: { name: 'cil-chart-line' },
+      },
+      // {
+      //   name: 'Mega CC Roads Map',
+      //   url: '/ol/display',
+      //   iconComponent: { name: 'cil-map' },
+    
+      // },
+      // {
+      //   name: 'Mega CC Reports',
+      //   iconComponent: { name: 'cil-chart-pie' },
+      //   children: [
+      //     // {
+      //     //   name: 'Date Wise Task Details',
+      //     //   url: '/location/report/taskdetailsreport',
+      //     //   iconComponent: { name: 'cil-chart-line' },
+      //     // },
+       
+      //     {
+      //       name: 'Zone Wise Report',
+      //       url: '/location/report/zonewisereport',
+      //       iconComponent: { name: 'cil-chart-line' },
+      //     },
+      //     {
+      //       name: 'Ward Wise Report',
+      //       url: '/location/report/wardwisereport',
+      //       iconComponent: { name: 'cil-chart-line' },
+      //     },
+      //     {
+      //       name: 'Contractor Wise Report',
+      //       url: '/location/report/contractorwisereport',
+      //       iconComponent: { name: 'cil-chart-line' },
+      //     },
+      //     {
+      //       name: 'Road Wise Report',
+      //       url: '/location/report/roadwisereport',
+      //       iconComponent: { name: 'cil-chart-line' },
+      //     },
+      //     {
+      //       name: 'Contractor Remarks',
+      //       url: '/location/report/contractorremarksreport',
+      //       iconComponent: { name: 'cil-chart-line' },
+      //     },
+      //     {
+      //       name: 'Defaulter List',
+      //       url: '/location/report/locationdataentry',
+      //       iconComponent: { name: 'cil-chart-line' },
+      //     },
+      //   ],
+      // },
+    
+    ]
   },
   {
     name: 'Mastic Work',
@@ -225,49 +482,6 @@ export const OtherThanAdminWithDataEntry: INavData[] = [
         iconComponent: { name: 'cil-chart-line' },
       }
     ]
-  },
-
-  {
-    name: 'Mega CC Roads Map',
-    url: '/ol/display',
-    iconComponent: { name: 'cil-map' },
-
-  },
-  {
-    name: 'Mega CC Reports',
-    iconComponent: { name: 'cil-chart-pie' },
-    children: [
-      // {
-      //   name: 'Date Wise Task Details',
-      //   url: '/location/report/taskdetailsreport',
-      //   iconComponent: { name: 'cil-chart-line' },
-      // },
-      {
-        name: 'Zone Wise Report',
-        url: '/location/report/zonewisereport',
-        iconComponent: { name: 'cil-chart-line' },
-      },
-      {
-        name: 'Ward Wise Report',
-        url: '/location/report/wardwisereport',
-        iconComponent: { name: 'cil-chart-line' },
-      },
-      {
-        name: 'Contractor Wise Report',
-        url: '/location/report/contractorwisereport',
-        iconComponent: { name: 'cil-chart-line' },
-      },
-      {
-        name: 'Road Wise Report',
-        url: '/location/report/roadwisereport',
-        iconComponent: { name: 'cil-chart-line' },
-      },
-      {
-        name: 'Task Detail Report',
-        url: '/location/report/contractorremarksreport',
-        iconComponent: { name: 'cil-chart-line' },
-      },
-    ],
   },
   {
     name: 'Data Entry',

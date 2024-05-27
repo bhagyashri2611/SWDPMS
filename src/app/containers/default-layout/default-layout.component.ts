@@ -15,7 +15,7 @@ export class DefaultLayoutComponent implements OnInit {
   ngOnInit(): void {
     this.userRole = sessionStorage.getItem('UserRole');
     this.isDataEntry = sessionStorage.getItem('isDataEntry');
-
+    debugger;
     if (this.userRole != 'Data Owner') {
       if(this.userRole=="Mastic Work"){
         this.navItems = masticWork;

@@ -158,29 +158,22 @@ export class MasticWorkListComponent implements OnInit {
               console.log(this.masticWorkList);
               
               this.rowData = this.masticWorkList;
-            } else  if (this.userRole === 'Data Viewer') {
+            } else if (this.userRole === 'Data Viewer' || this.userRole === 'Executive Engineer' || this.userRole === 'Assistant Engineer') {
               this.masticWorkList = result.data;
               console.log(this.masticWorkList);
-
               const userWardString = sessionStorage.getItem('UserWard');
-
-              // Split the UserWard string into an array of ward names
               const userWards = userWardString.split(',');
-
-              // Filter the locationList based on the ward names
               const filteredLocations = this.masticWorkList.filter((location) =>
                 userWards.includes(String(location.wardName.wardName))
               );
-              debugger
               this.masticWorkList=filteredLocations
               this.rowData = this.masticWorkList;
-            } else {
-              debugger
+            }  else {
               let ward = sessionStorage.getItem('UserWard');
-
               this.masticWorkList = result.data.filter(
                 (f) => f.wardName.wardName === ward
               );
+              debugger;
               console.log(this.masticWorkList);             
               this.masticWorkList=this.masticWorkList.filter(f=>f.subEngineerName._id===this.userID)
               this.rowData = this.masticWorkList;
@@ -205,8 +198,7 @@ export class MasticWorkListComponent implements OnInit {
           icon: 'error',
         });
       }
-    );
-    
+    );   
   }
 
   

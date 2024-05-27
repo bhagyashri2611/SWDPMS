@@ -101,7 +101,18 @@ export class UserloginComponent {
       sessionStorage.setItem('jwttoken', String(this.token));
       sessionStorage.setItem('isDataEntry', String(this.userModel.isDataEntry));
       sessionStorage.setItem('UserWard', String(this.userModel.wards[0][0].wardName));
-      this.router.navigateByUrl('dashboard');
+      debugger;
+      if(String(this.userModel.roleName)==="Data Viewer" || String(this.userModel.roleName)==="Executive Engineer"){
+        sessionStorage.setItem('UserWard', String(this.userModel.wards.map(m=>m[0].wardName)));
+      }
+      sessionStorage.setItem('isDataEntry', String(this.userModel.isDataEntry));
+      debugger;
+      if(String(this.userModel.roleName)===String("Mastic Work")){
+        this.router.navigateByUrl('location/masticworklist');
+      }
+      else{
+        this.router.navigateByUrl('dashboard');
+      }
    
     } else {
       Swal.fire({

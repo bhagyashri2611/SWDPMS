@@ -144,7 +144,7 @@ export class UserlistComponent implements OnInit {
         if (result != null) {
           if (result.status === 200) {
             this.userList = result.data;
-
+            debugger;
             this.userList.forEach((element) => {
               this.roleList.forEach((e) => {
                 if (e._id == element.role) {

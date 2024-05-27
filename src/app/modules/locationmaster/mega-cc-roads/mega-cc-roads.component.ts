@@ -8,16 +8,16 @@ import {
 } from 'src/app/core/models/ILocation';
 import { CommonService } from 'src/app/core/services/common.service';
 import { LocationService } from 'src/app/core/services/location.service';
-import { BtnCellRenderer } from './button-cell-renderer.component';
+import { MegaCCBtnCellRenderer } from './button-cell-renderer.component';
 import Swal from 'sweetalert2';
 import * as moment from 'moment';
 import * as XLSX from 'xlsx';
 @Component({
-  selector: 'app-locationlist',
-  templateUrl: './locationlist.component.html',
-  styleUrls: ['./locationlist.component.scss'],
+  selector: 'app-mega-cc-roads',
+  templateUrl: './mega-cc-roads.component.html',
+  styleUrls: ['./mega-cc-roads.component.scss']
 })
-export class LocationlistComponent implements OnInit {
+export class MegaCcRoadsComponent  implements OnInit {
   @ViewChild('agGrid', { static: false }) agGrid: AgGridAngular;
   locationForm: FormGroup;
   locationResponce: ILocationResponse;
@@ -109,10 +109,6 @@ export class LocationlistComponent implements OnInit {
           return this.commonService.DateFormatter(params.data.endDate);
         },
       },
-      {
-        headerName: 'Road Type',
-        field: 'roadType',
-      },
       // {
       //   headerName: 'Q1 End Date',
       //   field: 'quater1EndDate',
@@ -171,7 +167,7 @@ export class LocationlistComponent implements OnInit {
     debugger;
     this.rowSelection = 'multiple';
     this.frameworkComponents = {
-      btnCellRenderer: BtnCellRenderer,
+      btnCellRenderer: MegaCCBtnCellRenderer,
     };
     this.context = { componentParent: this };
 
@@ -203,14 +199,13 @@ export class LocationlistComponent implements OnInit {
           if (result != null) {
             if (result.status === 200) {
               this.locationList = result.data;
+              this.locationList=this.locationList.filter(f=>String(f.roadType)===String("Mega CC Road"))
               this.locationList = this.locationList.sort((a, b) =>
                 String(a.locationName).localeCompare(String(b.locationName))
               );
-
-              debugger;
               this.rowData = this.locationList;
               this.rowData.map(m=>m['wardName']=m.wardName.wardName)
-              
+              debugger;
             }
           } else {
             Swal.fire({
@@ -233,19 +228,16 @@ export class LocationlistComponent implements OnInit {
           });
         }
       );
-    }else if (this.userRole === 'Data Viewer') {
+    }else if (this.userRole === 'Data Viewer' || this.userRole === 'Executive Engineer' || this.userRole === 'Assistant Engineer'){
       this.locationService.getLocations().subscribe(
         (result) => {
           debugger;
           if (result != null) {
             if (result.status === 200) {
               this.locationList = result.data;
+              this.locationList=this.locationList.filter(f=>String(f.roadType)===String("Mega CC Road"))
               const userWardString = sessionStorage.getItem('UserWard');
-
-              // Split the UserWard string into an array of ward names
               const userWards = userWardString.split(',');
-
-              // Filter the locationList based on the ward names
               const filteredLocations = this.locationList.filter((location) =>
                 userWards.includes(String(location.wardName.wardName))
               );
@@ -253,10 +245,9 @@ export class LocationlistComponent implements OnInit {
               this.locationList = this.locationList.sort((a, b) =>
                 String(a.locationName).localeCompare(String(b.locationName))
               );
-
+              debugger;
               this.rowData = this.locationList;
               this.rowData.map(m=>m['wardName']=m.wardName.wardName)
-              
             }
           } else {
             Swal.fire({
@@ -286,12 +277,17 @@ export class LocationlistComponent implements OnInit {
           if (result != null) {
             if (result.status === 200) {
               this.locationList = result.data;
+              this.locationList=this.locationList.filter(f=>String(f.roadType)===String("Mega CC Road"))
+
               this.locationList = this.locationList.sort((a, b) =>
                 String(a.locationName).localeCompare(String(b.locationName))
               );
 
               debugger;
               this.rowData = this.locationList;
+              this.rowData = this.locationList;
+              this.rowData.map(m=>m['wardName']=m.wardName.wardName)
+              
             }
           } else {
             Swal.fire({
@@ -334,7 +330,6 @@ export class LocationlistComponent implements OnInit {
     let val = (<HTMLInputElement>document.getElementById('quickFilter')).value;
     this.agGrid.api.setQuickFilter(val);
   }
-
   selectAllAmerican() {
     this.agGrid.api.forEachNode(function (node) {
       if (
@@ -381,8 +376,8 @@ export class LocationlistComponent implements OnInit {
 
   download() {
     let fileName =
-      'Location Wise Task Details Report' +
-      moment(new Date()).format('DDMMYYYY') +
+    'Non Mega CC Road List ' +
+    moment(new Date()).format('DDMMYYYY') +
       '.xlsx';
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.rowData);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();

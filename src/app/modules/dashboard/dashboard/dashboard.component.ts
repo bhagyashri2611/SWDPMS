@@ -239,6 +239,8 @@ export class DashboardComponent implements OnInit {
             if (result.status === 200) {
               this.totalRoadsLength = 0;
               this.locationList = result.data;
+              this.locationList=this.locationList.filter(f=>String(f.roadType)===String("Mega CC Road"))
+
               this.locationList = this.locationList.sort((a, b) =>
                 String(a.locationName).localeCompare(String(b.locationName))
               );
@@ -348,13 +350,14 @@ export class DashboardComponent implements OnInit {
           });
         }
       );
-    } else if (this.userRole === 'Data Viewer') {
+    } else if (this.userRole === 'Data Viewer' || this.userRole === 'Executive Engineer') {
       this.locationService.getLocations().subscribe(
         (result) => {
           if (result != null) {
             if (result.status === 200) {
               this.totalRoadsLength = 0;
               this.locationList = result.data;
+              this.locationList=this.locationList.filter(f=>String(f.roadType)===String("Mega CC Road"))
 
               const userWardString = sessionStorage.getItem('UserWard');
 
@@ -483,6 +486,8 @@ export class DashboardComponent implements OnInit {
           if (result != null) {
             if (result.status === 200) {
               this.locationList = result.data;
+              this.locationList=this.locationList.filter(f=>String(f.roadType)===String("Mega CC Road"))
+
               this.locationList = this.locationList.sort((a, b) =>
                 String(a.locationName).localeCompare(String(b.locationName))
               );

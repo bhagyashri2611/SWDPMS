@@ -3,6 +3,7 @@ import { ICellRendererAngularComp } from '@ag-grid-community/angular';
 import { Router } from '@angular/router';
 import { LocationService } from 'src/app/core/services/location.service';
 import Swal from 'sweetalert2';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'btn-cell-renderer',
@@ -17,12 +18,31 @@ import Swal from 'sweetalert2';
       <svg cIcon name="cilNoteAdd"></svg>
       Edit
     </button>
+    <button
+    class="me-1"
+      color="light"
+      cButton
+      (click)="viewBeforeImage()"
+    >
+    Before Image
+    </button>
+      <button
+      class="me-1"
+      color="light"
+      cButton
+      (click)="viewAfterImage()"
+    >
+    After Image
+    </button>
   `,
 })
 export class BtnCellRenderer implements ICellRendererAngularComp {
   private params: any;
-  edit: boolean = true;
+  edit: boolean = false;
   userRole = sessionStorage.getItem('UserRole');
+  
+  beforeImagePath: string;
+  afterImagePath: string;
   constructor(
     private router: Router,
     private locationService: LocationService
@@ -33,7 +53,6 @@ export class BtnCellRenderer implements ICellRendererAngularComp {
     if (this.userRole === 'Data Owner') {
       this.edit = true;
     } else {
-
       const today: Date = new Date();
       const current: Date = new Date();
 
@@ -96,6 +115,18 @@ export class BtnCellRenderer implements ICellRendererAngularComp {
   btnClickedEditHandler() {
     this.router.navigate(['masticwork/create/' + this.params.data._id]);
   }
+  viewBeforeImage() {
+    this.beforeImagePath =
+                  environment.imageUrl + this.params.data.beforeImagePath;
+    window.open(this.beforeImagePath, '_blank');
+  }
+  viewAfterImage() {
+    this.afterImagePath =
+                  environment.imageUrl + this.params.data.afterImagePath;
+    window.open(this.afterImagePath, '_blank');
+  }
+
+
 
   btnClickedSave() {
     console.log(this.params.data);

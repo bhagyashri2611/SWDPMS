@@ -22,6 +22,9 @@ import { LocationDataEntryComponent } from '../rwmsreports/location-data-entry/l
 import { MasticWorkListComponent } from '../mastic-work/mastic-work-list/mastic-work-list.component';
 import { MasticRoadListComponent } from './mastic-road-list/mastic-road-list.component';
 import { MasticRoadDataEntryComponent } from './mastic-road-data-entry/mastic-road-data-entry.component';
+import { MegaCcRoadsComponent } from './mega-cc-roads/mega-cc-roads.component';
+import { NonMegaCcRoadsComponent } from './non-mega-cc-roads/non-mega-cc-roads.component';
+import { PaymentComponent } from './payment/payment.component';
 
 const routes: Routes = [
   { path: 'create', component: CreatelocationComponent },
@@ -42,13 +45,15 @@ const routes: Routes = [
   {path:"report/taskdetailsreport",component:TaskDetailsComponent}, 
   {path:"report/contractorremarksreport",component:ContractorRemarksComponent}, 
   {path:"masticroadlist",component: MasticRoadListComponent},
-
+  { path: 'megacclist', component: MegaCcRoadsComponent },
+  { path: 'nonmegacclist', component: NonMegaCcRoadsComponent },
   {path:"report/zonewisereport",component: ZoneWiseReportComponent}, 
   {path:"report/wardwisereport",component: WardWiseReportComponent}, 
   {path:"report/contractorwisereport",component: ConWiseReportComponent}, 
   {path:"report/roadwisereport",component: RoadWiseReportComponent},
   {path:"report/locationdataentry",component: LocationDataEntryComponent},
   {path:"masticworklist",component: MasticWorkListComponent},
+  {path:"payment",component: PaymentComponent},
   {path:"createMasticRoad",component: MasticRoadDataEntryComponent}, // added for routing by rucha
 ];
 

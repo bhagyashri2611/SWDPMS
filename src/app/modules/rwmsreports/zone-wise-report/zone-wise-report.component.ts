@@ -52,10 +52,11 @@ export class ZoneWiseReportComponent implements OnInit{
           if (result != null) {
             if (result.status === 200) {
               this.locationList = result.data;
+              this.locationList=this.locationList.filter(f=>String(f.roadType)===String("Mega CC Road"))
               this.locationList = this.locationList.sort((a, b) =>
                 String(a.locationName).localeCompare(String(b.locationName))
               );
-
+              debugger;
               if (this.locationList.length > 0) {
                 this.locationService
                   .getAllModulInLocationForDashboard()
@@ -64,6 +65,8 @@ export class ZoneWiseReportComponent implements OnInit{
                       if (result) {
                         this.moduleInLocationList = result.data;
                         if (this.moduleInLocationList.length > 0) {
+                          this.moduleInLocationList=this.moduleInLocationList.filter(f=>String(f.location.roadType)===String("Mega CC Road"))
+                          debugger;
                           this.getLocationTable();
                         }
                       } else {
@@ -94,12 +97,13 @@ export class ZoneWiseReportComponent implements OnInit{
           });
         }
       );
-    } else if (this.userRole === 'Data Viewer') {
+    } else if (this.userRole === 'Data Viewer' || this.userRole === 'Executive Engineer' || this.userRole === 'Assistant Engineer') {
       this.locationService.getLocations().subscribe(
         (result) => {
           if (result != null) {
             if (result.status === 200) {
               this.locationList = result.data;
+              this.locationList=this.locationList.filter(f=>String(f.roadType)===String("Mega CC Road"))
               const userWardString = sessionStorage.getItem('UserWard');
 
               // Split the UserWard string into an array of ward names
@@ -158,6 +162,7 @@ export class ZoneWiseReportComponent implements OnInit{
           if (result != null) {
             if (result.status === 200) {
               this.locationList = result.data;
+              this.locationList=this.locationList.filter(f=>String(f.roadType)===String("Mega CC Road"))
               this.locationList = this.locationList.sort((a, b) =>
                 String(a.locationName).localeCompare(String(b.locationName))
               );
@@ -170,6 +175,7 @@ export class ZoneWiseReportComponent implements OnInit{
                       if (result) {
                         this.moduleInLocationList = result.data;
                         if (this.moduleInLocationList.length > 0) {
+                          this.moduleInLocationList=this.moduleInLocationList.filter(f=>String(f.location.roadType)===String("Mega CC Road"))
                           this.getLocationTable();
                         }
                       } else {
@@ -227,7 +233,9 @@ export class ZoneWiseReportComponent implements OnInit{
 
   getLocationTable() {
     this.rowData = [];
+    debugger;
     this.filteredList = this.moduleInLocationList.map((item2) => {
+      debugger;
       // 
       let correspondingItem = this.locationList.find(
         (item1) => item1._id === item2.location._id

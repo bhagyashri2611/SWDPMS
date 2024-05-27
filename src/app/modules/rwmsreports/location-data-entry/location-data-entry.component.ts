@@ -246,9 +246,12 @@ export class LocationDataEntryComponent implements OnInit{
           if (result != null) {
             if (result.status === 200) {
               this.locationList = result.data;
+              this.locationList=this.locationList.filter(f=>String(f.roadType)===String("Mega CC Road"))
+
               this.locationList = this.locationList.sort((a, b) =>
                 String(a.locationName).localeCompare(String(b.locationName))
               );
+
 
               if (this.locationList.length > 0) {
                 this.dataentryService.getDataEntries().subscribe((result) => {
